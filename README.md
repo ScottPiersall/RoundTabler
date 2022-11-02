@@ -13,8 +13,8 @@ Release Date	|	Version		| Change(s)
 ----------------|-----------------------|------------------------------------------------------------------------------------
 02 Nov 2020	|	0.0.0.1     |	Repository Created. 
 
-## Contributors
-Name                        | Contribution(s) / Lead 
+## Authors
+Name                        | Contribution(s)
 -------------------------   | ---------------------------------------------
 Tiffany Ambrose             |
 Joseph Charlton             |
