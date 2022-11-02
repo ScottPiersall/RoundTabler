@@ -4,6 +4,10 @@ A security tool for scanning relational database column contents for unencrypted
 ## Features
 
 * Easy scanning of columns
+* Low false-positives
+* Avoids bad outcome (we do not certify databases with unencrypted data)
+* Reported data includes confidence scores
+* Quick Deployment Option
 * Deployable via a docker/VM image - NOTHING TO BUILD OR INSTALL!
 
 
