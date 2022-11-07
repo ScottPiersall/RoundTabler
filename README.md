@@ -20,14 +20,14 @@ Release Date	|	Version		| Change(s)
 ## Authors
 Name                        | Contribution(s)
 -------------------------   | ---------------------------------------------
-Tiffany Ambrose             |
-Joseph Charlton             |
+Tiffany Ambrose             | Writer
+Joseph Charlton             | Writer and Coder
 Dania Jean-Baptiste         |
-Brian Lasher                |
-Nataliz Martinez-Santiago   |
-Jordan Mcmillian            |
-Scott Piersall              |
-Zachary Russell             |
-Matthew Tyroler             |
+Brian Lasher                | Writer and Coder
+Nataliz Martinez-Santiago   | Writer
+Jordan Mcmillian            | Writer and Coder
+Scott Piersall              | Writer and Coder
+Zachary Russell             | Writer and Coder
+Matthew Tyroler             | Writer
 Ariel Turnley               |
 
