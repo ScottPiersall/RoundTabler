@@ -15,7 +15,9 @@ public class LuhnTest{
 		int runningsum =0;
 
 		// sum the digits alternating in weight
-
+		for (int i = 0; i < CardNumber.Length(); i++) {
+		
+		}
 
 
 
