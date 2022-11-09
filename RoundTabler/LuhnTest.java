@@ -20,7 +20,7 @@ public class LuhnTest{
 		
 		for (int index = CardNumber.length() - 1; index >=0 ; index--) {
 			int digit = CardNumber.charAt(index) - '0';
-			if ( Second == true){
+			if (Second){
 				digit *= 2;
 			}
 			runningsum += digit / 2;
@@ -40,12 +40,12 @@ public class LuhnTest{
 		// No valid digits should "reduce" to the result of a blank string
 		boolean NoValidDigits;
 		NoValidDigits = LuhnTest.Validate("asdjfh-kasjdhf-kjashd-kfjhas-kdjfh-kasjdhf");
-		assert NoValidDigits = ! true;
+		assert NoValidDigits = false;
 
 		// This is a card number which will fail Luhn's test
 		boolean BadCard;
 		BadCard = LuhnTest.Validate("70198888888481821");
-		assert BadCard = ! true;
+		assert BadCard = false;
 			}
   
 	public void TestNumbersWhichPass() {
