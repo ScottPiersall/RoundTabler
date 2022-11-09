@@ -41,11 +41,11 @@ public class LuhnTest{
 		// No valid digits should "reduce" to the result of a blank string
 		boolean NoValidDigits;
 		NoValidDigits = LuhnTest.Validate("asdjfh-kasjdhf-kjashd-kfjhas-kdjfh-kasjdhf");
-		assert NoValidDigits = false;
+		assert NoValidDigits = ! true;
 
 		boolean BadCard;
 		BadCard = LuhnTest.Validate("70198888888481821");
-		assert BadCard = false;
+		assert BadCard = ! true;
 
 
 	}
