@@ -2,3 +2,4 @@
 *.class
 *.sqlite
 .vs
+.idea
