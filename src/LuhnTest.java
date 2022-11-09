@@ -1,3 +1,5 @@
+package RoundTabler;
+
 //
 // Utility Class
 // For Checking Card Numbers
@@ -5,8 +7,6 @@
 //
 // Credit Card Numbers, to be valid, must pass Luhn's Algorithm
 //
-
-package RoundTabler{
 public class LuhnTest{
 
 
@@ -25,5 +25,4 @@ public class LuhnTest{
 
 
 
-}
 }
