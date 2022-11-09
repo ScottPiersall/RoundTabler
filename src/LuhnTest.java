@@ -32,7 +32,6 @@ public class LuhnTest{
 
 
 	public void TestNumbersWhichFail() {
-		
 		// Make sure we do not certify blank strings
 		boolean Blank;
 		Blank = LuhnTest.Validate("");
@@ -43,12 +42,11 @@ public class LuhnTest{
 		NoValidDigits = LuhnTest.Validate("asdjfh-kasjdhf-kjashd-kfjhas-kdjfh-kasjdhf");
 		assert NoValidDigits = ! true;
 
+		// This is a card number which will fail Luhn's test
 		boolean BadCard;
 		BadCard = LuhnTest.Validate("70198888888481821");
 		assert BadCard = ! true;
-
-
-	}
+			}
 
 	public void TestNumbersWhichPass() {
 
