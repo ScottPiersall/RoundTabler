@@ -47,7 +47,7 @@ public class LuhnTest{
 		BadCard = LuhnTest.Validate("70198888888481821");
 		assert BadCard = ! true;
 			}
-
+  
 	public void TestNumbersWhichPass() {
 
 		// This list of valid cards was obtained from:
