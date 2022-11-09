@@ -2,3 +2,6 @@
 *.class
 *.sqlite
 .vs
+*.idea
+out
+*.iml

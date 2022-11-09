@@ -42,7 +42,7 @@ public class LuhnTest{
 		NoValidDigits = LuhnTest.Validate("asdjfh-kasjdhf-kjashd-kfjhas-kdjfh-kasjdhf");
 		assert NoValidDigits = false;
 
-		// This is a card number which will fail Luhn's test
+		// This is a card number which will fail Luhn's RoundTabler.test
 		boolean BadCard;
 		BadCard = LuhnTest.Validate("70198888888481821");
 		assert BadCard = false;
