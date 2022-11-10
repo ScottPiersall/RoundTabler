@@ -35,7 +35,7 @@ public class PCIScan{
 		this();
 		pDBConnection = DBConnection;
 		pTableName = TableName;
-		ScanResult = String.Empty;
+		ScanResult = "";
 		JDBC_DRIVER ="org.mariadb.jdbc.Driver";
 		if ( pTableName.compareTo("*") == 0){
 			// We are scanning all tables
