@@ -17,7 +17,7 @@ public class RoundTable {
                 String[] argParts = elem.split("=");
 
                 //If any parameters are left empty i.e. "--server=" then throw exception and stop.
-                if(argParts.length == 1 && !argParts[0].equalsIgnoreCase("--resultfile"))throw(new InputMismatchException("Must provide an argument for parameter flag " + argParts[0].replace("--", "")));
+                if(argParts.length == 1)throw(new InputMismatchException("Must provide an argument for parameter flag: " + argParts[0].replace("--", "")));
 
                 //Initialize Config fields for easy access to all arguments needed for execution.
                 switch (argParts[0]) {
@@ -41,6 +41,9 @@ public class RoundTable {
                         break;
                     case "--resultfile":
                         config.setFile(argParts[1]);
+                        break;
+                    case "--table":
+                        config.setTable(argParts[1]);
                         break;
                     default:
                         //If a argument does not match any of the valid argument types then throw exception and stop.
@@ -69,7 +72,7 @@ public class RoundTable {
                 --server being empty would throw an exception before --resultfile is read. so need to iterate through rest of args in order to print to the requested result file.
             */
             for (String elem : args) {
-                if(elem.contains("--resultfile")){
+                if(elem.contains("--resultfile") && elem.split("=").length > 1){
                     filePath = elem.split("=")[1];
                     break;
                 }
@@ -80,7 +83,8 @@ public class RoundTable {
                 System.out.print(e);
             }
             else{
-                System.out.println(filePath);
+                System.out.println(e);
+                System.out.println("Eventually going to print error to file located at (haven't done it yet): " + filePath);
             }
         }
 

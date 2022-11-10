@@ -11,6 +11,7 @@ public class Configuration {
     private String password;
     private String database;
     private String file;
+    private String table;
 
     public Configuration() {
         this.type = "";
@@ -20,6 +21,7 @@ public class Configuration {
         this.password = "";
         this.database = "";
         this.file = "";
+        this.table = "";
     }
 
     //All getters and setters for config class
@@ -80,12 +82,20 @@ public class Configuration {
         this.file = file;
     }
 
+    public String getTable() {
+        return table;
+    }
+
+    public void setTable(String table) {
+        this.table = table;
+    }
+
     //Ensure all required parameters have been filled out except --resultfile since it isn't required
 
     public boolean allFilled(){
         for(Field f : getClass().getDeclaredFields()) {
             try {
-                if (f.get(this) == "" && !f.getName().equals("file")) {
+                if (f.get(this) == "" && !f.getName().equals("file") && !f.getName().equals("table")) {
                     return false;
                 }
             } catch (IllegalAccessException e) {
