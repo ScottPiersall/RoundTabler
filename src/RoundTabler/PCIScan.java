@@ -19,7 +19,7 @@ public class PCIScan{
 	
 	public String JDBC_DRIVER;
 
-	public string ScanResult;
+	public String ScanResult;
 
 	private Conenction pDBConnection;
 	private String pTableName; 
@@ -31,7 +31,7 @@ public class PCIScan{
 		this.pMYSQLColumnTypes = "(mediumtext, longtext, text, tinytext, varchar)";
 	}
 
-	public PCIScan(Connection MYSqlDBConnection, string TableName  ){
+	public PCIScan(Connection MYSqlDBConnection, String TableName  ){
 		this();
 		pDBConnection = DBConnection;
 		pTableName = TableName;
