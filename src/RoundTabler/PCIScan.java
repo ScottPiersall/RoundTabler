@@ -21,7 +21,7 @@ public class PCIScan{
 
 	public String ScanResult;
 
-	private Connections pDBConnection;
+	private Connection pDBConnection;
 	private String pTableName; 
 	private String pMYSQLColumnSelect;
 	private String pMYSQLColumnTypes;
@@ -31,7 +31,7 @@ public class PCIScan{
 		this.pMYSQLColumnTypes = "(mediumtext, longtext, text, tinytext, varchar)";
 	}
 
-	public PCIScan(Connections MYSqlDBConnection, String TableName  ){
+	public PCIScan(Connection MYSqlDBConnection, String TableName  ){
 		this();
 		pDBConnection = MYSqlDBConnection;
 		pTableName = TableName;
