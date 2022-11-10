@@ -19,16 +19,19 @@ public class PCIScan{
 	
 	public String JDBC_DRIVER;
 
-	public String ScanResult;
+
 
 	private Connection pDBConnection;
 	private String pTableName; 
 	private String pMYSQLColumnSelect;
 	private String pMYSQLColumnTypes;
 
+	private StringBuilder psbResults;
+
 	public PCIScan(){
 		super();
 		this.pMYSQLColumnTypes = "(mediumtext, longtext, text, tinytext, varchar)";
+		this.psbResults = new StringBuilder();
 	}
 
 	public PCIScan(Connection MYSqlDBConnection, String TableName  ){
@@ -40,24 +43,25 @@ public class PCIScan{
 		if ( pTableName.compareTo("*") == 0){
 			// We are scanning all tables
 			// so select should retrieve all table all columns which can store text
-			pMYSQLColumnSelect = "SELECT TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where table_schema=DATABASE() and DATA_TYPE in " + this.pMySQLColumnTypes + ';';
+			pMYSQLColumnSelect = "SELECT TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where table_schema=DATABASE() and DATA_TYPE in " + this.pMYSQLColumnTypes + ';';
 
 
 		} else {
 			// We are scanning a specific table
 			// so select should retrieve all table all columns which can store text
-		    pMYSQLColumnSelect = "SELECT TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where table_schema=DATABASE() and TABLE_NAME = '" + pTableName + " and DATA_TYPE in "  + this.pMySQLColumnTypes + ';';
+		    pMYSQLColumnSelect = "SELECT TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where table_schema=DATABASE() and TABLE_NAME = '" + pTableName + " and DATA_TYPE in "  + this.pMYSQLColumnTypes+ ';';
 
 
 		}
 
 	}
 
-	
-	public void ScanMYSQLTables(){
+	public String ScanResult() { return this.psbResults.toString() };
+
+	public void ScanMYSQLTables() throws SQLException {
 
 		Statement cStatement = this.pDBConnection.createStatement();
-		cStatement.executeSelect(pMYSQLColumnSelect);
+		cStatement.execute(pMYSQLColumnSelect);
 
 		// for every row returned by cStatement
 
@@ -66,10 +70,6 @@ public class PCIScan{
 				// get confidencelevel Match
 					// and when level > 0
 						// place is result stringbuilder
-
-
-
-
 
 	}
 
