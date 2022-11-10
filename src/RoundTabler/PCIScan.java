@@ -2,6 +2,9 @@ package RoundTabler;
 
 import java.util.regex.*;
 import RoundTabler.*;
+import java.sql.*;
+
+
 //
 // A Class used for doing PCIScan of fields
 // for protected cards.
@@ -13,11 +16,65 @@ public class PCIScan{
 	// with embedded dashes
 	static String CardNumberSequenceRegex = "\b(?:\\d[-]*?){13,16}\b";
 	static Pattern CardNumberPattern = Pattern.compile( CardNumberSequenceRegex);
+	
+	public String JDBC_DRIVER;
 
+	public string ScanResult;
+
+	private Conenction pDBConnection;
+	private String pTableName; 
+	private String pMYSQLColumnSelect;
+	private String pMYSQLColumnTypes;
 
 	public PCIScan(){
 		super();
+		this.pMYSQLColumnTypes = "(mediumtext, longtext, text, tinytext, varchar)";
 	}
+
+	public PCIScan(Connection MYSqlDBConnection, string TableName  ){
+		this();
+		pDBConnection = DBConnection;
+		pTableName = TableName;
+		ScanResult = String.Empty;
+		JDBC_DRIVER ="org.mariadb.jdbc.Driver";
+		if ( pTableName.compareTo("*") == 0){
+			// We are scanning all tables
+			// so select should retrieve all table all columns which can store text
+			pMYSQLColumnSelect = "SELECT TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where table_schema=DATABASE() and DATA_TYPE in " + this.pMySQLColumnTypes + ';';
+
+
+		} else {
+			// We are scanning a specific table
+			// so select should retrieve all table all columns which can store text
+		    pMYSQLColumnSelect = "SELECT TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where table_schema=DATABASE() and TABLE_NAME = '" + pTableName + " and DATA_TYPE in "  + this.pMySQLColumnTypes + ';';
+
+
+		}
+
+	}
+
+	
+	public void ScanMYSQLTables(){
+
+		Statement cStatement = this.pDBConnection.createStatement();
+		cStatement.executeSelect(pMYSQLColumnSelect);
+
+		// for every row returned by cStatement
+
+		// select columnName from TableName 
+			// For each of these rows  
+				// get confidencelevel Match
+					// and when level > 0
+						// place is result stringbuilder
+
+
+
+
+
+	}
+
+
+
 
 	public static int getConfidenceLevelmatch( String DatabaseRow ) {
 		int result = 0;
