@@ -83,15 +83,8 @@ public class RoundTable {
                 }
             }
 
-            //Iterated through all args and --resultfile wasn't there still? Just print to to console
-            if(filePath.equals("")){
-                System.out.print(e);
-            }
-            else{
-                //System.out.println(e);
-                //System.out.println("Eventually going to print error to file located at (haven't done it yet): " + filePath);
-                new HTMLErrorOut(config.getFile(), e.getMessage());
-            }
+            new HTMLErrorOut(filePath, e.getMessage());
+
         }
 
     }
