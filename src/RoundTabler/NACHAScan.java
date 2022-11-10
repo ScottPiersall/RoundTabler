@@ -15,7 +15,7 @@ public class NACHAScan{
     public boolean checkForValidABANumber(String abaNumber) {
         int abaLength = abaNumber.length();
         int validation = 0;
-        if (isNumeric(abaNumber) && abaLength == 9){
+        if (abaLength == 9 && isNumeric(abaNumber)){
             /*
              * Validation function uses checksum algorithm
              */
