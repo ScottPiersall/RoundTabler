@@ -21,7 +21,7 @@ public class PCIScan{
 
 	public String ScanResult;
 
-	private Connection pDBConnection;
+	private Connections pDBConnection;
 	private String pTableName; 
 	private String pMYSQLColumnSelect;
 	private String pMYSQLColumnTypes;
@@ -31,9 +31,9 @@ public class PCIScan{
 		this.pMYSQLColumnTypes = "(mediumtext, longtext, text, tinytext, varchar)";
 	}
 
-	public PCIScan(Connection MYSqlDBConnection, String TableName  ){
+	public PCIScan(Connections MYSqlDBConnection, String TableName  ){
 		this();
-		pDBConnection = DBConnection;
+		pDBConnection = MYSqlDBConnection;
 		pTableName = TableName;
 		ScanResult = "";
 		JDBC_DRIVER ="org.mariadb.jdbc.Driver";
