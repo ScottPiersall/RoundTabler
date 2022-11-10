@@ -21,7 +21,7 @@ public class PCIScan{
 
 	public String ScanResult;
 
-	private Conenction pDBConnection;
+	private Connection pDBConnection;
 	private String pTableName; 
 	private String pMYSQLColumnSelect;
 	private String pMYSQLColumnTypes;
