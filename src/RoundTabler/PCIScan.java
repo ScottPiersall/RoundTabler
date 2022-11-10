@@ -32,7 +32,7 @@ public class PCIScan{
 	}
 
 	public PCIScan(Connection MYSqlDBConnection, string TableName  ){
-		this.super();
+		this();
 		pDBConnection = DBConnection;
 		pTableName = TableName;
 		ScanResult = String.Empty;
