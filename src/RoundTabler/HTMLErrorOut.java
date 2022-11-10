@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.InputMismatchException;
 
 public class HTMLErrorOut {
 
@@ -14,10 +15,15 @@ public class HTMLErrorOut {
 
     private void addToErrorLog(String filePath, String error) {
 
-        File file = new File( filePath + "errorLog.html");
+
 
         try{
             //Create file at directory specified. Problem with directory resorts to simply printing to command line
+
+            if(filePath.length() == 0)throw(new IOException());
+
+            File file = new File( filePath + "errorLog.html");
+
             file.createNewFile();
 
             FileWriter htmlWrite = new FileWriter(file);
@@ -99,9 +105,10 @@ public class HTMLErrorOut {
 
         }catch(IOException e){
 
+            System.out.println();
             System.out.print("Invalid file path for result, printing error: ");
-            System.out.print(e);
-            System.out.print(e.getMessage());
+            System.out.println(error);
+            System.out.println("Please refer to https://github.com/ScottPiersall/RoundTabler/blob/main/README.md for any confusion.");
 
         }
     }
