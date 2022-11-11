@@ -105,7 +105,7 @@ public class HTMLErrorOut {
             System.out.println();
             System.out.print("Invalid file path for result, printing error: ");
             System.out.println(error);
-            System.out.println("Please refer to https://github.com/ScottPiersall/RoundTabler/blob/main/README.md for any confusion.");
+            System.out.println("Please refer to https://github.com/ScottPiersall/RoundTabler/blob/main/README.md to help resolve any confusion.");
 
         }
     }
