@@ -19,4 +19,28 @@ public class NACHAScanTest {
         boolean result3 = nachaScan.checkForValidABANumber("011401533");
         assertTrue(result3);
     }
+
+    @Test
+    public void getConfidenceLevelMatchTest100() {
+        String databaseRow = "The ABA number of the customer is 111000025";
+        int result = nachaScan.getConfidenceLevelMatch(databaseRow);
+        int expected = 100;
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void getConfidenceLevelMatchTest0() {
+        String databaseRow = "There was no ABA number of the customer given";
+        int result = nachaScan.getConfidenceLevelMatch(databaseRow);
+        int expected = 0;
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void getConfidenceLevelMatchTest75() {
+        String databaseRow = "The ABA number of the customer is 000000000";
+        int result = nachaScan.getConfidenceLevelMatch(databaseRow);
+        int expected = 75;
+        assertEquals(expected, result);
+    }
 }
