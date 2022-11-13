@@ -1,5 +1,10 @@
 package RoundTabler;
 
+import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import RoundTabler.Configuration;
 
@@ -78,14 +83,8 @@ public class RoundTable {
                 }
             }
 
-            //Iterated through all args and --resultfile wasn't there still? Just print to to console
-            if(filePath.equals("")){
-                System.out.print(e);
-            }
-            else{
-                System.out.println(e);
-                System.out.println("Eventually going to print error to file located at (haven't done it yet): " + filePath);
-            }
+            new HTMLErrorOut(filePath, e.getMessage());
+
         }
 
     }
