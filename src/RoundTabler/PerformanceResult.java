@@ -42,7 +42,7 @@ public class PerformanceResult{
 		"<TD>" + String.format("%,d", RowsMatched )+ "</TD>" +
 		"<TD>" + String.format("%2f", RowsPerSecond ) + "</TD>" + 
 		
-		"</TR>";"
+		"</TR>";
 
 	}
 
