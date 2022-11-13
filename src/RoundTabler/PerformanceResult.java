@@ -40,7 +40,9 @@ public class PerformanceResult{
 		"<TD>" + MatchType + "</TD>"+
 		"<TD>" + String.format("%,d", RowsScanned ) + "</TD>" +
 		"<TD>" + String.format("%,d", RowsMatched )+ "</TD>" +
-		"<TD>" + String.format("%2f", RowsPerSecond ) + "</TD>"; 
+		"<TD>" + String.format("%2f", RowsPerSecond ) + "</TD>" + 
+		
+		"</TR>";"
 
 	}
 
