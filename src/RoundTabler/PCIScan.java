@@ -4,6 +4,8 @@ import java.util.regex.*;
 import RoundTabler.*;
 import java.sql.*;
 
+import static utility.ApplicationUtility.*;
+
 
 //
 // A Class used for doing PCIScan of fields
@@ -19,62 +21,57 @@ public class PCIScan{
 	
 	public String JDBC_DRIVER;
 
-	public string ScanResult;
+	private RoundTabler.Configuration pScanConfiguration;
 
-	private Conenction pDBConnection;
+	private Connection pDBConnection;
 	private String pTableName; 
 	private String pMYSQLColumnSelect;
 	private String pMYSQLColumnTypes;
 
+	private PerformanceSummary pPerformanceSummary;
+
+	private StringBuilder psbResults;
+
 	public PCIScan(){
 		super();
 		this.pMYSQLColumnTypes = "(mediumtext, longtext, text, tinytext, varchar)";
+		this.psbResults = new StringBuilder();
+		psbResults.append("\n");
 	}
 
-	public PCIScan(Connection MYSqlDBConnection, string TableName  ){
+	public PCIScan( RoundTabler.Configuration ScanConfiguration, RoundTabler.PerformanceSummary Summary){
 		this();
-		pDBConnection = DBConnection;
-		pTableName = TableName;
-		ScanResult = String.Empty;
-		JDBC_DRIVER ="org.mariadb.jdbc.Driver";
-		if ( pTableName.compareTo("*") == 0){
-			// We are scanning all tables
-			// so select should retrieve all table all columns which can store text
-			pMYSQLColumnSelect = "SELECT TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where table_schema=DATABASE() and DATA_TYPE in " + this.pMySQLColumnTypes + ';';
+		pScanConfiguration = ScanConfiguration;
+		pPerformanceSummary = Summary;
+	}
 
+	public String ScanResult() { return this.psbResults.toString(); }
 
-		} else {
-			// We are scanning a specific table
-			// so select should retrieve all table all columns which can store text
-		    pMYSQLColumnSelect = "SELECT TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where table_schema=DATABASE() and TABLE_NAME = '" + pTableName + " and DATA_TYPE in "  + this.pMySQLColumnTypes + ';';
-
-
+	public int ScanMySQL() throws SQLException {
+		//
+		// Performs MySQL-Based Scan
+		// using the settings and configuration 
+		// contained in pScanConfiguration
+		if ( pScanConfiguration.getDbType().toUpper().compareTo("MYSQL") != 0 ) {
+			new HTMLErrorOut(psScanConfiguration.getfile(), "Database Type Mismatch. Database Type Configuration " & pScanConfiguration.getDbType() & " cannot be used with MySQL Scan" );
+			return 0;
 		}
 
+		// Pseudocode
+		// gather table list
+			// gather column list for each table
+				// Instantiate New PerformanceResult
+					// TableName->PerformanceResult ColumnName->PerformanceResult
+					// GetStartTime ->PerformanceResult
+						// getConfidenceLevelmatch
+						// TableRows+=1  
+						// If ConfidenceLevel > 0
+							// Increment MatchedRows in PerformanceResult
+							// Place Row in StringBuilder
+
+					// GetEndTime -> PerformanceResult
+				// Add PerformanceResult to Performance Summary
 	}
-
-	
-	public void ScanMYSQLTables(){
-
-		Statement cStatement = this.pDBConnection.createStatement();
-		cStatement.executeSelect(pMYSQLColumnSelect);
-
-		// for every row returned by cStatement
-
-		// select columnName from TableName 
-			// For each of these rows  
-				// get confidencelevel Match
-					// and when level > 0
-						// place is result stringbuilder
-
-
-
-
-
-	}
-
-
-
 
 	public static int getConfidenceLevelmatch( String DatabaseRow ) {
 		int result = 0;

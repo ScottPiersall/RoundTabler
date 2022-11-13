@@ -85,8 +85,11 @@ public class LuhnTest{
 		LuhnTest Tests;
 		Tests = new LuhnTest();
 
+		System.out.println("Running LuhnTest Assertions...");
 		Tests.TestNumbersWhichFail();
 		Tests.TestNumbersWhichPass();
+		System.out.println("Finished Running LuhnTest Assertions...");
+
 	}
 
 
