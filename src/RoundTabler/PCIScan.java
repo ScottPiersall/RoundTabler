@@ -21,12 +21,14 @@ public class PCIScan{
 	
 	public String JDBC_DRIVER;
 
-
+	private RoundTabler.Configuration pScanConfiguration;
 
 	private Connection pDBConnection;
 	private String pTableName; 
 	private String pMYSQLColumnSelect;
 	private String pMYSQLColumnTypes;
+
+	private PerformanceSummary pPerformanceSummary;
 
 	private StringBuilder psbResults;
 
@@ -34,49 +36,42 @@ public class PCIScan{
 		super();
 		this.pMYSQLColumnTypes = "(mediumtext, longtext, text, tinytext, varchar)";
 		this.psbResults = new StringBuilder();
+		psbResults.append("\n");
 	}
 
-	public PCIScan(Connection MYSqlDBConnection, String TableName  ){
+	public PCIScan( RoundTabler.Configuration ScanConfiguration, RoundTabler.PerformanceSummary Summary){
 		this();
-		pDBConnection = MYSqlDBConnection;
-		pTableName = TableName;
-		psbResults.append("\n");
-		JDBC_DRIVER ="org.mariadb.jdbc.Driver";
-		if ( pTableName.compareTo("*") == 0){
-			// We are scanning all tables
-			// so select should retrieve all table all columns which can store text
-			pMYSQLColumnSelect = "SELECT TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where table_schema=DATABASE() and DATA_TYPE in " + this.pMYSQLColumnTypes + ';';
-
-
-		} else {
-			// We are scanning a specific table
-			// so select should retrieve all table all columns which can store text
-		    pMYSQLColumnSelect = "SELECT TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where table_schema=DATABASE() and TABLE_NAME = '" + pTableName + " and DATA_TYPE in "  + this.pMYSQLColumnTypes+ ';';
-
-
-		}
-
+		pScanConfiguration = ScanConfiguration;
+		pPerformanceSummary = Summary;
 	}
 
 	public String ScanResult() { return this.psbResults.toString(); }
 
-	public void ScanMYSQLTables() throws SQLException {
+	public int ScanMySQL() throws SQLException {
+		//
+		// Performs MySQL-Based Scan
+		// using the settings and configuration 
+		// contained in pScanConfiguration
+		if ( pScanConfiguration.getDbType().toUpper().compareTo("MYSQL") != 0 ) {
+			throw new SQLException("Database Type Mismatch. Database Type Configuration " & pScanConfiguration.getDbType() & " cannot be used with MySQL Scan" );
+			return 0;
+		}
 
-		Statement cStatement = this.pDBConnection.createStatement();
-		cStatement.execute(pMYSQLColumnSelect);
+		// Pseudocode
+		// gather table list
+			// gather column list for each table
+				// Instantiate New PerformanceResult
+					// TableName->PerformanceResult ColumnName->PerformanceResult
+					// GetStartTime ->PerformanceResult
+						// getConfidenceLevelmatch
+						// TableRows+=1  
+						// If ConfidenceLevel > 0
+							// Increment MatchedRows in PerformanceResult
+							// Place Row in StringBuilder
 
-		// for every row returned by cStatement
-
-		// select columnName from TableName 
-			// For each of these rows  
-				// get confidencelevel Match
-					// and when level > 0
-						// place is result stringbuilder
-
+					// GetEndTime -> PerformanceResult
+				// Add PerformanceResult to Performance Summary
 	}
-
-
-
 
 	public static int getConfidenceLevelmatch( String DatabaseRow ) {
 		int result = 0;
