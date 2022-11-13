@@ -4,6 +4,8 @@ import java.util.regex.*;
 import RoundTabler.*;
 import java.sql.*;
 
+import static utility.ApplicationUtility.*;
+
 
 //
 // A Class used for doing PCIScan of fields
@@ -38,7 +40,7 @@ public class PCIScan{
 		this();
 		pDBConnection = MYSqlDBConnection;
 		pTableName = TableName;
-		ScanResult = "";
+		psbResults.append("\n");
 		JDBC_DRIVER ="org.mariadb.jdbc.Driver";
 		if ( pTableName.compareTo("*") == 0){
 			// We are scanning all tables
@@ -56,7 +58,7 @@ public class PCIScan{
 
 	}
 
-	public String ScanResult() { return this.psbResults.toString() };
+	public String ScanResult() { return this.psbResults.toString(); }
 
 	public void ScanMYSQLTables() throws SQLException {
 
