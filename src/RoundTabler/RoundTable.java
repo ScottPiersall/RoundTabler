@@ -1,6 +1,7 @@
 package RoundTabler;
 
-import RoundTabler.db.MariaReader;
+import RoundTabler.db.DBReader;
+import RoundTabler.db.ReaderMaker;
 
 import java.sql.SQLException;
 import java.util.InputMismatchException;
@@ -11,6 +12,8 @@ public class RoundTable {
     public static void main(String[] args){
 
         Configuration config = new Configuration();
+
+        DBReader reader = null;
 
         PerformanceSummary SummaryOfPerformance = new PerformanceSummary();
 
@@ -112,37 +115,37 @@ public class RoundTable {
 
             System.out.println();
             System.out.println("INITIALIZING DATABASE CONNECTION");
-            System.out.println();
-
-            if ( config.getDbType().toUpperCase().compareTo("MARIADB") == 0 ) {
-                System.out.println("DEBUG: Attempting Connection");
-                try {
-                    MariaReader mr = new MariaReader( config );
-                }
-                catch ( SQLException sqlex ) {
-                    System.out.println(sqlex.toString() );
-                    return;
-                }
-                catch ( Exception ex ) {
-                    System.out.println(ex.toString() );
-                    return;
-                }
-                PCIScan lPCI;
-                int Counter;
-                lPCI = new PCIScan( config, SummaryOfPerformance  );
-                try { 
-                Counter = lPCI.ScanMariaDB();
-                }
-                catch (SQLException sqlex ) {
-                    System.out.println("DEBUG: " + sqlex.toString() );
-                }
-
+try {
+                // Technically a bad practice to just create this factory and forget about it,
+                // but we do not need it for anything else after it makes our single reader.
+                reader = new ReaderMaker(config).getReader();
+            }
+            catch ( SQLException sqlex ) {
+                System.out.println(sqlex.toString() );
+                return;
+            }
+            catch ( ClassNotFoundException cnfex ) {
+                System.out.println(cnfex); // The .toString() is implicit
+                return;
+            }
+            catch ( InputMismatchException imex ) {
+                System.out.println(imex);
+                return;
+            }
+            catch ( Exception ex ) {
+                 System.out.println(ex.toString() );
+                return;
             }
 
-
-
-
-
+            PCIScan lPCI;
+            int Counter;
+            lPCI = new PCIScan( config, SummaryOfPerformance  );
+            try { 
+                Counter = lPCI.ScanMariaDB();
+            }
+            catch (SQLException sqlex ) {
+                System.out.println("DEBUG: " + sqlex.toString() );
+            }
 
         }catch(InputMismatchException e){
 

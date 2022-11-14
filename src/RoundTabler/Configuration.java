@@ -10,7 +10,7 @@ public class Configuration {
     private String type;
     private String[] validScanTypes = { "all", "nacha", "pci"};
     private String dbType;
-    private String[] validDbTypes = { "mysql", "mariadb", "mysql"};
+    private String[] validDbTypes = { "mysql", "mariadb", "mongo", "mongodb" };
     private String server;
     private String user;
     private String password;
