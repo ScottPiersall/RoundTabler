@@ -100,6 +100,10 @@ public class HTMLErrorOut {
 
             htmlWrite.close();
 
+            System.out.println();
+            System.out.println("RoundTabler has encountered an error.");
+            System.out.println("Error information can be found in the error log file that was saved to the specified file path: " + filePath + "errorLog.html");
+
         }catch(IOException e){
 
             System.out.println();

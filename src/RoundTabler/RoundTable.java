@@ -22,6 +22,23 @@ public class RoundTable {
             for (String elem : args) {
                 String[] argParts = elem.split("=");
 
+                if(elem.contains("--help")){
+                    System.out.println();
+                    System.out.println(
+                            "REQUIRED PARAMETERS:\n" +
+                                    "\t--type= Options include all, pci, nacha\n" +
+                                    "\t--dbtype= Only option currently available is mariadb\n" +
+                                    "\t--server= IP address of database. (Optional) include a colon followed by the port number i.e., 127.0.0.1:3306\n" +
+                                    "\t--user= Your username to log into the database\n" +
+                                    "\t--password= Your password to log into the database\n" +
+                                    "\t--database= The name of the database you want to scan\n" +
+                                    "\nOPTIONAL PARAMETERS:\n" +
+                                    "\t--resultfile= Include a file path to store the results or any error logs\n" +
+                                    "\t--table= Specify one table you would like to have scanned instead of the entire database\n"
+                    );
+                    return;
+                }
+
                 //If any parameters are left empty i.e. "--server=" then throw exception and stop.
                 if(argParts.length == 1)throw(new InputMismatchException("Must provide an argument for parameter flag: " + argParts[0].replace("--", "")));
 
@@ -64,10 +81,12 @@ public class RoundTable {
 
 
             //Print Statements signifying next step in RoundTabler process... can be removed just used as a checkpoint to ensure all arg checking is complete.
+            System.out.println();
             System.out.println("ALL REQUIRED PARAMETERS FULFILLED...");
 
+            System.out.println();
             System.out.println("INITIALIZING DATABASE CONNECTION");
-
+            System.out.println();
 
             if ( config.getDbType().toUpperCase().compareTo("MARIADB") == 0 ) {
                 System.out.println("DEBUG: Attempting Connection");
