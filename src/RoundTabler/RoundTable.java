@@ -18,7 +18,7 @@ import RoundTabler.db.*;
 
 public class RoundTable {
 
-    public static int main(String[] args){
+    public static void main(String[] args){
 
         Configuration config = new Configuration();
 
@@ -81,11 +81,11 @@ public class RoundTable {
                 }
                 catch ( SQLException sqlex ) {
 
-                    return 0;
+                    return;
                 }
                 catch ( Exception ex ) {
 
-                    return 0;
+                    return;
                 }
                 
 
@@ -114,7 +114,7 @@ public class RoundTable {
             new HTMLErrorOut(filePath, e.getMessage());
 
         }
-        return 0;
+        return;
     }
 
 }
