@@ -1,6 +1,7 @@
 *.vs
 *.class
 *.sqlite
+*.suo
 .vs
 *.idea
 out
