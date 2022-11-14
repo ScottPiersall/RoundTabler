@@ -69,7 +69,7 @@ public class RoundTable {
             System.out.println("INITIALIZING DATABASE CONNECTION");
 
 
-            if ( config.getDbType().compareTo("mysql") == 0 ) {
+            if ( config.getDbType().toUppercase().compareTo("MARIADB") == 0 ) {
                 System.out.println("DEBUG: Attempting Connection");
                 try {
                     MariaReader mr = new MariaReader( config );
@@ -86,7 +86,7 @@ public class RoundTable {
                 int Counter;
                 lPCI = new PCIScan( config, SummaryOfPerformance  );
                 try { 
-                Counter = lPCI.ScanMySQL();
+                Counter = lPCI.ScanMariaDB();
                 }
                 catch (SQLException sqlex ) {
                     System.out.println("DEBUG: " + sqlex.toString() );

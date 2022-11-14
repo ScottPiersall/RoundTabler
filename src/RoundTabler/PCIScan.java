@@ -45,12 +45,12 @@ public class PCIScan {
 
 	public String ScanResult() { return this.psbResults.toString(); }
 
-	public int ScanMySQL() throws SQLException {
+	public int ScanMariaDB() throws SQLException {
 		//
 		// Performs MySQL-Based Scan
 		// using the settings and configuration 
 		// contained in pScanConfiguration
-		if ( pScanConfiguration.getDbType().toUpperCase().compareTo("MYSQL") != 0 ) {
+		if ( pScanConfiguration.getDbType().toUpperCase().compareTo("MARIADB") != 0 ) {
 			new HTMLErrorOut(pScanConfiguration.getFile(), "Database Type Mismatch. Database Type Configuration " + pScanConfiguration.getDbType() + " cannot be used with MySQL Scan" );
 			return 0;
 		}
