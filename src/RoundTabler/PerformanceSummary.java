@@ -21,7 +21,7 @@ public class PerformanceSummary{
 		int Index;
 		temp = new StringBuilder();
 		for( Index=1; Index <= PerfResults.size(); Index++ ){
-			temp.append( PerfResults.get(Index).toString + "\n");
+			temp.append( PerfResults.get(Index).toString() + "\n");
 		}
 		return temp.toString();
 	}

@@ -1,18 +1,30 @@
 package RoundTabler;
 
-import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.InputMismatchException;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import RoundTabler.PerformanceSummary;
+import RoundTabler.PerformanceResult;
+
+
 import RoundTabler.Configuration;
+import RoundTabler.db.*;
+
 
 public class RoundTable {
 
     public static void main(String[] args){
 
         Configuration config = new Configuration();
+
+        PerformanceSummary SummaryOfPerformance = new PerformanceSummary();
+
 
         try {
 
@@ -65,6 +77,33 @@ public class RoundTable {
 
             System.out.println("INITIALIZING DATABASE CONNECTION");
 
+
+            if ( config.getDbType().compareTo("mysql") == 0 ) {
+                System.out.println("DEBUG: Attempting Connection");
+                try {
+                    MariaReader mr = new MariaReader( config );
+                }
+                catch ( SQLException sqlex ) {
+                    System.out.println(sqlex.toString() );
+                    return;
+                }
+                catch ( Exception ex ) {
+                    System.out.println(ex.toString() );
+                    return;
+                }
+                PCIScan lPCI;
+                int Counter;
+                lPCI = new PCIScan( config, SummaryOfPerformance  );
+                try { 
+                Counter = lPCI.ScanMySQL();
+                }
+                catch (SQLException sqlex ) {
+                    System.out.println("DEBUG: " + sqlex.toString() );
+                }
+
+            }
+
+
         }catch(InputMismatchException e){
 
             String filePath = "";
@@ -86,7 +125,7 @@ public class RoundTable {
             new HTMLErrorOut(filePath, e.getMessage());
 
         }
-
+        return;
     }
 
 }

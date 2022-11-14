@@ -1,8 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\RoundTabler"
+    "\\RoundTabler",
+    "\\SampleDBs",
+    "\\src",
+    "\\src\\RoundTabler",
+    "\\src\\utility"
   ],
-  "SelectedNode": "\\RoundTabler\\PCIScan.java",
   "PreviewInSolutionExplorer": false
 }

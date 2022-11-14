@@ -5,7 +5,8 @@ import RoundTabler.*;
 import java.sql.*;
 
 import static utility.ApplicationUtility.*;
-
+import RoundTabler.db.SchemaItems;
+import RoundTabler.db.SchemaItem;
 
 //
 // A Class used for doing PCIScan of fields
@@ -52,10 +53,16 @@ public class PCIScan{
 		// Performs MySQL-Based Scan
 		// using the settings and configuration 
 		// contained in pScanConfiguration
-		if ( pScanConfiguration.getDbType().toUpper().compareTo("MYSQL") != 0 ) {
-			new HTMLErrorOut(psScanConfiguration.getfile(), "Database Type Mismatch. Database Type Configuration " & pScanConfiguration.getDbType() & " cannot be used with MySQL Scan" );
+		if ( pScanConfiguration.getDbType().toUpperCase().compareTo("MYSQL") != 0 ) {
+			new HTMLErrorOut(pScanConfiguration.getFile(), "Database Type Mismatch. Database Type Configuration " + pScanConfiguration.getDbType() + " cannot be used with MySQL Scan" );
 			return 0;
 		}
+
+		
+
+
+
+
 
 		// Pseudocode
 		// gather table list
@@ -71,6 +78,10 @@ public class PCIScan{
 
 					// GetEndTime -> PerformanceResult
 				// Add PerformanceResult to Performance Summary
+
+
+
+		return 0;
 	}
 
 	public static int getConfidenceLevelmatch( String DatabaseRow ) {
