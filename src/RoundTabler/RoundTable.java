@@ -40,9 +40,11 @@ public class RoundTable {
                 switch (argParts[0]) {
                     case "--type":
                         config.setType(argParts[1]);
+                        if(!config.validateScanType())throw (new InputMismatchException("Invalid scan type of: " + argParts[1] + "."));
                         break;
                     case "--dbtype":
                         config.setDbType(argParts[1]);
+                        if(!config.validateDbType())throw (new InputMismatchException("Invalid database type of: " + argParts[1] + "."));
                         break;
                     case "--server":
                         config.setServer(argParts[1]);
