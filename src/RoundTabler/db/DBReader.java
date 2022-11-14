@@ -1,8 +1,6 @@
 package RoundTabler.db;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
-
 import RoundTabler.Configuration;
 
 /*
@@ -13,8 +11,10 @@ import RoundTabler.Configuration;
 
 public abstract class DBReader {
 
-    Connection conn = null;
-    Configuration config = null;
+    protected Connection conn = null;
+    protected Configuration config = null;
+    
+    protected SchemaItems schemaItems = new SchemaItems();
 
     // Constructor
     // If cannot find driver (e.g., JDBC for MySQL), throws ClassNotFoundException
@@ -26,15 +26,6 @@ public abstract class DBReader {
 
             this.config = config;
     }
-    
-    // Get tables (or their equivalent) and return them in an iterable list
-    abstract void getTables();
-
-    // Get the columns of a particular table
-    abstract ResultSet getColumns();
-
-    // Get the structure or data of a column
-    abstract void getColumnInfo();
 
     // Return the current connection object (if applicable for that database type)
     // If not applicable or connection failed to establish, conn == null
@@ -46,4 +37,14 @@ public abstract class DBReader {
     public Configuration getConfiguration() {
         return this.config;
     }
+
+    // Return the SchemaItems retrieved by this DBReader, which may be empty
+    public SchemaItems getSchemaItems() {
+        return this.schemaItems;
+    }
+
+    // Using a ResultSet or similar data type construct SchemaItems
+    // Implemented on a per-database basis, returns true if successful, false otherwise
+    abstract public Boolean readSchema();
+
 }
