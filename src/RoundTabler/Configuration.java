@@ -1,17 +1,23 @@
 package RoundTabler;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 public class Configuration {
 
     private String type;
+    private String[] validScanTypes = { "all", "nacha", "pci"};
     private String dbType;
+    private String[] validDbTypes = { "mysql", "mysql", "mysql"};
     private String server;
     private String user;
     private String password;
     private String database;
     private String file;
     private String table;
+    private String queryStatement;
 
     public Configuration() {
         this.type = "";
@@ -32,6 +38,12 @@ public class Configuration {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean validateScanType(){
+        List<String> types = Arrays.asList(this.validScanTypes);
+
+        return types.contains(this.type.toLowerCase());
     }
 
     public String getDbType() {
@@ -74,6 +86,13 @@ public class Configuration {
         this.database = database;
     }
 
+   
+    public boolean validateDbType(){
+        List<String> types = Arrays.asList(this.validDbTypes);
+
+        return types.contains(this.dbType.toLowerCase());
+    }
+    
     public String getFile() {
         return this.file;
     }
