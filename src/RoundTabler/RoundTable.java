@@ -9,7 +9,7 @@ import java.util.InputMismatchException;
 
 public class RoundTable {
 
-    public static void main(String[] args){
+    public static int main(String[] args){
 
         Configuration config = new Configuration();
 
@@ -39,7 +39,7 @@ public class RoundTable {
                                     "\t--resultfile= Include a file path to store the results or any error logs\n" +
                                     "\t--table= Specify one table you would like to have scanned instead of the entire database\n"
                     );
-                    return;
+                    return -1;
                 }
 
                 //If any parameters are left empty i.e. "--server=" then throw exception and stop.
@@ -122,19 +122,19 @@ try {
             }
             catch ( SQLException sqlex ) {
                 System.out.println(sqlex.toString() );
-                return;
+                return -1;
             }
             catch ( ClassNotFoundException cnfex ) {
                 System.out.println(cnfex); // The .toString() is implicit
-                return;
+                return -1;
             }
             catch ( InputMismatchException imex ) {
                 System.out.println(imex);
-                return;
+                return -1;
             }
             catch ( Exception ex ) {
                  System.out.println(ex.toString() );
-                return;
+                return -1;
             }
 
             PCIScan lPCI;
@@ -146,6 +146,8 @@ try {
             catch (SQLException sqlex ) {
                 System.out.println("DEBUG: " + sqlex.toString() );
             }
+
+            return 0;
 
         }catch(InputMismatchException e){
 
@@ -168,8 +170,10 @@ try {
 
             new HTMLErrorOut(filePath, e.getMessage());
 
+            return -1;
+
         }
-        return;
+
     }
 
 }
