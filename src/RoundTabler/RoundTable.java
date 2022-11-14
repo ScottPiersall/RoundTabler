@@ -9,7 +9,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
- 
+import RoundTabler.PerformanceSummary;
+import RoundTabler.PerformanceResult;
+
 
 import RoundTabler.Configuration;
 import RoundTabler.db.*;
@@ -20,6 +22,9 @@ public class RoundTable {
     public static void main(String[] args){
 
         Configuration config = new Configuration();
+
+        PerformanceSummary SummaryOfPerformance = new PerformanceSummary();
+
 
         try {
 
@@ -86,8 +91,10 @@ public class RoundTable {
                     System.out.println(ex.toString() );
                     return;
                 }
-                
-
+                PCIScan lPCI;
+                int Counter;
+                lPCI = new PCIScan( config, SummaryOfPerformance  );
+                Counter = lPCI.ScanMySQL();
 
             }
 
