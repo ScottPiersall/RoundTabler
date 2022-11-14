@@ -35,7 +35,7 @@ public class MariaReader extends DBReader {
         stmtString.append("SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM information_schema.COLUMNS WHERE DATA_TYPE IN ");
         stmtString.append("('mediumtext', 'longtext', 'text', 'tinytext', 'varchar') ");
         stmtString.append("AND TABLE_SCHEMA=?");
-        if (!config.getTable().isBlank()) { stmtString.append("AND TABLE_NAME=?"); }
+        if (!config.getTable().isBlank()) { stmtString.append(" AND TABLE_NAME=?"); }
 
         buildSchema = conn.prepareStatement(stmtString.toString());
         buildSchema.setString(1, config.getDatabase()); 
