@@ -79,11 +79,11 @@ public class RoundTable {
                     MariaReader mr = new MariaReader( config );
                 }
                 catch ( SQLException sqlex ) {
-
+                    System.out.println(sqlex.toString() );
                     return;
                 }
                 catch ( Exception ex ) {
-
+                    System.out.println(ex.toString() );
                     return;
                 }
                 
