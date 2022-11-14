@@ -100,12 +100,16 @@ public class HTMLErrorOut {
 
             htmlWrite.close();
 
+            System.out.println();
+            System.out.println("RoundTabler has encountered an error.");
+            System.out.println("Error information can be found in the error log file that was saved to the specified file path: " + filePath + "errorLog.html");
+
         }catch(IOException e){
 
             System.out.println();
             System.out.print("Invalid file path for result, printing error: ");
             System.out.println(error);
-            System.out.println("Please refer to https://github.com/ScottPiersall/RoundTabler/blob/main/README.md for any confusion.");
+            System.out.println("Please refer to https://github.com/ScottPiersall/RoundTabler/blob/main/README.md to help resolve any confusion.");
 
         }
     }
