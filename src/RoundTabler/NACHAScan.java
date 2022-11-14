@@ -1,5 +1,7 @@
 package RoundTabler;
 
+import java.util.regex.*;
+
 import static utility.ApplicationUtility.*;
 
 /**
@@ -32,6 +34,33 @@ public class NACHAScan{
             return false;
         }
         return false;
+    }
+
+    /**
+     * Method that is inputted with a database row string and outputs the confidence level
+     * of the row as it pertains to containing an ABA number
+     * @param databaseRow String to match with possible ABA number
+     * @return confidenceLevel of ABA number presence in database row
+     */
+    public int getConfidenceLevelMatch(String databaseRow){
+        String ABANumberSequenceRegex = "\\b[0-9]{9}\\b";
+        Pattern ABANumberPattern = Pattern.compile(ABANumberSequenceRegex);
+
+        Matcher abaNumberSequenceMatcher = ABANumberPattern.matcher(databaseRow);
+
+        int result = 0;
+        boolean resultMatcher = abaNumberSequenceMatcher.find();
+        // checks if the regex is found in the database row string
+        if (resultMatcher){
+            // if found, confidence is increased to 75%
+            result += 75;
+            // further checks if the number found is a valid ABA number
+            if (checkForValidABANumber(abaNumberSequenceMatcher.group())){
+                // if number is a valid ABA Number, confidence increased to 100%
+                result += 25;
+            }
+        }
+        return result;
     }
 
 }

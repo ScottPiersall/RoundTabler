@@ -1,20 +1,9 @@
 package RoundTabler;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.InputMismatchException;
-import java.sql.DriverManager;
+import RoundTabler.db.MariaReader;
+
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import RoundTabler.PerformanceSummary;
-import RoundTabler.PerformanceResult;
-
-
-import RoundTabler.Configuration;
-import RoundTabler.db.*;
+import java.util.InputMismatchException;
 
 
 public class RoundTable {

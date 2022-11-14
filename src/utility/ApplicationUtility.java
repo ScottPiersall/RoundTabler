@@ -10,12 +10,9 @@ public class ApplicationUtility {
         if (strNum == null) {
             return false;
         }
-        try {
-            Double.parseDouble(strNum);
-        } catch (NumberFormatException nfe) {
-            return false;
+        else {
+            return strNum.chars().allMatch(Character::isDigit);
         }
-        return true;
     }
 
     /**
@@ -28,9 +25,6 @@ public class ApplicationUtility {
          * If the character imported is not a digit,
          * then a NumberFormatException is thrown
          */
-        if (!Character.isDigit(character)){
-            throw new NumberFormatException("Not a digit!");
-        }
-        return Character.getNumericValue(character);
+        return (byte) character - 48;
     }
 }
