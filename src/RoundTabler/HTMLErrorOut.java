@@ -100,8 +100,6 @@ public class HTMLErrorOut {
 
             htmlWrite.close();
 
-     //       Desktop.getDesktop().browse(file.toURI());
-
         }catch(IOException e){
 
             System.out.println();
