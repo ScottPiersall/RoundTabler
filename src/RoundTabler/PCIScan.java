@@ -52,7 +52,7 @@ public class PCIScan{
 		// Performs MySQL-Based Scan
 		// using the settings and configuration 
 		// contained in pScanConfiguration
-		if ( pScanConfiguration.getDbType().toUpper().compareTo("MYSQL") != 0 ) {
+		if ( pScanConfiguration.getDbType().toUpperCase().compareTo("MYSQL") != 0 ) {
 			new HTMLErrorOut(pScanConfiguration.getfile(), "Database Type Mismatch. Database Type Configuration " + pScanConfiguration.getDbType() + " cannot be used with MySQL Scan" );
 			return 0;
 		}
