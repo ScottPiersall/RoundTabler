@@ -71,6 +71,10 @@ public class PCIScan{
 
 					// GetEndTime -> PerformanceResult
 				// Add PerformanceResult to Performance Summary
+
+
+
+		return 0;
 	}
 
 	public static int getConfidenceLevelmatch( String DatabaseRow ) {
