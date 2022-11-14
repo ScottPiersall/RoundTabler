@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class NACHAScanTest {
+
     NACHAScan nachaScan = new NACHAScan();
     @Test
     public void checkForValidABANumberTest(){
