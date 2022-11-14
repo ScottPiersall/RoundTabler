@@ -14,8 +14,6 @@ public class HTMLErrorOut {
 
     private void addToErrorLog(String filePath, String error) {
 
-
-
         try{
             //Create file at directory specified. Problem with directory resorts to simply printing to command line
 
@@ -112,6 +110,7 @@ public class HTMLErrorOut {
             System.out.println("Please refer to https://github.com/ScottPiersall/RoundTabler/blob/main/README.md to help resolve any confusion.");
 
         }
+
     }
 
 
