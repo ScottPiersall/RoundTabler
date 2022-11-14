@@ -94,7 +94,12 @@ public class RoundTable {
                 PCIScan lPCI;
                 int Counter;
                 lPCI = new PCIScan( config, SummaryOfPerformance  );
+                try { 
                 Counter = lPCI.ScanMySQL();
+                }
+                catch (SQLException sqlex ) {
+                    System.out.println("DEBUG: " + sqlex.toString() );
+                }
 
             }
 
