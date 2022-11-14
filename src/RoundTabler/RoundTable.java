@@ -6,11 +6,19 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.InputMismatchException;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+
+
 import RoundTabler.Configuration;
+import RoundTabler.db.*;
+
 
 public class RoundTable {
 
-    public static void main(String[] args){
+    public static int main(String[] args){
 
         Configuration config = new Configuration();
 
@@ -66,7 +74,7 @@ public class RoundTable {
             System.out.println("INITIALIZING DATABASE CONNECTION");
 
 
-            if ( config.dbType.compareTo("mysql") == 0 ) {
+            if ( config.getDbType().compareTo("mysql") == 0 ) {
 
                 try {
                     MariaReader mr = new MariaReader( config );
