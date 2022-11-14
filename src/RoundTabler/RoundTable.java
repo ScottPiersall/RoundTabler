@@ -65,6 +65,26 @@ public class RoundTable {
 
             System.out.println("INITIALIZING DATABASE CONNECTION");
 
+
+            if ( config.dbType.compareTo("mysql") == 0 ) {
+
+                try {
+                    MariaReader mr = new MariaReader( config );
+                }
+                catch ( SQLException sqlex ) {
+
+                    return 0;
+                }
+                catch ( Exception ex ) {
+
+                    return 0;
+                }
+                
+
+
+            }
+
+
         }catch(InputMismatchException e){
 
             String filePath = "";

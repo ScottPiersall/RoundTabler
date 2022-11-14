@@ -13,25 +13,20 @@ import RoundTabler.Configuration;
 
 public class MariaReader extends DBReader {
 
-    public MariaReader(Configuration config) {
+    public MariaReader(Configuration config) throws SQLException {
         super(config);
 
         // JDBC driver check fails for MariaDB JDBC driver always, for some reason
         // I think it is an issue with my development environment, but the below statement will throw
         // a descriptive error if the driver is not present
-
-        try {
-            // Use args to establish database connection
-            String jdbcUri = String.format("jdbc:mariadb://%s?user=%s&password=%s",
-                                                   config.getServer(),
+               
+        // Use args to establish database connection
+        String jdbcUri = String.format("jdbc:mariadb://%s?user=%s&password=%s",
+                                                  config.getServer(),
                                                    config.getUser(), config.getPassword());
 
-            this.conn = DriverManager.getConnection(jdbcUri);
-        }
-        catch (SQLException e) {
-            System.out.println("Error in establishing connection: " + e);
-        }
-
+        this.conn = DriverManager.getConnection(jdbcUri);
+        
     }
 
     public void getTables() {}

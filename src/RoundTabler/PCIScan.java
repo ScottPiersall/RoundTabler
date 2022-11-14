@@ -5,7 +5,8 @@ import RoundTabler.*;
 import java.sql.*;
 
 import static utility.ApplicationUtility.*;
-
+import RoundTabler.db.SchemaItems;
+import RoundTabler.db.SchemaItem;
 
 //
 // A Class used for doing PCIScan of fields
@@ -56,6 +57,12 @@ public class PCIScan{
 			new HTMLErrorOut(pScanConfiguration.getFile(), "Database Type Mismatch. Database Type Configuration " + pScanConfiguration.getDbType() + " cannot be used with MySQL Scan" );
 			return 0;
 		}
+
+		
+
+
+
+
 
 		// Pseudocode
 		// gather table list
