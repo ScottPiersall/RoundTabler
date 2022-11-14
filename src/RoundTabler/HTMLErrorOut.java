@@ -1,6 +1,5 @@
 package RoundTabler;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -101,7 +100,7 @@ public class HTMLErrorOut {
 
             htmlWrite.close();
 
-            Desktop.getDesktop().browse(file.toURI());
+     //       Desktop.getDesktop().browse(file.toURI());
 
         }catch(IOException e){
 
