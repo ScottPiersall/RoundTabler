@@ -10,7 +10,7 @@ public class Configuration {
     private String type;
     private String[] validScanTypes = { "all", "nacha", "pci"};
     private String dbType;
-    private String[] validDbTypes = { "mysql", "mariadb", "mysql"};
+    private String[] validDbTypes = { "mysql", "mariadb", "mongo", "mongodb" };
     private String server;
     private String user;
     private String password;
@@ -28,6 +28,7 @@ public class Configuration {
         this.database = "";
         this.file = "";
         this.table = "";
+        this.queryStatement = "";
     }
 
     //All getters and setters for config class
@@ -86,13 +87,12 @@ public class Configuration {
         this.database = database;
     }
 
-   
     public boolean validateDbType(){
         List<String> types = Arrays.asList(this.validDbTypes);
 
         return types.contains(this.dbType.toLowerCase());
     }
-    
+
     public String getFile() {
         return this.file;
     }
@@ -102,11 +102,19 @@ public class Configuration {
     }
 
     public String getTable() {
-        return table;
+        return this.table;
     }
 
     public void setTable(String table) {
         this.table = table;
+    }
+
+    public String getQueryStatement() {
+        return this.queryStatement;
+    }
+
+    public void setQueryStatement(String statement) {
+        this.queryStatement = statement;
     }
 
     //Ensure all required parameters have been filled out except --resultfile since it isn't required
@@ -114,7 +122,7 @@ public class Configuration {
     public boolean allFilled(){
         for(Field f : getClass().getDeclaredFields()) {
             try {
-                if (f.get(this) == "" && !f.getName().equals("file") && !f.getName().equals("table")) {
+                if (f.get(this) == "" && !f.getName().equals("file") && !f.getName().equals("table") && !f.getName().equals("queryStatement")) {
                     return false;
                 }
             } catch (IllegalAccessException e) {

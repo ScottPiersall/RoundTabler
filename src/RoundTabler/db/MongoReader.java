@@ -10,20 +10,15 @@ import RoundTabler.Configuration;
 
 public class MongoReader extends DBReader {
 
-    public MongoReader(Configuration config) {
+    public MongoReader(Configuration config) throws ClassNotFoundException {
         super(config);
 
-        try {
-            // Check for Java driver; if fails, throw ClassNotFoundException
-            Class.forName("com.mongodb.client");
+        // Check for Java driver; if fails, throw ClassNotFoundException
+        Class.forName("com.mongodb.client");
 
-            // Use args to establish database connection
-            //String dbUri = String.format("mongodb://%s:27017/local",
-            //                                       config.getServer());
-        }
-        catch (ClassNotFoundException e) {
-            System.out.println("Error in locating driver: " + e);
-        }
+        // Use args to establish database connection
+        //String dbUri = String.format("mongodb://%s:27017/local",
+        //                                       config.getServer());
     }
 
     public void executeQuery() {}

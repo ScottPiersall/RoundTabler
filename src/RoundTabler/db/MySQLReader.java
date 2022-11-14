@@ -12,26 +12,18 @@ import RoundTabler.Configuration;
 
 public class MySQLReader extends DBReader {
 
-    public MySQLReader(Configuration config) {
+    public MySQLReader(Configuration config) throws ClassNotFoundException, SQLException {
         super(config);
         
-        try {
-            // Check for JDBC driver; if fails, throw ClassNotFoundException
-            Class.forName("com.mysql.cj.jdbc.Driver");
+        // Check for JDBC driver; if fails, throw ClassNotFoundException
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
-            // Use args to establish database connection
-            String jdbcUri = String.format("jdbc:mysql://%s?user=%s&password=%s",
-                                                    config.getServer(),
-                                                    config.getUser(), config.getPassword());
+        // Use args to establish database connection
+        String jdbcUri = String.format("jdbc:mysql://%s?user=%s&password=%s",
+                                                config.getServer(),
+                                                config.getUser(), config.getPassword());
 
-            this.conn = DriverManager.getConnection(jdbcUri);
-        }
-        catch (ClassNotFoundException e) {
-            System.out.println("Error in locating driver: " + e);
-        }
-        catch (SQLException e) {
-            System.out.println("Error in establishing connection: " + e);
-        }
+        this.conn = DriverManager.getConnection(jdbcUri);
     }
 
     public void executeQuery() {}
