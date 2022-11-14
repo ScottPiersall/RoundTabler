@@ -74,7 +74,7 @@ public class RoundTable {
 
 
             if ( config.getDbType().compareTo("mysql") == 0 ) {
-
+                System.out.println("DEBUG: Attempting Connection");
                 try {
                     MariaReader mr = new MariaReader( config );
                 }
