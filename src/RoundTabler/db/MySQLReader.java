@@ -2,15 +2,18 @@ package RoundTabler.db;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import RoundTabler.Configuration;
 
 /*
  * MySQL database reader
+ * Requires the MySQL JDBC Driver
 */
 
 public class MySQLReader extends DBReader {
+
+    PreparedStatement buildSchema = null;
 
     public MySQLReader(Configuration config) throws ClassNotFoundException, SQLException {
         super(config);
@@ -24,28 +27,43 @@ public class MySQLReader extends DBReader {
                                                 config.getUser(), config.getPassword());
 
         this.conn = DriverManager.getConnection(jdbcUri);
+
+        // Create the relevant query string for forming populating our SchemaItems
+        StringBuilder stmtString = new StringBuilder();
+        stmtString.append("SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE from information_schema.COLUMNS where DATA_TYPE IN ");
+        stmtString.append("('mediumtext', 'longtext', 'text', 'tinytext', 'varchar') ");
+        stmtString.append("AND TABLE_SCHEMA=?");
+        if (!config.getTable().isBlank()) { stmtString.append(" AND TABLE_NAME=?"); }
+
+        buildSchema = conn.prepareStatement(stmtString.toString());
+        buildSchema.setString(1, config.getDatabase()); 
+        if (!config.getTable().isBlank()) { buildSchema.setString(2, config.getTable()); }
     }
 
-    public void executeQuery() {}
-
-    public void getTables() {}
-
-    // Test connection for demonstration
-    // Gets the table, column, and privileges for columns
-    // TODO: refine the sql statement to not use %'s: just used as a proof of concept
-    public ResultSet getColumns() {
+    // Reads the schema and stores its information in the SchemaItems structure
+    public Boolean readSchema() {
         ResultSet rs = null;
 
+        // If we have already read the schema with this reader, then disallow future reads
+        if (!schemaItems.isEmpty())
+            return false;
+
         try {
-            Statement stmt = this.conn.createStatement();
-            rs = stmt.executeQuery("SELECT TABLE_NAME, COLUMN_NAME, PRIVILEGES FROM information_schema.COLUMNS WHERE COLUMN_TYPE LIKE 'varchar%' OR COLUMN_TYPE LIKE '%text%' AND PRIVILEGES like '%elect%'");
+            rs = buildSchema.executeQuery();
+
+            // If rs successfully produced results, then we iterate through it
+            if (rs != null) {
+                while (rs.next()) {
+                    // Table_Name, Column_Name, Data_Type
+                    schemaItems.Add(rs.getString(1), rs.getString(2), rs.getString(3));
+                }
+            }
         }
         catch (SQLException e) {
             System.out.println("Error in SQL execution: " + e);
+            return false;
         }
 
-        return rs;
+        return true;
     }
-
-    public void getColumnInfo() {}
 }

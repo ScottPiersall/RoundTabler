@@ -1,6 +1,5 @@
 package RoundTabler.db;
 
-import java.sql.ResultSet;
 import RoundTabler.Configuration;
 
 /*
@@ -21,13 +20,5 @@ public class MongoReader extends DBReader {
         //                                       config.getServer());
     }
 
-    public void executeQuery() {}
-
-    public void getTables() {}
-
-    public ResultSet getColumns() {
-        return null;
-    }
-
-    public void getColumnInfo() {}
+    public Boolean readSchema() { return false; }
 }
