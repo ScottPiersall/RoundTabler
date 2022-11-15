@@ -9,7 +9,13 @@ import java.util.InputMismatchException;
 
 public class RoundTable {
 
-    public static int main(String[] args){
+    public static void main(String[] args){
+
+        round(args);
+
+    }
+
+    public static int round(String[] args){
 
         Configuration config = new Configuration();
 
@@ -18,7 +24,7 @@ public class RoundTable {
         PerformanceSummary SummaryOfPerformance = new PerformanceSummary();
 
 
-        try {
+        try{
 
             //Iterate through all args given through the command line.
 
@@ -82,40 +88,13 @@ public class RoundTable {
             //Ensures all required parameters needed for RoundTabler to run are filled out. THIS DOES NOT ENSURE --resultfile IS FILLED OUT BECAUSE ITS NOT A REQUIRED PARAMETER
             if(!config.allFilled())throw(new InputMismatchException("Missing required parameter flag."));
 
-
-            switch(config.getDbType()){
-                case "mariaDB":
-                    if(config.getTable().length() != 0){
-                        config.setQueryStatement("SELECT TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where table_schema=DATABASE() and TABLE_NAME =" + config.getTable() + "and DATA_TYPE in (mediumtext, longtext, text, tinytext, varchar);");
-                    }else{
-                        config.setQueryStatement("SELECT TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS where table_schema=DATABASE() and DATA_TYPE in (mediumtext, longtext, text, tinytext, varchar);");
-                    }
-                    break;
-                case "mysql":
-                    if(config.getTable().length() != 0){
-                        config.setQueryStatement("SELECT table_name, column_name FROM information_schema.tables WHERE table_type='BASE TABLE' AND table_schema = '" + config.getDatabase() + "' AND table_name = '" + config.getTable() + "' AND data_type in (mediumtext, longtext, text, tinytext, varchar);");
-                    }else{
-                        config.setQueryStatement("SELECT table_name, column_name FROM information_schema.tables WHERE table_type='BASE TABLE' AND table_schema = '" + config.getDatabase() + "' AND data_type in (mediumtext, longtext, text, tinytext, varchar);\"");
-                    }
-                    break;
-                case "mongo":
-                    if(config.getTable().length() != 0){
-                        config.setQueryStatement("");
-                    }else{
-                        config.setQueryStatement("");
-                    }
-                    break;
-
-            }
-
-
             //Print Statements signifying next step in RoundTabler process... can be removed just used as a checkpoint to ensure all arg checking is complete.
             System.out.println();
             System.out.println("ALL REQUIRED PARAMETERS FULFILLED...");
 
             System.out.println();
             System.out.println("INITIALIZING DATABASE CONNECTION");
-try {
+            try {
                 // Technically a bad practice to just create this factory and forget about it,
                 // but we do not need it for anything else after it makes our single reader.
                 reader = new ReaderMaker(config).getReader();
@@ -133,14 +112,14 @@ try {
                 return -1;
             }
             catch ( Exception ex ) {
-                 System.out.println(ex.toString() );
+                System.out.println(ex.toString() );
                 return -1;
             }
 
             PCIScan lPCI;
             int Counter;
             lPCI = new PCIScan( config, SummaryOfPerformance  );
-            try { 
+            try {
                 Counter = lPCI.ScanMariaDB();
             }
             catch (SQLException sqlex ) {
@@ -173,7 +152,6 @@ try {
             return -1;
 
         }
-
     }
 
 }
