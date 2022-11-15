@@ -38,4 +38,6 @@ public class ReaderMaker extends DBReader {
 
     // Must cover the bases for an abstract class, these are not intended to be called
     public Boolean readSchema() { return false; }
+
+    public java.util.ArrayList<String> readColumn(SchemaItem item) { return null; }
 }

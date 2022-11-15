@@ -3,7 +3,9 @@ package RoundTabler.db;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import RoundTabler.Configuration;
 
 /*
@@ -65,5 +67,34 @@ public class MySQLReader extends DBReader {
         }
 
         return true;
+    }
+
+    // Return the contents of a column as an ArrayList
+    // TODO: for exceptionally large databases, allow dynamically iterating through results (time + memory usage)
+    public ArrayList<String> readColumn(SchemaItem item) {
+        ArrayList<String> columnData = new ArrayList<String>();
+        ResultSet rs = null;
+
+        try {
+            Statement select = this.conn.createStatement();
+            String queryString = String.format("SELECT %s FROM %s.%s",
+                                                       item.getColumnName(), this.config.getDatabase(), item.getTableName());
+
+            rs = select.executeQuery(queryString);
+
+            // If rs successfully produced results, then we iterate through it
+            if (rs != null) {
+                while (rs.next()) {
+                    // Column data per row
+                    columnData.add(rs.getString(1));
+                }
+            }
+        }
+        catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+
+        return columnData;
     }
 }
