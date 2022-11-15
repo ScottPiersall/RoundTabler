@@ -123,7 +123,7 @@ public class PCIScan {
 
 
 
-	private int getConfidenceLevelMatch(String DatabaseRow ) {
+	public int getConfidenceLevelMatch(String DatabaseRow ) {
 		int result = 0;
 		
 		Matcher CardNumberSequenceMatcher = CardNumberPattern.matcher( DatabaseRow );
