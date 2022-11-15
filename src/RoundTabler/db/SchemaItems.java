@@ -24,6 +24,11 @@ public class SchemaItems{
 
 	// Returns true if there is >= 1 members of results, otherwise false
 	public Boolean isEmpty() {
-		return SchemaItemResults.isEmpty();
+		return this.SchemaItemResults.isEmpty();
+	}
+
+	// Returns the number of SchemaItems contained in this structure
+	public Integer size() {
+		return this.SchemaItemResults.size();
 	}
 }
