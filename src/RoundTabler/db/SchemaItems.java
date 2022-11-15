@@ -28,7 +28,7 @@ public class SchemaItems{
 	}
 
 	// Returns the number of SchemaItems contained in this structure
-	public Integer size() {
+	public int size() {
 		return this.SchemaItemResults.size();
 	}
 }
