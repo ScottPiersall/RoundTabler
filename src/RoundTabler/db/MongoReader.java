@@ -16,8 +16,12 @@ public class MongoReader extends DBReader {
         Class.forName("com.mongodb.client");
 
         // Use args to establish database connection
-        //String dbUri = String.format("mongodb://%s:27017/local",
-        //                                       config.getServer());
+        String dbUri = String.format("mongodb://%s:%s@%s:%s/%s",
+                                    config.getUser(), config.getPassword(),
+                                    config.getServer(), !config.getPort().isBlank() ? config.getPort() : "27017",
+                                    config.getDatabase());
+
+        
     }
 
     public Boolean readSchema() { return false; }
