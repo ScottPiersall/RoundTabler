@@ -21,4 +21,6 @@ public class MongoReader extends DBReader {
     }
 
     public Boolean readSchema() { return false; }
+
+    public java.util.ArrayList<String> readColumn(SchemaItem item) { return null; }
 }
