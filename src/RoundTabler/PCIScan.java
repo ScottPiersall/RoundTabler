@@ -17,6 +17,11 @@ public class PCIScan {
 	static String CardNumberSequenceRegex = "\\b(?:\\d[-]*?){13,16}\\b";
 	static Pattern CardNumberPattern = Pattern.compile(CardNumberSequenceRegex);
 
+
+	static String CardPartialSequenceRegex = "\\b(AMEX|VISA|MC)-\\d{4}\\b";
+	static Pattern CardPartialPattern = Pattern.compile(CardPartialSequenceRegex, Pattern.CASE_INSENSITIVE);
+
+
 	public String JDBC_DRIVER;
 
 	private RoundTabler.Configuration pScanConfiguration;
@@ -140,6 +145,21 @@ public class PCIScan {
 			pLastMatchEnd = CardNumberSequenceMatcher.end();
 
 		}
+
+		if ( result == 0 ){
+			Matcher CardPartialSequenceMatcher = CardPartialPattern.matcher( DatabaseRow );
+			if ( CardNumberSequenceMatcher.find() ) {
+				result = 100;
+			pLastMatchStart = CardPartialSequenceMatcher.start();
+			pLastMatchEnd = CardPartialSequenceMatcher.end();
+			}
+		}	
+			
+
+
+
+
+
 
 		return result;
 	}
