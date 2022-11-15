@@ -14,7 +14,7 @@ public class RoundTableTest {
 
         String[] args = {"--type=test", "--dbtype=mysql", "--server=localhost", "--user=username", "--password=1234", "--database=DBToTest",};
 
-        assertEquals(-1, RoundTable.main(args));
+        assertEquals(-1, RoundTable.round(args));
 
         System.out.println();
 
@@ -27,7 +27,7 @@ public class RoundTableTest {
 
         String[] args = {"--type=all", "--dbtype=java", "--server=localhost", "--user=username", "--password=1234", "--database=DBToTest",};
 
-        assertEquals(-1, RoundTable.main(args));
+        assertEquals(-1, RoundTable.round(args));
 
         System.out.println();
 
@@ -40,7 +40,7 @@ public class RoundTableTest {
 
         String[] args = {"--type=", "--dbtype=mysql", "--server=localhost", "--user=username", "--password=1234", "--database=DBToTest",};
 
-        assertEquals(-1, RoundTable.main(args));
+        assertEquals(-1, RoundTable.round(args));
 
         System.out.println();
 
@@ -53,7 +53,7 @@ public class RoundTableTest {
 
         String[] args = {"--type=all", "--dbtype=", "--server=localhost", "--user=username", "--password=1234", "--database=DBToTest",};
 
-        assertEquals(-1, RoundTable.main(args));
+        assertEquals(-1, RoundTable.round(args));
 
         System.out.println();
 
@@ -66,7 +66,7 @@ public class RoundTableTest {
 
         String[] args = {"--type=all", "--dbtype=mysql", "--server=", "--user=username", "--password=1234", "--database=DBToTest",};
 
-        assertEquals(-1, RoundTable.main(args));
+        assertEquals(-1, RoundTable.round(args));
 
         System.out.println();
 
@@ -79,7 +79,7 @@ public class RoundTableTest {
 
         String[] args = {"--type=all", "--dbtype=mysql", "--server=localhost", "--user=", "--password=1234", "--database=DBToTest",};
 
-        assertEquals(-1, RoundTable.main(args));
+        assertEquals(-1, RoundTable.round(args));
 
         System.out.println();
 
@@ -92,7 +92,7 @@ public class RoundTableTest {
 
         String[] args = {"--type=all", "--dbtype=mysql", "--server=localhost", "--user=username", "--password=", "--database=DBToTest",};
 
-        assertEquals(-1, RoundTable.main(args));
+        assertEquals(-1, RoundTable.round(args));
 
         System.out.println();
 
@@ -105,7 +105,7 @@ public class RoundTableTest {
 
         String[] args = {"--type=all", "--dbtype=mysql", "--server=localhost", "--user=username", "--password=1234", "--database=",};
 
-        assertEquals(-1, RoundTable.main(args));
+        assertEquals(-1, RoundTable.round(args));
 
         System.out.println();
 
@@ -118,7 +118,7 @@ public class RoundTableTest {
 
         String[] args = {"--help"};
 
-        assertEquals(-1, RoundTable.main(args));
+        assertEquals(-1, RoundTable.round(args));
 
         System.out.println();
 
