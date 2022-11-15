@@ -62,12 +62,12 @@ public class Configuration {
     public String getPort() { return this.port; }
 
     public void setServer(String server) {
+        this.server = server;
 
         if(server.contains(":")){
+            this.server = server.split(":")[0];
             this.port = server.split(":")[1];
         }
-
-        this.server = server;
     }
 
     public String getUser() {
