@@ -30,6 +30,10 @@ public class PCIScan {
 
 	private StringBuilder psbResults;
 
+	private int pLastMatchStart;
+	private int pLastMatchEnd;
+
+
 	public PCIScan(){
 		super();
 		this.pMYSQLColumnTypes = "(mediumtext, longtext, text, tinytext, varchar)";
@@ -55,12 +59,12 @@ public class PCIScan {
 			return 0;
 		}
 
-		
+	
+		int currentConfidenceLevel = 0;
+		String currentTable = "";
+		String currentColumn = "";
 
-
-
-
-
+		String currentRow = "";
 		// Pseudocode
 		// gather table list
 			// gather column list for each table
@@ -73,15 +77,53 @@ public class PCIScan {
 							// Increment MatchedRows in PerformanceResult
 							// Place Row in StringBuilder
 
+
+							currentConfidenceLevel = getConfidenceLevelMatch(currentRow);
+							if ( currentConfidenceLevel > 0 ) {
+
+								psbResults.append("<TR>");
+							
+								psbResults.append("<TD>");
+								psbResults.append(currentTable);
+								psbResults.append("</TD>");
+
+								psbResults.append("<TD>");
+								psbResults.append(currentRow);
+								psbResults.append("</TD>");
+
+								psbResults.append("<TD>");
+								psbResults.append(insertStrongEmphasisInto(currentRow, pLastMatchStart, pLastMatchEnd));
+								psbResults.append("</TD>");
+
+								psbResults.append("<TD ALIGN =\"RIGHT\">");
+								psbResults.append(currentConfidenceLevel );
+								psbResults.append("</TD>");
+
+								psbResults.append("</TR>");
+							}
+
 					// GetEndTime -> PerformanceResult
 				// Add PerformanceResult to Performance Summary
-
-
-
 		return 0;
 	}
 
-	public static int getConfidenceLevelMatch(String DatabaseRow ) {
+
+	/**
+	*
+	* Returns a string with strong and emphasis tags surrounding the StartLocation 
+	* and EndLocation 
+	*
+	*/
+	private String insertStrongEmphasisInto( String MatchedRow, int StartLocation, int EndLocation){
+		StringBuilder tsb = new StringBuilder(MatchedRow);
+		tsb.insert(EndLocation, "</EM></STRONG>");
+		tsb.insert(StartLocation, "<STRONG><EM>");
+		return tsb.toString();
+	}
+
+
+
+	public int getConfidenceLevelMatch(String DatabaseRow ) {
 		int result = 0;
 		
 		Matcher CardNumberSequenceMatcher = CardNumberPattern.matcher( DatabaseRow );
@@ -93,6 +135,10 @@ public class PCIScan {
 			// If the match passes LuhnsTest, Boost Confidence to 100
 			if (LuhnTest.Validate(DatabaseRow.substring(CardNumberSequenceMatcher.start(), CardNumberSequenceMatcher.end())))
 				result += 25;
+		
+			pLastMatchStart = CardNumberSequenceMatcher.start();
+			pLastMatchEnd = CardNumberSequenceMatcher.end();
+
 		}
 
 		return result;

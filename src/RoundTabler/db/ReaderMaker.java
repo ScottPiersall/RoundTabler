@@ -2,7 +2,6 @@ package RoundTabler.db;
 
 import RoundTabler.Configuration;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.InputMismatchException;
 
@@ -38,11 +37,5 @@ public class ReaderMaker extends DBReader {
     }
 
     // Must cover the bases for an abstract class, these are not intended to be called
-    protected void executeQuery() {}
-
-    protected void getTables() {}
-
-    protected ResultSet getColumns() { return null; }
-
-    protected void getColumnInfo() {}
+    public Boolean readSchema() { return false; }
 }

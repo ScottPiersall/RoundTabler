@@ -17,18 +17,18 @@ public class Configuration {
     private String database;
     private String file;
     private String table;
-    private String queryStatement;
+    private String port;
 
     public Configuration() {
         this.type = "";
         this.dbType = "";
         this.server = "";
+        this.port = "";
         this.user = "";
         this.password = "";
         this.database = "";
         this.file = "";
         this.table = "";
-        this.queryStatement = "";
     }
 
     //All getters and setters for config class
@@ -59,7 +59,14 @@ public class Configuration {
         return this.server;
     }
 
+    public String getPort() { return this.port; }
+
     public void setServer(String server) {
+
+        if(server.contains(":")){
+            this.port = server.split(":")[1];
+        }
+
         this.server = server;
     }
 
@@ -109,20 +116,13 @@ public class Configuration {
         this.table = table;
     }
 
-    public String getQueryStatement() {
-        return this.queryStatement;
-    }
-
-    public void setQueryStatement(String statement) {
-        this.queryStatement = statement;
-    }
 
     //Ensure all required parameters have been filled out except --resultfile since it isn't required
 
     public boolean allFilled(){
         for(Field f : getClass().getDeclaredFields()) {
             try {
-                if (f.get(this) == "" && !f.getName().equals("file") && !f.getName().equals("table") && !f.getName().equals("queryStatement")) {
+                if (f.get(this) == "" && !f.getName().equals("file") && !f.getName().equals("table")) {
                     return false;
                 }
             } catch (IllegalAccessException e) {

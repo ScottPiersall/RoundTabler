@@ -96,16 +96,6 @@ public class ConfigurationTest {
 
     }
 
-    @Test
-    public void setQueryStatementWorks(){
-
-        Configuration config = new Configuration();
-
-        config.setQueryStatement("SELECT * from creditInfo");
-
-        assertEquals("SELECT * from creditInfo", config.getQueryStatement());
-
-    }
 
     @Test
     public void allParamsFilledTrue(){
