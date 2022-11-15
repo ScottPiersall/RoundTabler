@@ -1,6 +1,8 @@
 package RoundTabler.db;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+
 import RoundTabler.Configuration;
 
 /*
@@ -43,8 +45,16 @@ public abstract class DBReader {
         return this.schemaItems;
     }
 
+    // Close the connection
+    public void closeConnection() {
+        if (this.conn != null)
+            try { this.conn.close(); } catch (SQLException e) { System.out.println(e); }
+    }
+
     // Using a ResultSet or similar data type construct SchemaItems
     // Implemented on a per-database basis, returns true if successful, false otherwise
     abstract public Boolean readSchema();
 
+    // Given a SchemaItem, get its contents as an array of strings
+    abstract public java.util.ArrayList<String> readColumn(SchemaItem item);
 }
