@@ -122,7 +122,7 @@ public class Configuration {
     public boolean allFilled(){
         for(Field f : getClass().getDeclaredFields()) {
             try {
-                if (f.get(this) == "" && !f.getName().equals("file") && !f.getName().equals("table")) {
+                if (f.get(this) == "" && !f.getName().equals("file") && !f.getName().equals("table") && !f.getName().equals("port")) {
                     return false;
                 }
             } catch (IllegalAccessException e) {
