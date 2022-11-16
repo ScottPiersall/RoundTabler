@@ -3,14 +3,13 @@ package RoundTabler;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 public class Configuration {
 
     private String type;
-    private String[] validScanTypes = { "all", "nacha", "pci"};
+    private final String[] validScanTypes = { "all", "nacha", "pci"};
     private String dbType;
-    private String[] validDbTypes = { "mysql", "mariadb", "mongo", "mongodb" };
+    private final String[] validDbTypes = { "mysql", "mariadb", "mongo", "mongodb" };
     private String server;
     private String user;
     private String password;
@@ -18,6 +17,7 @@ public class Configuration {
     private String file;
     private String table;
     private String port;
+    public String missingParameter;
 
     public Configuration() {
         this.type = "";
@@ -118,17 +118,17 @@ public class Configuration {
 
     //Ensure all required parameters have been filled out except --resultfile since it isn't required
 
-    public boolean allFilled(){
+    public boolean allFilled() throws IllegalAccessException {
+
         for(Field f : getClass().getDeclaredFields()) {
-            try {
-                if (f.get(this) == "" && !f.getName().equals("file") && !f.getName().equals("table") && !f.getName().equals("port")) {
-                    return false;
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            if (f.get(this) == "" && !f.getName().equals("file") && !f.getName().equals("table") && !f.getName().equals("port")) {
+                this.missingParameter = f.getName();
+                return false;
             }
         }
+
         return true;
+
     }
 
 }
