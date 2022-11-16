@@ -47,6 +47,6 @@ Navigate to the src directory using:
 
 	`cd src`
 
-Look at the list of parameters to get started:
+To review the list of options pleas see:
 
 	`java RoundTabler.RoundTable --help`
