@@ -25,8 +25,8 @@ public class MariaReader extends DBReader {
         // a descriptive error if the driver is not present
                
         // Use args to establish database connection
-        String jdbcUri = String.format("jdbc:mariadb://%s?user=%s&password=%s",
-                                                config.getServer(),
+        String jdbcUri = String.format("jdbc:mariadb://%s:%s?user=%s&password=%s",
+                                                config.getServer(), !config.getPort().isBlank() ? config.getPort() : "3306",
                                                 config.getUser(), config.getPassword());
 
         this.conn = DriverManager.getConnection(jdbcUri);

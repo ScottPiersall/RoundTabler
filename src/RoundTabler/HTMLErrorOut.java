@@ -107,7 +107,6 @@ public class HTMLErrorOut {
         }catch(IOException e){
 
             System.out.println();
-            System.out.print("NO file path for result file, printing error: ");
             System.out.println(error);
             System.out.println("Please refer to https://github.com/ScottPiersall/RoundTabler/blob/main/README.md to help resolve any confusion.");
 

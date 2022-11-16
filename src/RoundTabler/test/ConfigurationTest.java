@@ -96,9 +96,18 @@ public class ConfigurationTest {
 
     }
 
+    @Test
+    public void getPort(){
+
+        Configuration config = new Configuration();
+
+        config.setServer("127.0.0.1:3306");
+
+        assertEquals("3306", config.getPort());
+    }
 
     @Test
-    public void allParamsFilledTrue(){
+    public void allParamsFilledTrue() throws IllegalAccessException {
 
         Configuration config = new Configuration();
 
@@ -114,7 +123,7 @@ public class ConfigurationTest {
     }
 
     @Test
-    public void allParamsFilledFalse(){
+    public void allParamsFilledFalse() throws IllegalAccessException {
 
         Configuration config = new Configuration();
 
@@ -169,6 +178,22 @@ public class ConfigurationTest {
         config.setDbType("invalid");
 
         assertFalse(config.validateDbType());
+
+    }
+
+    @Test
+    public void doesNotThrow(){
+
+        Configuration config = new Configuration();
+
+        config.setType("all");
+        config.setDbType("mariadb");
+        config.setServer("127.0.0.1");
+        config.setUser("user");
+        config.setPassword("1234");
+        config.setDatabase("DBToTest");
+
+        assertDoesNotThrow(config::allFilled);
 
     }
 }

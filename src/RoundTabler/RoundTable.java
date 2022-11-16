@@ -86,7 +86,7 @@ public class RoundTable {
             }
 
             //Ensures all required parameters needed for RoundTabler to run are filled out. THIS DOES NOT ENSURE --resultfile IS FILLED OUT BECAUSE ITS NOT A REQUIRED PARAMETER
-            if(!config.allFilled())throw(new InputMismatchException("Missing required parameter flag."));
+            if(!config.allFilled())throw(new InputMismatchException("Missing required parameter flag: " + config.missingParameter + "."));
 
             //Print Statements signifying next step in RoundTabler process... can be removed just used as a checkpoint to ensure all arg checking is complete.
             System.out.println();
@@ -128,7 +128,7 @@ public class RoundTable {
 
             return 0;
 
-        }catch(InputMismatchException e){
+        }catch(InputMismatchException | IllegalAccessException e){
 
             String filePath = "";
 
