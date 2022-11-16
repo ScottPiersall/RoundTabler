@@ -27,18 +27,9 @@ public class PCIScan {
 	static String CardPartialSequenceRegex = "\\b(AMEX|VISA|MC)-\\d{4}\\b";
 	static Pattern CardPartialPattern = Pattern.compile(CardPartialSequenceRegex, Pattern.CASE_INSENSITIVE);
 
-
-	public String JDBC_DRIVER;
-
 	private RoundTabler.Configuration pScanConfiguration;
-
-	private Connection pDBConnection;
-	private String pTableName; 
-	private String pMYSQLColumnSelect;
-	private String pMYSQLColumnTypes;
-
+	private Connection pDBConnection;	
 	private PerformanceSummary pPerformanceSummary;
-
 	private StringBuilder psbResults;
 
 	private int pLastMatchStart;
@@ -47,7 +38,6 @@ public class PCIScan {
 
 	public PCIScan(){
 		super();
-		this.pMYSQLColumnTypes = "(mediumtext, longtext, text, tinytext, varchar)";
 		this.psbResults = new StringBuilder();
 		psbResults.append("\n");
 	}
@@ -62,18 +52,15 @@ public class PCIScan {
 	public String ScanResult() { return this.psbResults.toString(); }
 
 	public int ScanMariaDB() throws SQLException {
-			System.out.println("DEBUG: mariadb PCIScan starting...");
 		//
 		// Performs MySQL-Based Scan
 		// using the settings and configuration 
 		// contained in pScanConfiguration
 		if ( pScanConfiguration.getDbType().toUpperCase().compareTo("MARIADB") != 0 ) {
-					System.out.println("DEBUG: database type mismatch. EXITING");
 			new HTMLErrorOut(pScanConfiguration.getFile(), "Database Type Mismatch. Database Type Configuration " + pScanConfiguration.getDbType() + " cannot be used with MySQL Scan" );
 			return 0;
 		}
-
-		
+	
 		int currentConfidenceLevel = 0;
 		String currentTable = "";
 		String currentColumn = "";
@@ -89,8 +76,6 @@ public class PCIScan {
 			for( index = 0; index < tablesandcolumns.size(); index ++ ){
 				currentTable = tablesandcolumns.get(index).getTableName();
 				currentColumn = tablesandcolumns.get(index).getColumnName();
-	//			System.out.println( tablesandcolumns.get(index).getTableName() + "\t" + tablesandcolumns.get(index).getColumnName() );
-
 				ArrayList<String> rowsData;
 				rowsData  = pDBReader.readColumn( tablesandcolumns.get(index) );
 				int rowindex;
@@ -101,7 +86,7 @@ public class PCIScan {
 				currentResult.TableColumn = currentColumn;
 				currentResult.MatchType = "PCIDSS";
 				currentResult.RowsMatched = 0;
-				currentResult.RowsScanned = rowsData.Size();
+				currentResult.RowsScanned = rowsData.size();
 				currentResult.ScanStarted = LocalDateTime.now();
 	
 				for (rowindex =0; rowindex < rowsData.size(); rowindex++ ){
@@ -115,13 +100,14 @@ public class PCIScan {
 							}
 				}
 				currentResult.ScanFinished = LocalDateTime.now();
-				Summary.addResult(currentResult);
+				pPerformanceSummary.addResult(currentResult);
 
 			}
 		} else {
 			
 		}
-		System.out.println( "<HTML><BODY><TABLE>" + "\n" + psbResults.toString() + "</TABLE></BODY></HTML>" + "\n" );
+		System.out.println("DEBUGTEST: here are the HTML table rows with matches emphasized");
+		System.out.println( psbResults.toString()  );
 
 		return 0;
 	}
@@ -147,10 +133,7 @@ public class PCIScan {
 		psbResults.append("</TD>");
 
 		psbResults.append("</TR>" + "\n");
-
 	}
-
-
 
 	/**
 	*
@@ -172,7 +155,6 @@ public class PCIScan {
 		
 		Matcher CardNumberSequenceMatcher = CardNumberPattern.matcher( DatabaseRow );
 
-
 		// If we find what looks like a card sequence, make the confidence 75
 		if (CardNumberSequenceMatcher.find()) {
 			result += 75;   // Assign a confidence Level of at least 75%
@@ -193,12 +175,6 @@ public class PCIScan {
 				pLastMatchEnd = CardPartialSequenceMatcher.end();
 			}
 		}	
-			
-
-
-
-
-
 
 		return result;
 	}
