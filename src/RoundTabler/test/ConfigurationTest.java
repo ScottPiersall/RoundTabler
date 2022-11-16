@@ -196,4 +196,5 @@ public class ConfigurationTest {
         assertDoesNotThrow(config::allFilled);
 
     }
+
 }
