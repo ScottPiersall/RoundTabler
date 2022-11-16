@@ -104,10 +104,10 @@ public class RoundTable {
 
             case "all":
                 PCIScan allPCI;
-                int Counter;
+                int allCounter;
                 allPCI = new PCIScan( config, SummaryOfPerformance, reader   );
                 try {
-                    Counter = allPCI.ScanMariaDB();
+                    allCounter = allPCI.ScanMariaDB();
                 }
                 catch (SQLException sqlex ) {
                 System.out.println("DEBUG: " + sqlex.toString() );
