@@ -100,24 +100,44 @@ public class RoundTable {
                 // but we do not need it for anything else after it makes our single reader.
             reader = new ReaderMaker(config).getReader();
 
+            switch ( config.getType() )  {
 
-            switch(config.getType()){
-                case "all":
+            case "all":
+                PCIScan allPCI;
+                int allCounter;
+                allPCI = new PCIScan( config, SummaryOfPerformance, reader   );
+                try {
+                    allCounter = allPCI.ScanMariaDB();
+                }
+                catch (SQLException sqlex ) {
+                System.out.println("DEBUG: " + sqlex.toString() );
+                }              
 
-                    break;
-                case "pci":
-
-                    PCIScan lPCI;
-                    int Counter;
-
-                    lPCI = new PCIScan( config, SummaryOfPerformance  );
+                break;
+            
+            case "pci":
+                PCIScan lPCI;
+                int Counter;
+                lPCI = new PCIScan( config, SummaryOfPerformance, reader   );
+                try {
                     Counter = lPCI.ScanMariaDB();
+                }
+                catch (SQLException sqlex ) {
+                System.out.println("DEBUG: " + sqlex.toString() );
+                }              
 
-                    break;
-                case "nacha":
 
-                    break;
+                break;
+
+            case "nacha":
+
+                break;
             }
+ 
+
+            System.out.println("DEBUG/TEST: Performance Summary Object: ");
+            System.out.println( SummaryOfPerformance.toString() );
+
 
             return 0;
 
