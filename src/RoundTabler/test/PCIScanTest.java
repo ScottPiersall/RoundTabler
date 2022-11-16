@@ -18,6 +18,15 @@ public class PCIScanTest {
     }
 
     @Test
+    public void TestConfidence_100_PARTIAL_CARD() {
+        String databaseRow = "Processed credit card using VISA-4892 on file";
+        int result = pciScan.getConfidenceLevelMatch(databaseRow);
+        int expected = 100;
+        assertEquals(expected, result);
+    }
+
+
+    @Test
     public void TestConfidence_75() {
         String databaseRow = "The number is 6011121511111117, which looks like a card but fails Luhn's test";
         int result = pciScan.getConfidenceLevelMatch(databaseRow);
