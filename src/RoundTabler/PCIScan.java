@@ -121,7 +121,7 @@ public class PCIScan {
 		} else {
 			
 		}
-		System.out.println( "<HTML><BODY><TABLE>" + "\n" + psbResults.toString() + "<\TABLE></BODY></HTML>" + "\n" );
+		System.out.println( "<HTML><BODY><TABLE>" + "\n" + psbResults.toString() + "</TABLE></BODY></HTML>" + "\n" );
 
 		return 0;
 	}
