@@ -59,16 +59,18 @@ public class PCIScan {
 	public String ScanResult() { return this.psbResults.toString(); }
 
 	public int ScanMariaDB() throws SQLException {
+			System.out.println("DEBUG: mariadb PCIScan starting...");
 		//
 		// Performs MySQL-Based Scan
 		// using the settings and configuration 
 		// contained in pScanConfiguration
 		if ( pScanConfiguration.getDbType().toUpperCase().compareTo("MARIADB") != 0 ) {
+					System.out.println("DEBUG: database type mismatch. EXITING");
 			new HTMLErrorOut(pScanConfiguration.getFile(), "Database Type Mismatch. Database Type Configuration " + pScanConfiguration.getDbType() + " cannot be used with MySQL Scan" );
 			return 0;
 		}
 
-		System.out.println("DEBUG: mariadb PCIScan starting...");
+		
 		int currentConfidenceLevel = 0;
 		String currentTable = "";
 		String currentColumn = "";
