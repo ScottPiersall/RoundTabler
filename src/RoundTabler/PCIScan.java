@@ -98,7 +98,7 @@ public class PCIScan {
 
 				if ( currentConfidenceLevel > 0 ) {
 							AppendMatch( currentTable, currentRow, currentConfidenceLevel);
-							System.outprintln("MATCHED: " + currentRow);
+							System.out.println("MATCHED: " + currentRow);
 							}
 				}
 
