@@ -62,10 +62,9 @@ public class Configuration {
     public String getPort() { return this.port; }
 
     public void setServer(String server) {
-        this.server = server;
+        this.server = server.split(":")[0]; // If : not present, this is always the entire string
 
         if(server.contains(":")){
-            this.server = server.split(":")[0];
             this.port = server.split(":")[1];
         }
     }
