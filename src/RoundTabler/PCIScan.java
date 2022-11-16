@@ -106,7 +106,9 @@ public class PCIScan {
 		} else {
 			
 		}
-		System.out.println("DEBUGTEST: here are the HTML table rows with matches emphasized");
+		System.out.println("\n\n" + "DEBUGTEST: here are the HTML table rows with matches emphasized");
+		System.out.println( "<TR><TH>Table</TH><TH>Column</TH><TH>PCIDSS Content Match</TH><TH>Confidence</TH></TR>" );
+
 		System.out.println( psbResults.toString()  );
 
 		return 0;
