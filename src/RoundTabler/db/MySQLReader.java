@@ -24,8 +24,8 @@ public class MySQLReader extends DBReader {
         Class.forName("com.mysql.cj.jdbc.Driver");
 
         // Use args to establish database connection
-        String jdbcUri = String.format("jdbc:mysql://%s?user=%s&password=%s",
-                                                config.getServer(),
+        String jdbcUri = String.format("jdbc:mysql://%s:%s?user=%s&password=%s",
+                                                config.getServer(), !config.getPort().isBlank() ? config.getPort() : "3306",
                                                 config.getUser(), config.getPassword());
 
         this.conn = DriverManager.getConnection(jdbcUri);
