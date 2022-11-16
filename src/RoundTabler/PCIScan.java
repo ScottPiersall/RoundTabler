@@ -92,11 +92,13 @@ public class PCIScan {
 				rowsData  = pDBReader.readColumn( tablesandcolumns.get(index) );
 				int rowindex;
 				for (rowindex =0; rowindex < rowsData.size(); rowindex++ ){
-				//System.out.println("DEBUG: Analyzing : " + rowsData.get(rowindex).toString() );
+				currentRow = rowsData.get(rowindex).toString();
+
 				currentConfidenceLevel = getConfidenceLevelMatch( rowsData.get(rowindex).toString() );
 
 				if ( currentConfidenceLevel > 0 ) {
 							AppendMatch( currentTable, currentRow, currentConfidenceLevel);
+							System.outprintln("MATCHED: " + currentRow);
 							}
 				}
 
@@ -128,6 +130,7 @@ public class PCIScan {
 
 
 	private void AppendMatch( String currentTable, String currentRow, int currentConfidenceLevel) {
+
 		psbResults.append("<TR>");							
 		psbResults.append("<TD>");
 		psbResults.append(currentTable);
