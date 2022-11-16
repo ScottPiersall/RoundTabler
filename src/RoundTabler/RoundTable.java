@@ -135,6 +135,10 @@ public class RoundTable {
             }
  
 
+            System.out.println("DEBUG/TEST: Performance Summary Object: ");
+            System.out.println( SummaryOfPerformance.toString() );
+
+
             return 0;
 
         }catch(InputMismatchException | IllegalAccessException e){
