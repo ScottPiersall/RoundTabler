@@ -97,8 +97,8 @@ public class PCIScan {
 				currentConfidenceLevel = getConfidenceLevelMatch( rowsData.get(rowindex).toString() );
 
 				if ( currentConfidenceLevel > 0 ) {
-			//				AppendMatch( currentTable, currentRow, currentConfidenceLevel);
-							System.out.println("MATCHED: " + currentRow);
+							AppendMatch( currentTable, currentRow, currentConfidenceLevel);
+						//	System.out.println("MATCHED: " + currentRow);
 							}
 				}
 
@@ -125,6 +125,10 @@ public class PCIScan {
 
 					// GetEndTime -> PerformanceResult
 				// Add PerformanceResult to Performance Summary
+
+
+		System.out.println( psbResults.toString() );
+
 		return 0;
 	}
 
