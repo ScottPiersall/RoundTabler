@@ -1,12 +1,15 @@
 package RoundTabler;
 
+import RoundTabler.db.*;
+
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import RoundTabler.db.*;
+
 
 //
 // A Class used for doing PCIScan of fields
@@ -86,48 +89,39 @@ public class PCIScan {
 			for( index = 0; index < tablesandcolumns.size(); index ++ ){
 				currentTable = tablesandcolumns.get(index).getTableName();
 				currentColumn = tablesandcolumns.get(index).getColumnName();
-				System.out.println( tablesandcolumns.get(index).getTableName() + "\t" + tablesandcolumns.get(index).getColumnName() );
+	//			System.out.println( tablesandcolumns.get(index).getTableName() + "\t" + tablesandcolumns.get(index).getColumnName() );
 
 				ArrayList<String> rowsData;
 				rowsData  = pDBReader.readColumn( tablesandcolumns.get(index) );
 				int rowindex;
+
+				PerformanceResult currentResult;
+				currentResult = new PerformanceResult();
+				currentResult.TableName = currentTable;
+				currentResult.TableColumn = currentColumn;
+				currentResult.MatchType = "PCIDSS";
+				currentResult.RowsMatched = 0;
+				currentResult.RowsScanned = rowsData.Size();
+				currentResult.ScanStarted = LocalDateTime.now();
+	
 				for (rowindex =0; rowindex < rowsData.size(); rowindex++ ){
-				currentRow = rowsData.get(rowindex).toString();
+					currentRow = rowsData.get(rowindex).toString();
 
-				currentConfidenceLevel = getConfidenceLevelMatch( rowsData.get(rowindex).toString() );
+					currentConfidenceLevel = getConfidenceLevelMatch( rowsData.get(rowindex).toString() );
 
-				if ( currentConfidenceLevel > 0 ) {
+					if ( currentConfidenceLevel > 0 ) {
 							AppendMatch( currentTable, currentRow, currentConfidenceLevel);
-						//	System.out.println("MATCHED: " + currentRow);
+							currentResult.RowsMatched++;
 							}
 				}
+				currentResult.ScanFinished = LocalDateTime.now();
+				Summary.addResult(currentResult);
 
 			}
 		} else {
-			System.out.println("DEBUG: readSchema() is EMPTY");
+			
 		}
-
-
-		// Pseudocode
-		// gather table list
-			// gather column list for each table
-				// Instantiate New PerformanceResult
-					// TableName->PerformanceResult ColumnName->PerformanceResult
-					// GetStartTime ->PerformanceResult
-						// getConfidenceLevelmatch
-						// TableRows+=1  
-						// If ConfidenceLevel > 0
-							// Increment MatchedRows in PerformanceResult
-							// Place Row in StringBuilder
-
-
-						
-
-					// GetEndTime -> PerformanceResult
-				// Add PerformanceResult to Performance Summary
-
-
-		System.out.println( psbResults.toString() );
+		System.out.println( "<HTML><BODY><TABLE>" + "\n" + psbResults.toString() + "<\TABLE></BODY></HTML>" + "\n" );
 
 		return 0;
 	}
@@ -152,7 +146,7 @@ public class PCIScan {
 		psbResults.append(currentConfidenceLevel );
 		psbResults.append("</TD>");
 
-		psbResults.append("</TR>");
+		psbResults.append("</TR>" + "\n");
 
 	}
 
