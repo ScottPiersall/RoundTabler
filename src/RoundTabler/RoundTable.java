@@ -116,15 +116,31 @@ public class RoundTable {
                 return -1;
             }
 
-            PCIScan lPCI;
-            int Counter;
-            lPCI = new PCIScan( config, SummaryOfPerformance  );
-            try {
-                Counter = lPCI.ScanMariaDB();
-            }
-            catch (SQLException sqlex ) {
+            switch ( config.getType() )  {
+
+            case "all":
+
+                break;
+            
+            case "pci":
+                PCIScan lPCI;
+                int Counter;
+                lPCI = new PCIScan( config, SummaryOfPerformance, reader   );
+                try {
+                    Counter = lPCI.ScanMariaDB();
+                }
+                catch (SQLException sqlex ) {
                 System.out.println("DEBUG: " + sqlex.toString() );
+                }              
+
+
+                break;
+
+            case "nacha":
+
+                break;
             }
+ 
 
             return 0;
 

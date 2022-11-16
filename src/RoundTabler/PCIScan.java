@@ -37,7 +37,7 @@ public class PCIScan {
 
 	private int pLastMatchStart;
 	private int pLastMatchEnd;
-
+	private DBReader pDBReader;
 
 	public PCIScan(){
 		super();
@@ -46,10 +46,11 @@ public class PCIScan {
 		psbResults.append("\n");
 	}
 
-	public PCIScan(RoundTabler.Configuration ScanConfiguration, RoundTabler.PerformanceSummary Summary) {
+	public PCIScan(RoundTabler.Configuration ScanConfiguration, RoundTabler.PerformanceSummary Summary, DBReader DatabaseReader ) {
 		this();
 		pScanConfiguration = ScanConfiguration;
 		pPerformanceSummary = Summary;
+		pDBReader = DatabaseReader;
 	}
 
 	public String ScanResult() { return this.psbResults.toString(); }
@@ -70,21 +71,24 @@ public class PCIScan {
 		String currentColumn = "";
 
 		String currentRow = "";
-		// Pseudocode
-		// gather table list
-			// gather column list for each table
-				// Instantiate New PerformanceResult
-					// TableName->PerformanceResult ColumnName->PerformanceResult
-					// GetStartTime ->PerformanceResult
-						// getConfidenceLevelmatch
-						// TableRows+=1  
-						// If ConfidenceLevel > 0
-							// Increment MatchedRows in PerformanceResult
-							// Place Row in StringBuilder
 
+		SchemaItems tablesandcolumns;
 
-							currentConfidenceLevel = getConfidenceLevelMatch(currentRow);
-							if ( currentConfidenceLevel > 0 ) {
+		if ( pDBReader.readSchema() ) 
+		{
+			tablesandcolumns = pDBReader.getSchemaItems();
+			int index;
+			for( index = 1; index <= tablesandcolumns.size(); index ++ ){
+
+				System.out.println( tablesandcolumns(i).getTableName() + "\t" + tablesandcolumns(i).getColumnName() );
+
+				ArrayList<String> rowsData;
+				rowsData  = pDBReader.ReadColumn( tablesandcolumns(i) );
+				int rowindex;
+				for (rowindex =1; rowindex <= rowsData.size(); rowindex++ ){
+				int currentConfidenceLevel;
+				currentConfidenceLevel = getConfidenceLevelMatch( rowsData(i).toString() );
+				if ( currentConfidenceLevel > 0 ) {
 
 								psbResults.append("<TR>");
 							
@@ -106,6 +110,28 @@ public class PCIScan {
 
 								psbResults.append("</TR>");
 							}
+
+
+				}
+
+			}
+		}
+
+
+		// Pseudocode
+		// gather table list
+			// gather column list for each table
+				// Instantiate New PerformanceResult
+					// TableName->PerformanceResult ColumnName->PerformanceResult
+					// GetStartTime ->PerformanceResult
+						// getConfidenceLevelmatch
+						// TableRows+=1  
+						// If ConfidenceLevel > 0
+							// Increment MatchedRows in PerformanceResult
+							// Place Row in StringBuilder
+
+
+						
 
 					// GetEndTime -> PerformanceResult
 				// Add PerformanceResult to Performance Summary
