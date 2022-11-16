@@ -23,5 +23,9 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="bson-4.8.0" level="project" />
+    <orderEntry type="library" name="mongo" level="project" />
+    <orderEntry type="library" name="mariadb" level="project" />
+    <orderEntry type="library" name="mysql" level="project" />
   </component>
 </module>
