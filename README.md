@@ -31,3 +31,22 @@ Zachary Russell             | Writer and Coder
 Matthew Tyroler             | Writer
 Ariel Turnley               |
 
+## Software Requirements
+
+RoundTabler requires you to have a working version of Docker on your machine.
+
+##Getting Started
+
+Clone the repository to your machine.
+
+Double-click on the 'LaunchRoundTablerInstance.bat' to automatically build and start the Docker container.
+
+Open Docker Desktop and open the CLI on the instance named 'roundtabler'
+
+Navigate to the src directory using:
+
+	`cd src`
+
+Look at the list of parameters to get started:
+
+	`java RoundTabler.RoundTable --help`
