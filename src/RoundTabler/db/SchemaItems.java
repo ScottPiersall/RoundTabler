@@ -31,4 +31,14 @@ public class SchemaItems{
 	public int size() {
 		return this.SchemaItemResults.size();
 	}
+
+	// Returns a reference this SchemaItems held by this object
+	public ArrayList<SchemaItem> getItems() {
+		return this.SchemaItemResults;
+	}
+
+	// Mimics the ArrayList get function (kinda proxies it)
+	public SchemaItem get(int index) {
+		return this.SchemaItemResults.get(index);
+	}
 }
