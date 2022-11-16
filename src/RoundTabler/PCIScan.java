@@ -2,8 +2,11 @@ package RoundTabler;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import RoundTabler.db.*;
 
 //
 // A Class used for doing PCIScan of fields
@@ -80,14 +83,13 @@ public class PCIScan {
 			int index;
 			for( index = 1; index <= tablesandcolumns.size(); index ++ ){
 
-				System.out.println( tablesandcolumns(i).getTableName() + "\t" + tablesandcolumns(i).getColumnName() );
+				System.out.println( tablesandcolumns(index).getTableName() + "\t" + tablesandcolumns(index).getColumnName() );
 
 				ArrayList<String> rowsData;
-				rowsData  = pDBReader.ReadColumn( tablesandcolumns(i) );
+				rowsData  = pDBReader.ReadColumn( tablesandcolumns(index) );
 				int rowindex;
 				for (rowindex =1; rowindex <= rowsData.size(); rowindex++ ){
-				int currentConfidenceLevel;
-				currentConfidenceLevel = getConfidenceLevelMatch( rowsData(i).toString() );
+				currentConfidenceLevel = getConfidenceLevelMatch( rowsData(rowindex).toString() );
 				if ( currentConfidenceLevel > 0 ) {
 
 								psbResults.append("<TR>");
