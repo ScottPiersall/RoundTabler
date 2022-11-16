@@ -42,6 +42,7 @@ public class NACHAScan{
      * @param databaseRow String to match with possible ABA number
      * @return confidenceLevel of ABA number presence in database row
      */
+
     public int getConfidenceLevelMatch(String databaseRow){
         String ABANumberSequenceRegex = "\\b[0-9]{9}\\b";
         Pattern ABANumberPattern = Pattern.compile(ABANumberSequenceRegex);

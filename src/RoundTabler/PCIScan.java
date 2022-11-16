@@ -148,7 +148,7 @@ public class PCIScan {
 
 		if ( result == 0 ){
 			Matcher CardPartialSequenceMatcher = CardPartialPattern.matcher( DatabaseRow );
-			if ( CardNumberSequenceMatcher.find() ) {
+			if ( CardPartialSequenceMatcher.find() ) {
 				result = 100;
 				pLastMatchStart = CardPartialSequenceMatcher.start();
 				pLastMatchEnd = CardPartialSequenceMatcher.end();

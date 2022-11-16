@@ -129,9 +129,9 @@ public class RoundTableTest {
 
         System.out.println("allValidParameters:");
 
-        String[] args = {"--type=all", "--dbtype=mysql", "--server=localhost", "--user=username", "--password=1234", "--database=DBToTest",};
+        String[] args = {"--type=all", "--dbtype=mariadb", "--server=localhost", "--user=username", "--password=1234", "--database=DBToTest",};
 
-        assertEquals(0, RoundTable.main(args));
+        assertEquals(0, RoundTable.round(args));
 
         System.out.println();
 
