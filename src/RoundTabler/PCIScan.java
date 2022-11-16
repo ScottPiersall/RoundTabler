@@ -84,41 +84,20 @@ public class PCIScan {
 			tablesandcolumns = pDBReader.getSchemaItems();
 			int index;
 			for( index = 0; index < tablesandcolumns.size(); index ++ ){
-
+				currentTable = tablesandcolumns.get(index).getTableName();
+				currentColumn = tablesandcolumns.get(index).getColumnName();
 				System.out.println( tablesandcolumns.get(index).getTableName() + "\t" + tablesandcolumns.get(index).getColumnName() );
 
 				ArrayList<String> rowsData;
 				rowsData  = pDBReader.readColumn( tablesandcolumns.get(index) );
 				int rowindex;
 				for (rowindex =0; rowindex < rowsData.size(); rowindex++ ){
-				System.out.println("DEBUG: Analyzing : " + rowsData.get(rowindex).toString() );
+				//System.out.println("DEBUG: Analyzing : " + rowsData.get(rowindex).toString() );
 				currentConfidenceLevel = getConfidenceLevelMatch( rowsData.get(rowindex).toString() );
-				
 
 				if ( currentConfidenceLevel > 0 ) {
-
-								psbResults.append("<TR>");
-							
-								psbResults.append("<TD>");
-								psbResults.append(currentTable);
-								psbResults.append("</TD>");
-
-								psbResults.append("<TD>");
-								psbResults.append(currentRow);
-								psbResults.append("</TD>");
-
-								psbResults.append("<TD>");
-								psbResults.append(insertStrongEmphasisInto(currentRow, pLastMatchStart, pLastMatchEnd));
-								psbResults.append("</TD>");
-
-								psbResults.append("<TD ALIGN =\"RIGHT\">");
-								psbResults.append(currentConfidenceLevel );
-								psbResults.append("</TD>");
-
-								psbResults.append("</TR>");
+							AppendMatch( currentTable, currentRow, currentConfidenceLevel);
 							}
-
-
 				}
 
 			}
@@ -146,6 +125,30 @@ public class PCIScan {
 				// Add PerformanceResult to Performance Summary
 		return 0;
 	}
+
+
+	private void AppendMatch( String currentTable, String currentRow, int currentConfidenceLevel) {
+		psbResults.append("<TR>");							
+		psbResults.append("<TD>");
+		psbResults.append(currentTable);
+		psbResults.append("</TD>");
+
+		psbResults.append("<TD>");
+		psbResults.append(currentRow);
+		psbResults.append("</TD>");
+
+		psbResults.append("<TD>");
+		psbResults.append(insertStrongEmphasisInto(currentRow, pLastMatchStart, pLastMatchEnd));
+		psbResults.append("</TD>");
+
+		psbResults.append("<TD ALIGN =\"RIGHT\">");
+		psbResults.append(currentConfidenceLevel );
+		psbResults.append("</TD>");
+
+		psbResults.append("</TR>");
+
+	}
+
 
 
 	/**
