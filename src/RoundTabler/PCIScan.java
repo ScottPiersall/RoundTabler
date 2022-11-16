@@ -68,7 +68,7 @@ public class PCIScan {
 			return 0;
 		}
 
-	
+		System.out.println("DEBUG: mariadb PCIScan starting...");
 		int currentConfidenceLevel = 0;
 		String currentTable = "";
 		String currentColumn = "";
@@ -76,7 +76,7 @@ public class PCIScan {
 		String currentRow = "";
 
 		SchemaItems tablesandcolumns;
-
+	
 		if ( pDBReader.readSchema() ) 
 		{
 			tablesandcolumns = pDBReader.getSchemaItems();
@@ -117,6 +117,8 @@ public class PCIScan {
 				}
 
 			}
+		} else {
+			System.out.println("DEBUG: readSchema() is EMPTY");
 		}
 
 
