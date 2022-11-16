@@ -83,7 +83,7 @@ public class PCIScan {
 			int index;
 			for( index = 1; index <= tablesandcolumns.size(); index ++ ){
 
-				System.out.println( tablesandcolumns(index).getTableName() + "\t" + tablesandcolumns(index).getColumnName() );
+				System.out.println( tablesandcolumns.get(index).getTableName() + "\t" + tablesandcolumns.get(index).getColumnName() );
 
 				ArrayList<String> rowsData;
 				rowsData  = pDBReader.ReadColumn( tablesandcolumns(index) );
