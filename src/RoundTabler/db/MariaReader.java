@@ -79,7 +79,7 @@ public class MariaReader extends DBReader {
 
         try {
             Statement select = this.conn.createStatement();
-            String queryString = String.format("SELECT %s FROM %s.%s WHERE %s NOT NULL",
+            String queryString = String.format("SELECT %s FROM %s.%s WHERE %s IS NOT NULL",
                                                        item.getColumnName(), this.config.getDatabase(), item.getTableName(), item.getColumnName() );
 
             rs = select.executeQuery(queryString);
