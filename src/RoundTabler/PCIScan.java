@@ -86,10 +86,10 @@ public class PCIScan {
 				System.out.println( tablesandcolumns.get(index).getTableName() + "\t" + tablesandcolumns.get(index).getColumnName() );
 
 				ArrayList<String> rowsData;
-				rowsData  = pDBReader.ReadColumn( tablesandcolumns(index) );
+				rowsData  = pDBReader.ReadColumn( tablesandcolumns.get(index) );
 				int rowindex;
 				for (rowindex =1; rowindex <= rowsData.size(); rowindex++ ){
-				currentConfidenceLevel = getConfidenceLevelMatch( rowsData(rowindex).toString() );
+				currentConfidenceLevel = getConfidenceLevelMatch( rowsData.get(rowindex).toString() );
 				if ( currentConfidenceLevel > 0 ) {
 
 								psbResults.append("<TR>");
