@@ -20,7 +20,7 @@ public class PerformanceSummary{
 		StringBuilder temp;
 		int Index;
 		temp = new StringBuilder();
-		for( Index=1; Index <= PerfResults.size(); Index++ ){
+		for( Index=0; Index < PerfResults.size(); Index++ ){
 			temp.append( PerfResults.get(Index).toString() + "\n");
 		}
 		return temp.toString();
