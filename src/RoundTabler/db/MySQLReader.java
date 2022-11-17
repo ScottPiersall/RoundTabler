@@ -48,7 +48,7 @@ public class MySQLReader extends DBReader {
 
         // If we have already read the schema with this reader, then disallow future reads
         if (!schemaItems.isEmpty())
-            return false;
+            return true;
 
         try {
             rs = buildSchema.executeQuery();
