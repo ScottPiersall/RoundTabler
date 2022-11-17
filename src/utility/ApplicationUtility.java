@@ -7,7 +7,7 @@ public class ApplicationUtility {
      * @return boolean whether the value is a number or not
      */
     public static boolean isNumeric(String strNum) {
-        if (strNum == null) {
+        if (strNum == null || strNum.trim().equals("")) {
             return false;
         }
         else {
