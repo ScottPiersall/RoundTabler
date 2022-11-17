@@ -80,6 +80,8 @@ public class NACHAScan{
             // if found, confidence is increased to 75%
             result += 75;
             pLastMatchDescription = "9 Digit Number";
+            pLastMatchStart = abaNumberSequenceMatcher.start();
+            pLastMatchEnd = abaNumberSequenceMatcher.end();
             // further checks if the number found is a valid ABA number
             if (checkForValidABANumber(abaNumberSequenceMatcher.group())){
                 // if number is a valid ABA Number, confidence increased to 100%

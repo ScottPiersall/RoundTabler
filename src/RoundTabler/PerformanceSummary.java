@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class PerformanceSummary{
 
-	private ArrayList<RoundTabler.PerformanceResult> PerfResults = new ArrayList<RoundTabler.PerformanceResult>();
+	private ArrayList<RoundTabler.PerformanceResult> PerfResults = new ArrayList<>();
 
 	public PerformanceSummary(){
 		super();
