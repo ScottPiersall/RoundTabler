@@ -109,7 +109,7 @@ public class RoundTable {
 
             case "all":
                 CommonScan allPCIScan = new CommonScan( config, SummaryOfPerformance, SummaryOfScans,reader   );
-                CommonScan allNACHAScan = new CommonScan( config, SummaryOfPerformance, reader   );
+                CommonScan allNACHAScan = new CommonScan( config, SummaryOfPerformance, SummaryOfScans,reader   );
                 try {
                     allPCIScan.ScanMariaDB("PCIDSS");
                     allNACHAScan.ScanMariaDB("NACHA");
@@ -122,9 +122,9 @@ public class RoundTable {
             
             case "pci":
 
-                CommonScan pciScan = new CommonScan( config, SummaryOfPerformance, reader   );
+                CommonScan pciScan = new CommonScan( config, SummaryOfPerformance, SummaryOfScans,reader   );
                 try {
-                    Counter = lPCI.ScanMariaDB();
+                    pciScan.ScanMariaDB("PCIDSS");
                 }
                 catch (SQLException sqlex ) {
                     System.out.println("DEBUG: " + sqlex);
@@ -133,7 +133,7 @@ public class RoundTable {
                 break;
 
             case "nacha":
-                CommonScan nachaScan = new CommonScan( config, SummaryOfPerformance, reader   );
+                CommonScan nachaScan = new CommonScan( config, SummaryOfPerformance, SummaryOfScans,reader   );
                 try {
                     nachaScan.ScanMariaDB("NACHA");
                 }
