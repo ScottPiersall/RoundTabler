@@ -3,7 +3,11 @@ package RoundTabler;
 import RoundTabler.db.DBReader;
 import RoundTabler.db.ReaderMaker;
 
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 
 
@@ -22,7 +26,7 @@ public class RoundTable {
         DBReader reader = null;
 
         PerformanceSummary SummaryOfPerformance = new PerformanceSummary();
-
+        ScanSummary SummaryOfScans = new ScanSummary();
 
         try{
 
@@ -104,7 +108,7 @@ public class RoundTable {
             switch ( config.getType() )  {
 
             case "all":
-                CommonScan allPCIScan = new CommonScan( config, SummaryOfPerformance, reader   );
+                CommonScan allPCIScan = new CommonScan( config, SummaryOfPerformance, SummaryOfScans,reader   );
                 CommonScan allNACHAScan = new CommonScan( config, SummaryOfPerformance, reader   );
                 try {
                     allPCIScan.ScanMariaDB("PCIDSS");
@@ -117,9 +121,10 @@ public class RoundTable {
                 break;
             
             case "pci":
+
                 CommonScan pciScan = new CommonScan( config, SummaryOfPerformance, reader   );
                 try {
-                    pciScan.ScanMariaDB("PCIDSS");
+                    Counter = lPCI.ScanMariaDB();
                 }
                 catch (SQLException sqlex ) {
                     System.out.println("DEBUG: " + sqlex);
@@ -140,6 +145,17 @@ public class RoundTable {
             }
  
 
+
+            WriteResultsToHTMLFile( SummaryOfScans, SummaryOfPerformance );
+
+            //System.out.println("DEBUG/TEST: Scan Results Object: ");
+            //System.out.println( SummaryOfScans.toString() );
+            //System.out.println("\n\n");
+
+
+
+            //System.out.println("DEBUG/TEST: Performance Summary Object: ");
+            //System.out.println( SummaryOfPerformance.toString() );
             System.out.println("DEBUG/TEST: Performance Summary Object: ");
             System.out.println(SummaryOfPerformance);
 
@@ -183,5 +199,70 @@ public class RoundTable {
             return -1;
         }
     }
+
+
+    public static void WriteResultsToHTMLFile( ScanSummary Scans, PerformanceSummary Performance ){
+
+        String fileName;
+        LocalDateTime Current;
+        Current = LocalDateTime.now();
+
+        fileName = "/tmp/RESULTS_" +
+        String.format( "%d%02d%02d_%02d%02d%02d.html",
+            Current.getYear(),
+            Current.getMonthValue(),
+            Current.getDayOfMonth(),
+            Current.getHour(),
+            Current.getMinute(),
+            Current.getSecond() );
+
+
+        try(
+            FileWriter fileW = new FileWriter( fileName );
+            BufferedWriter writer = new BufferedWriter( fileW );
+        ) {
+
+            writer.write("<HTML><BODY><TITLE>RoundTabler Results for </TITLE><BR><BR><CENTER>");
+
+            writer.write("<TABLE BORDER=\"2\">");
+            writer.write("<TR><TH>Table Name</TH>" +
+            "<TH>Table Column</TH>"+
+            "<TH>Match Type</TH>"+
+            "<TH>Row Data Match</TH>" +
+            "<TH>Confidence Level</TH>" +
+            "<TH>Match Rule(s)</TH>" +
+            "</TR>");
+            writer.write( Scans.toString() );
+            writer.write("</TABLE><BR><BR>");
+
+            writer.write("\n\n");
+
+
+            writer.write("<TABLE BORDER=\"2\">");
+            writer.write("<TR><TH>Table Name</TH>" +
+            "<TH>Column Name</TH>"+
+            "<TH>Scan Type</TH>"+
+            "<TH>Rows Scanned</TH>" +
+            "<TH>Rows Matched</TH>" +
+            "<TH>Rows/Second</TH><TR>" + "\n" );
+
+
+            writer.write( Performance.toString() );
+            writer.write("</TABLE><BR><BR>");
+
+            writer.write("</CENTER></BODY></HTML>");
+
+            System.out.println("DEBUG: Results written to " + fileName);
+
+
+
+        }
+        catch (Exception ex ){
+            System.out.println("Could not create results files " + ex.toString() );
+        }
+
+
+    }
+
 
 }
