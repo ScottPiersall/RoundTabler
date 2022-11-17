@@ -183,70 +183,95 @@ public class RoundTable {
         }
     }
 
-
+    /**
+     * 
+     * 
+     * 
+    
+     */
     public static void WriteResultsToHTMLFile( ScanSummary Scans, PerformanceSummary Performance, Configuration config ){
 
-        String fileName;
-        LocalDateTime Current;
-        Current = LocalDateTime.now();
+        
 
-        fileName = "/tmp/RESULTS_" + 
-        String.format( "%d%02d%02d_%02d%02d%02d.html",
-            Current.getYear(),
-            Current.getMonthValue(),
-            Current.getDayOfMonth(),
-            Current.getHour(),
-            Current.getMinute(),
-            Current.getSecond() );
+        StringBuilder sbHTML = new StringBuilder();
 
 
-        try(
-            FileWriter fileW = new FileWriter( fileName );
-            BufferedWriter writer = new BufferedWriter( fileW );
-        ) {
-
-            writer.write("<HTML><BODY><TITLE>RoundTabler Results for </TITLE><BR><BR><CENTER>");
-
-
-
-            writer.write("<h2>Scan Results</h2><BR>\n");
-            writer.write("<TABLE BORDER=\"2\">");
-            writer.write("<TR><TH>Table Name</TH>" +
-            "<TH>Table Column</TH>"+
-            "<TH>Match Type</TH>"+
-            "<TH>Row Data Match</TH>" +
-            "<TH>Confidence Level</TH>" +
-            "<TH>Match Rule(s)</TH>" +
-            "</TR>");
-            writer.write( Scans.toString() );
-            writer.write("</TABLE><BR><BR>");
+        sbHTML.append("<HTML><BODY><TITLE>RoundTabler Results for </TITLE><BR><BR><CENTER>");
     
-            writer.write("\n\n");
-    
-            writer.write("<h2>Scan Performance Summary</h2><BR>\n");
-    
-            writer.write("<TABLE BORDER=\"2\">");
-            writer.write("<TR><TH>Table Name</TH>" +
-            "<TH>Column Name</TH>"+
-            "<TH>Scan Type</TH>"+
-            "<TH>Rows Scanned</TH>" +
-            "<TH>Rows Matched</TH>" +
-            "<TH>Rows/Second</TH><TR>" + "\n" ); 
+        sbHTML.append("<H1>RoundTabler Scan Resuls for</h1><br>\n");
+        sbHTML.append("<h2>Database " + config.getDatabase() + "</h2><br>\n");
+        sbHTML.append("<h2>on host " + config.getServer() + "</h2><br>\n");
+        sbHTML.append("<h2>scan type " + config.getType().toString() + "</h2></br>\n");
 
-            
-            writer.write( Performance.toString() );
-            writer.write("</TABLE><BR><BR>");
+
+        sbHTML.append("<h2>Scan Results</h2><BR>\n");
+        sbHTML.append("<TABLE BORDER=\"2\">");
+        sbHTML.append("<TR><TH>Table Name</TH>" +
+        "<TH>Table Column</TH>"+
+        "<TH>Match Type</TH>"+
+        "<TH>Row Data Match</TH>" +
+        "<TH>Confidence Level</TH>" +
+        "<TH>Match Rule(s)</TH>" +
+        "</TR>");
+        sbHTML.append( Scans.toString() );
+        sbHTML.append("</TABLE><BR><BR>");
+
+        sbHTML.append("\n\n");
+
+        sbHTML.append("<h2>Scan Performance Summary</h2><BR>\n");
+
+        sbHTML.append("<TABLE BORDER=\"2\">");
+        sbHTML.append("<TR><TH>Table Name</TH>" +
+        "<TH>Column Name</TH>"+
+        "<TH>Scan Type</TH>"+
+        "<TH>Rows Scanned</TH>" +
+        "<TH>Rows Matched</TH>" +
+        "<TH>Rows/Second</TH><TR>" + "\n" ); 
+
+        
+        sbHTML.append( Performance.toString() );
+        sbHTML.append("</TABLE><BR><BR>");
+
+        sbHTML.append("</CENTER></BODY></HTML>");
+
+
+        //
+        // If no filename was specified in configuration, we write to standard output
+        // otherwise, we write to the filename provided in the config
+        //
+        if ( config.getFile().length() == 0 ) {
+
+            System.out.println(sbHTML.toString() );
+
+        } else {
+
+            try(
+                FileWriter fileW = new FileWriter( config.getFile() );
+                BufferedWriter writer = new BufferedWriter( fileW );
+            ) {
     
-            writer.write("</CENTER></BODY></HTML>");
+                writer.write(sbHTML.toString() );
+        
+                System.out.println("DEBUG: Results written to " + config.getFile());
     
-            System.out.println("DEBUG: Results written to " + fileName);
+    
+    
+            }
+            catch (Exception ex ){
+                System.out.println("Could not create results files " + ex.toString() );
+            }
+    
+    
 
 
 
         }
-        catch (Exception ex ){
-            System.out.println("Could not create results files " + ex.toString() );
-        }
+
+
+
+
+
+
 
 
     }
