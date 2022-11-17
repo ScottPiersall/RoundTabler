@@ -17,4 +17,6 @@ ENV CLASSPATH=./:/Roundtabler/Drivers/bson-4.8.0-jar:/RoundTabler/Drivers/mariad
 
 RUN javac RoundTabler/*.java
 
+RUN javac utility/*.java
+
 RUN javac RoundTabler/db/*.java

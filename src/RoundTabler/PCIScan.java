@@ -1,11 +1,5 @@
 package RoundTabler;
 
-import RoundTabler.db.*;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,18 +21,24 @@ public class PCIScan {
 	static String CardPartialSequenceRegex = "\\b(AMEX|VISA|MC)-\\d{4}\\b";
 	static Pattern CardPartialPattern = Pattern.compile(CardPartialSequenceRegex, Pattern.CASE_INSENSITIVE);
 
+	private StringBuilder psbResults;
+
 	private int pLastMatchStart;
 	private int pLastMatchEnd;
 
-	public int getLastMatchStart() {
+	public PCIScan(){
+		super();
+		this.psbResults = new StringBuilder();
+		psbResults.append("\n");
+	}
+
+	public int getLastMatchStart(){
 		return pLastMatchStart;
 	}
 
-	public int getLastMatchEnd() {
+	public int getLastMatchEnd(){
 		return pLastMatchEnd;
 	}
-
-
 
 	public int getConfidenceLevelMatch(String DatabaseRow ) {
 		int result = 0;

@@ -8,8 +8,17 @@ import static utility.ApplicationUtility.*;
  * Class used for scanning fields of data to check for NACHA compliance
  */
 public class NACHAScan{
+
+    private StringBuilder psbResults;
+
     private int pLastMatchStart;
     private int pLastMatchEnd;
+
+    public NACHAScan(){
+        super();
+        this.psbResults = new StringBuilder();
+        psbResults.append("\n");
+    }
 
     public int getLastMatchStart(){
         return pLastMatchStart;
