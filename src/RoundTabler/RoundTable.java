@@ -5,6 +5,7 @@ import RoundTabler.db.ReaderMaker;
 
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -192,13 +193,16 @@ public class RoundTable {
     public static void WriteResultsToHTMLFile( ScanSummary Scans, PerformanceSummary Performance, Configuration config ){
 
         
+        String saveDirectory = config.getFile();
 
+        
+        
         StringBuilder sbHTML = new StringBuilder();
 
 
-        sbHTML.append("<HTML><BODY><TITLE>RoundTabler Results for </TITLE><BR><BR><CENTER>");
+        sbHTML.append("<HTML><BODY><TITLE>RoundTabler Results for </TITLE><BR><BR><CENTER><BR>");
     
-        sbHTML.append("<H1>RoundTabler Scan Resuls for</h1><br>\n");
+        sbHTML.append("<h1>RoundTabler Scan Resuls for</h1><br>\n");
         sbHTML.append("<h2>Database " + config.getDatabase() + "</h2><br>\n");
         sbHTML.append("<h2>on host " + config.getServer() + "</h2><br>\n");
         sbHTML.append("<h2>scan type " + config.getType().toString() + "</h2></br>\n");
@@ -245,14 +249,36 @@ public class RoundTable {
 
         } else {
 
+
+                String saveFileName;
+                String dbName = config.getDatabase();
+                // Remove any characters in database name which are illegal in a fileNAme
+                dbName = dbName.replaceAll("[^a-zA-Z0-9]", "_");
+                saveFileName = config.getFile() + "/" + 
+                "RESULTS_" + dbName + "_" +
+                String.format("%d%02d%02d_%02d%02d%02d.html",
+                LocalDateTime.now().getYear(),
+                LocalDateTime.now().getMonthValue(),
+                LocalDateTime.now().getDayOfMonth(),
+                LocalDateTime.now().getHour(),
+                LocalDateTime.now().getMinute(),
+                LocalDateTime.now().getSecond()   );
+
+            
+        
+        
+
+
+
+
             try(
-                FileWriter fileW = new FileWriter( config.getFile() );
+                FileWriter fileW = new FileWriter( saveFileName );
                 BufferedWriter writer = new BufferedWriter( fileW );
             ) {
     
                 writer.write(sbHTML.toString() );
         
-                System.out.println("DEBUG: Results written to " + config.getFile());
+                System.out.println("DEBUG: Results written to " +  saveFileName );
     
     
     
