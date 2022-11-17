@@ -31,6 +31,7 @@ public class PCIScan {
 	private PerformanceSummary pPerformanceSummary;
 	private ScanSummary pScanSummary;
 	private StringBuilder psbResults;
+	private String pLastMatchDescription;
 
 	private int pLastMatchStart;
 	private int pLastMatchEnd;
@@ -91,7 +92,7 @@ public class PCIScan {
 	
 				for (rowindex =0; rowindex < rowsData.size(); rowindex++ ){
 					currentRow = rowsData.get(rowindex).toString();
-
+					pLastMatchDescription = "";
 					currentConfidenceLevel = getConfidenceLevelMatch( rowsData.get(rowindex).toString() );
 
 					if ( currentConfidenceLevel > 0 ) { 
@@ -119,7 +120,7 @@ public class PCIScan {
 			tResult.TableName = currentTable;
 			tResult.TableColumn = currentColumn;
 			tResult.HTMLEmphasizedResult = insertStrongEmphasisInto(currentRow, pLastMatchStart, pLastMatchEnd);
-			tResult.MatchResultRule = matchDescription;
+			tResult.MatchResultRule = pLastMatchDescription;
 			pScanSummary.addResult( tResult );
 	}
 
@@ -145,10 +146,13 @@ public class PCIScan {
 
 		// If we find what looks like a card sequence, make the confidence 75
 		if (CardNumberSequenceMatcher.find()) {
+
 			result += 75;   // Assign a confidence Level of at least 75%
 			// If the match passes LuhnsTest, Boost Confidence to 100
+			pLastMatchDescription = "Card Regular Expression";
 			if (LuhnTest.Validate(DatabaseRow.substring(CardNumberSequenceMatcher.start(), CardNumberSequenceMatcher.end())))
 				result += 25;
+				pLastMatchDescription = pLastMatchDescription + "<BR>Luhn's Test";
 		
 			pLastMatchStart = CardNumberSequenceMatcher.start();
 			pLastMatchEnd = CardNumberSequenceMatcher.end();
@@ -161,6 +165,7 @@ public class PCIScan {
 				result = 100;
 				pLastMatchStart = CardPartialSequenceMatcher.start();
 				pLastMatchEnd = CardPartialSequenceMatcher.end();
+				pLastMatchDescription = "Card Type Plus Last 4";
 			}
 		}	
 
