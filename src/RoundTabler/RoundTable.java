@@ -140,20 +140,8 @@ public class RoundTable {
 
                 break;
             }
- 
-
             
-            WriteResultsToHTMLFile( SummaryOfScans, SummaryOfPerformance );
-
-            //System.out.println("DEBUG/TEST: Scan Results Object: ");
-            //System.out.println( SummaryOfScans.toString() );
-            //System.out.println("\n\n");
-
-
-
-            //System.out.println("DEBUG/TEST: Performance Summary Object: ");
-            //System.out.println( SummaryOfPerformance.toString() );
-
+            WriteResultsToHTMLFile( SummaryOfScans, SummaryOfPerformance, config );
 
             return 0;
 
@@ -196,7 +184,7 @@ public class RoundTable {
     }
 
 
-    public static void WriteResultsToHTMLFile( ScanSummary Scans, PerformanceSummary Performance ){
+    public static void WriteResultsToHTMLFile( ScanSummary Scans, PerformanceSummary Performance, Configuration config ){
 
         String fileName;
         LocalDateTime Current;
@@ -219,6 +207,9 @@ public class RoundTable {
 
             writer.write("<HTML><BODY><TITLE>RoundTabler Results for </TITLE><BR><BR><CENTER>");
 
+
+
+            writer.write("<h2>Scan Results</h2><BR>\n");
             writer.write("<TABLE BORDER=\"2\">");
             writer.write("<TR><TH>Table Name</TH>" +
             "<TH>Table Column</TH>"+
@@ -232,6 +223,7 @@ public class RoundTable {
     
             writer.write("\n\n");
     
+            writer.write("<h2>Scan Performance Summary</h2><BR>\n");
     
             writer.write("<TABLE BORDER=\"2\">");
             writer.write("<TR><TH>Table Name</TH>" +
