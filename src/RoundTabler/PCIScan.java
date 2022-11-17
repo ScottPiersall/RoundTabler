@@ -1,11 +1,5 @@
 package RoundTabler;
 
-import RoundTabler.db.*;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,15 +21,11 @@ public class PCIScan {
 	static String CardPartialSequenceRegex = "\\b(AMEX|VISA|MC)-\\d{4}\\b";
 	static Pattern CardPartialPattern = Pattern.compile(CardPartialSequenceRegex, Pattern.CASE_INSENSITIVE);
 
-	private RoundTabler.Configuration pScanConfiguration;
-	private PerformanceSummary pPerformanceSummary;
-	private ScanSummary pScanSummary;
 	private StringBuilder psbResults;
-	private String pLastMatchDescription;
 
 	private int pLastMatchStart;
 	private int pLastMatchEnd;
-	private DBReader pDBReader;
+	private String pLastMatchDescription;
 
 	public PCIScan(){
 		super();
@@ -43,101 +33,17 @@ public class PCIScan {
 		psbResults.append("\n");
 	}
 
-	public PCIScan(RoundTabler.Configuration ScanConfiguration, RoundTabler.PerformanceSummary Summary, RoundTabler.ScanSummary Scans, DBReader DatabaseReader ) {
-		this();
-		pScanConfiguration = ScanConfiguration;
-		pPerformanceSummary = Summary;
-		pScanSummary = Scans;
-		pDBReader = DatabaseReader;
+	public int getLastMatchStart(){
+		return pLastMatchStart;
 	}
 
-	public String ScanResult() { return this.psbResults.toString(); }
-
-	public int ScanMariaDB() throws SQLException {
-		//
-		// Performs MySQL-Based Scan
-		// using the settings and configuration 
-		// contained in pScanConfiguration
-		if ( pScanConfiguration.getDbType().toUpperCase().compareTo("MARIADB") != 0 ) {
-			new HTMLErrorOut(pScanConfiguration.getFile(), "Database Type Mismatch. Database Type Configuration " + pScanConfiguration.getDbType() + " cannot be used with MySQL Scan" );
-			return 0;
-		}
-	
-		int currentConfidenceLevel = 0;
-		String currentTable = "";
-		String currentColumn = "";
-
-		String currentRow = "";
-
-		SchemaItems tablesandcolumns;
-	
-		if ( pDBReader.readSchema() ) 
-		{
-			tablesandcolumns = pDBReader.getSchemaItems();
-			int index;
-			for( index = 0; index < tablesandcolumns.size(); index ++ ){
-				currentTable = tablesandcolumns.get(index).getTableName();
-				currentColumn = tablesandcolumns.get(index).getColumnName();
-				ArrayList<String> rowsData;
-				rowsData  = pDBReader.readColumn( tablesandcolumns.get(index) );
-				int rowindex;
-				PerformanceResult currentResult;
-				currentResult = new PerformanceResult();
-				currentResult.TableName = currentTable;
-				currentResult.TableColumn = currentColumn;
-				currentResult.MatchType = "PCIDSS";
-				currentResult.RowsMatched = 0;
-				currentResult.RowsScanned = rowsData.size();
-				currentResult.ScanStarted = LocalDateTime.now();
-	
-				for (rowindex =0; rowindex < rowsData.size(); rowindex++ ){
-					currentRow = rowsData.get(rowindex).toString();
-					pLastMatchDescription = "";
-					currentConfidenceLevel = getConfidenceLevelMatch( rowsData.get(rowindex).toString() );
-
-					if ( currentConfidenceLevel > 0 ) { 
-							AppendMatch( currentTable, currentColumn, currentRow, currentConfidenceLevel, "");
-							currentResult.RowsMatched++;
-							}
-				}
-
-				currentResult.ScanFinished = LocalDateTime.now();
-				pPerformanceSummary.addResult(currentResult);
-
-			}
-		} else {
-			
-		}
-		return 0;
+	public int getLastMatchEnd(){
+		return pLastMatchEnd;
 	}
 
-
-	private void AppendMatch( String currentTable, String currentColumn, String currentRow, int currentConfidenceLevel, String matchDescription) {
-			ScanResult tResult;
-			tResult = new ScanResult();
-			tResult.ConfidenceLevel = currentConfidenceLevel;
-			tResult.MatchType = "PCIDSS";
-			tResult.TableName = currentTable;
-			tResult.TableColumn = currentColumn;
-			tResult.HTMLEmphasizedResult = insertStrongEmphasisInto(currentRow, pLastMatchStart, pLastMatchEnd);
-			tResult.MatchResultRule = pLastMatchDescription;
-			pScanSummary.addResult( tResult );
+	public String getLastMatchDescription(){
+		return pLastMatchDescription;
 	}
-
-	/**
-	*
-	* Returns a string with strong and emphasis tags surrounding the StartLocation 
-	* and EndLocation 
-	*
-	*/
-	private String insertStrongEmphasisInto( String MatchedRow, int StartLocation, int EndLocation){
-		StringBuilder tsb = new StringBuilder(MatchedRow);
-		tsb.insert(EndLocation, "</EM></STRONG>");
-		tsb.insert(StartLocation, "<STRONG><EM>");
-		return tsb.toString();
-	}
-
-
 
 	public int getConfidenceLevelMatch(String DatabaseRow ) {
 		int result = 0;
@@ -153,9 +59,8 @@ public class PCIScan {
 			if (LuhnTest.Validate(DatabaseRow.substring(CardNumberSequenceMatcher.start(), CardNumberSequenceMatcher.end())))
 				result += 25;
 				pLastMatchDescription = pLastMatchDescription + "<BR>Luhn's Test";
-		
-			pLastMatchStart = CardNumberSequenceMatcher.start();
-			pLastMatchEnd = CardNumberSequenceMatcher.end();
+				pLastMatchStart = CardNumberSequenceMatcher.start();
+				pLastMatchEnd = CardNumberSequenceMatcher.end();
 
 		}
 
@@ -165,6 +70,7 @@ public class PCIScan {
 				result = 100;
 				pLastMatchStart = CardPartialSequenceMatcher.start();
 				pLastMatchEnd = CardPartialSequenceMatcher.end();
+
 				pLastMatchDescription = "Card Type Plus Last 4";
 			}
 		}	
