@@ -80,7 +80,6 @@ public class PCIScan {
 				ArrayList<String> rowsData;
 				rowsData  = pDBReader.readColumn( tablesandcolumns.get(index) );
 				int rowindex;
-
 				PerformanceResult currentResult;
 				currentResult = new PerformanceResult();
 				currentResult.TableName = currentTable;
@@ -95,11 +94,12 @@ public class PCIScan {
 
 					currentConfidenceLevel = getConfidenceLevelMatch( rowsData.get(rowindex).toString() );
 
-					if ( currentConfidenceLevel > 0 ) {
+					if ( currentConfidenceLevel > 0 ) { 
 							AppendMatch( currentTable, currentColumn, currentRow, currentConfidenceLevel, "");
 							currentResult.RowsMatched++;
 							}
 				}
+
 				currentResult.ScanFinished = LocalDateTime.now();
 				pPerformanceSummary.addResult(currentResult);
 
@@ -115,6 +115,7 @@ public class PCIScan {
 			ScanResult tResult;
 			tResult = new ScanResult();
 			tResult.ConfidenceLevel = currentConfidenceLevel;
+			tResult.MatchType = "PCIDSS";
 			tResult.TableName = currentTable;
 			tResult.TableColumn = currentColumn;
 			tResult.HTMLEmphasizedResult = insertStrongEmphasisInto(currentRow, pLastMatchStart, pLastMatchEnd);
