@@ -100,7 +100,6 @@ public class CommonScan {
         ScanResult tResult;
         tResult = new ScanResult();
         tResult.ConfidenceLevel = currentConfidenceLevel;
-        tResult.MatchType = "PCIDSS";
         tResult.TableName = currentTable;
         if (Objects.equals(scanType, "NACHA")){
             tResult.MatchType = "NACHA";
