@@ -28,7 +28,9 @@ public class PerformanceResult{
 			RowsPerSecond = dRows / dElapsed; 
 					
 		} else { RowsPerSecond = 0.0;}
-
+		if ( ( RowsPerSecond == 0.0 ) && ( RowsScanned > 0 ) ) {
+			RowsPerSecond = Double.valueOf( RowsScanned);
+		}
 	}
 
 	
@@ -38,9 +40,9 @@ public class PerformanceResult{
 	"<TR><TD>" + TableName + "</TD>" +
 	    "<TD>" + TableColumn + "</TD>"+
 		"<TD>" + MatchType + "</TD>"+
-		"<TD>" + String.format("%,d", RowsScanned ) + "</TD>" +
-		"<TD>" + String.format("%,d", RowsMatched )+ "</TD>" +
-		"<TD>" + String.format("%2f", RowsPerSecond ) + "</TD>" + 
+		"<TD ALIGN=\"RIGHT\">" + String.format("%,d", RowsScanned ) + "</TD>" +
+		"<TD ALIGN=\"RIGHT\">" + String.format("%,d", RowsMatched )+ "</TD>" +
+		"<TD ALIGN=\"RIGHT\">" + String.format("%.2f", RowsPerSecond ) + "</TD>" + 
 		
 		"</TR>";
 
