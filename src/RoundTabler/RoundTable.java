@@ -5,6 +5,7 @@ import RoundTabler.db.ReaderMaker;
 
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -185,70 +186,120 @@ public class RoundTable {
         }
     }
 
+    /**
+     *
+     *
+     *
 
+     */
     public static void WriteResultsToHTMLFile( ScanSummary Scans, PerformanceSummary Performance, Configuration config ){
 
-        String fileName;
-        LocalDateTime Current;
-        Current = LocalDateTime.now();
 
-        fileName = "/tmp/RESULTS_" +
-        String.format( "%d%02d%02d_%02d%02d%02d.html",
-            Current.getYear(),
-            Current.getMonthValue(),
-            Current.getDayOfMonth(),
-            Current.getHour(),
-            Current.getMinute(),
-            Current.getSecond() );
-
-
-        try(
-            FileWriter fileW = new FileWriter( fileName );
-            BufferedWriter writer = new BufferedWriter( fileW );
-        ) {
-
-            writer.write("<HTML><BODY><TITLE>RoundTabler Results for </TITLE><BR><BR><CENTER>");
+        String saveDirectory = config.getFile();
 
 
 
-            writer.write("<h2>Scan Results</h2><BR>\n");
-            writer.write("<TABLE BORDER=\"2\">");
-            writer.write("<TR><TH>Table Name</TH>" +
-            "<TH>Table Column</TH>"+
-            "<TH>Match Type</TH>"+
-            "<TH>Row Data Match</TH>" +
-            "<TH>Confidence Level</TH>" +
-            "<TH>Match Rule(s)</TH>" +
-            "</TR>");
-            writer.write( Scans.toString() );
-            writer.write("</TABLE><BR><BR>");
-
-            writer.write("\n\n");
-
-            writer.write("<h2>Scan Performance Summary</h2><BR>\n");
-
-            writer.write("<TABLE BORDER=\"2\">");
-            writer.write("<TR><TH>Table Name</TH>" +
-            "<TH>Column Name</TH>"+
-            "<TH>Scan Type</TH>"+
-            "<TH>Rows Scanned</TH>" +
-            "<TH>Rows Matched</TH>" +
-            "<TH>Rows/Second</TH><TR>" + "\n" );
+        StringBuilder sbHTML = new StringBuilder();
 
 
-            writer.write( Performance.toString() );
-            writer.write("</TABLE><BR><BR>");
+        sbHTML.append("<HTML><BODY><TITLE>RoundTabler Results for </TITLE><BR><BR><CENTER><BR>");
 
-            writer.write("</CENTER></BODY></HTML>");
+        sbHTML.append("<h1>RoundTabler Scan Resuls for</h1><br>\n");
+        sbHTML.append("<h2>Database " + config.getDatabase() + "</h2><br>\n");
+        sbHTML.append("<h2>on host " + config.getServer() + "</h2><br>\n");
+        sbHTML.append("<h2>scan type " + config.getType().toString() + "</h2></br>\n");
 
-            System.out.println("DEBUG: Results written to " + fileName);
+
+        sbHTML.append("<h2>Scan Results</h2><BR>\n");
+        sbHTML.append("<TABLE BORDER=\"2\">");
+        sbHTML.append("<TR><TH>Table Name</TH>" +
+        "<TH>Table Column</TH>"+
+        "<TH>Match Type</TH>"+
+        "<TH>Row Data Match</TH>" +
+        "<TH>Confidence Level</TH>" +
+        "<TH>Match Rule(s)</TH>" +
+        "</TR>");
+        sbHTML.append( Scans.toString() );
+        sbHTML.append("</TABLE><BR><BR>");
+
+        sbHTML.append("\n\n");
+
+        sbHTML.append("<h2>Scan Performance Summary</h2><BR>\n");
+
+        sbHTML.append("<TABLE BORDER=\"2\">");
+        sbHTML.append("<TR><TH>Table Name</TH>" +
+        "<TH>Column Name</TH>"+
+        "<TH>Scan Type</TH>"+
+        "<TH>Rows Scanned</TH>" +
+        "<TH>Rows Matched</TH>" +
+        "<TH>Rows/Second</TH><TR>" + "\n" );
+
+
+        sbHTML.append( Performance.toString() );
+        sbHTML.append("</TABLE><BR><BR>");
+
+        sbHTML.append("</CENTER></BODY></HTML>");
+
+
+        //
+        // If no filename was specified in configuration, we write to standard output
+        // otherwise, we write to the filename provided in the config
+        //
+        if ( config.getFile().length() == 0 ) {
+
+            System.out.println(sbHTML.toString() );
+
+        } else {
+
+
+                String saveFileName;
+                String dbName = config.getDatabase();
+                // Remove any characters in database name which are illegal in a fileNAme
+                dbName = dbName.replaceAll("[^a-zA-Z0-9]", "_");
+                saveFileName = config.getFile() + "/" +
+                "RESULTS_" + dbName + "_" +
+                String.format("%d%02d%02d_%02d%02d%02d.html",
+                LocalDateTime.now().getYear(),
+                LocalDateTime.now().getMonthValue(),
+                LocalDateTime.now().getDayOfMonth(),
+                LocalDateTime.now().getHour(),
+                LocalDateTime.now().getMinute(),
+                LocalDateTime.now().getSecond()   );
+
+
+
+
+
+
+
+
+            try(
+                FileWriter fileW = new FileWriter( saveFileName );
+                BufferedWriter writer = new BufferedWriter( fileW );
+            ) {
+
+                writer.write(sbHTML.toString() );
+
+                System.out.println("DEBUG: Results written to " +  saveFileName );
+
+
+
+            }
+            catch (Exception ex ){
+                System.out.println("Could not create results files " + ex.toString() );
+            }
+
+
 
 
 
         }
-        catch (Exception ex ){
-            System.out.println("Could not create results files " + ex);
-        }
+
+
+
+
+
+
 
 
     }
