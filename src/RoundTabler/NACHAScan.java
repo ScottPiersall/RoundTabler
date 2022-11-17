@@ -13,6 +13,7 @@ public class NACHAScan{
 
     private int pLastMatchStart;
     private int pLastMatchEnd;
+    private String pLastMatchDescription;
 
     public NACHAScan(){
         super();
@@ -26,6 +27,10 @@ public class NACHAScan{
 
     public int getLastMatchEnd(){
         return pLastMatchEnd;
+    }
+
+    public String getLastMatchDescription(){
+        return pLastMatchDescription;
     }
 
     /**
@@ -74,12 +79,14 @@ public class NACHAScan{
         if (resultMatcher){
             // if found, confidence is increased to 75%
             result += 75;
+            pLastMatchDescription = "9 Digit Number";
             // further checks if the number found is a valid ABA number
             if (checkForValidABANumber(abaNumberSequenceMatcher.group())){
                 // if number is a valid ABA Number, confidence increased to 100%
                 result += 25;
                 pLastMatchStart = abaNumberSequenceMatcher.start();
                 pLastMatchEnd = abaNumberSequenceMatcher.end();
+                pLastMatchDescription = "9 Digit and Valid ABA Number";
             }
         }
         return result;

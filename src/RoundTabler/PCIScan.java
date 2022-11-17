@@ -25,6 +25,7 @@ public class PCIScan {
 
 	private int pLastMatchStart;
 	private int pLastMatchEnd;
+	private String pLastMatchDescription;
 
 	public PCIScan(){
 		super();
@@ -40,6 +41,10 @@ public class PCIScan {
 		return pLastMatchEnd;
 	}
 
+	public String getLastMatchDescription(){
+		return pLastMatchDescription;
+	}
+
 	public int getConfidenceLevelMatch(String DatabaseRow ) {
 		int result = 0;
 		
@@ -51,9 +56,9 @@ public class PCIScan {
 			// If the match passes LuhnsTest, Boost Confidence to 100
 			if (LuhnTest.Validate(DatabaseRow.substring(CardNumberSequenceMatcher.start(), CardNumberSequenceMatcher.end())))
 				result += 25;
-		
-			pLastMatchStart = CardNumberSequenceMatcher.start();
-			pLastMatchEnd = CardNumberSequenceMatcher.end();
+				pLastMatchDescription = pLastMatchDescription + "<BR>Luhn's Test";
+				pLastMatchStart = CardNumberSequenceMatcher.start();
+				pLastMatchEnd = CardNumberSequenceMatcher.end();
 
 		}
 
@@ -63,6 +68,8 @@ public class PCIScan {
 				result = 100;
 				pLastMatchStart = CardPartialSequenceMatcher.start();
 				pLastMatchEnd = CardPartialSequenceMatcher.end();
+
+				pLastMatchDescription = "Card Type Plus Last 4";
 			}
 		}	
 

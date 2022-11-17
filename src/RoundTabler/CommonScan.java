@@ -15,6 +15,7 @@ public class CommonScan {
 
     private Configuration nScanConfiguration;
     private PerformanceSummary nPerformanceScan;
+    private ScanSummary pScanSummary;
     private StringBuilder nsbResults;
 
     private DBReader nDBReader;
@@ -26,10 +27,11 @@ public class CommonScan {
     }
 
     public CommonScan(Configuration scanConfiguration, PerformanceSummary performanceSummary,
-                     DBReader databaseReader){
+                     ScanSummary scans, DBReader databaseReader){
         this();
         nScanConfiguration = scanConfiguration;
         nPerformanceScan = performanceSummary;
+        pScanSummary = scans;
         nDBReader = databaseReader;
     }
 
@@ -56,7 +58,6 @@ public class CommonScan {
                 ArrayList<String> rowsData;
                 rowsData  = nDBReader.readColumn( tablesAndColumns.get(index) );
                 int rowindex;
-
                 PerformanceResult currentResult;
                 currentResult = new PerformanceResult();
                 currentResult.TableName = currentTable;
@@ -72,7 +73,7 @@ public class CommonScan {
                 currentResult.ScanStarted = LocalDateTime.now();
 
                 for (rowindex =0; rowindex < rowsData.size(); rowindex++ ){
-                    currentRow = rowsData.get(rowindex).toString();
+                    currentRow = rowsData.get(rowindex);
 
                     if (Objects.equals(scanType, "NACHA")){
                         currentConfidenceLevel = nachaScan.getConfidenceLevelMatch(rowsData.get(rowindex));
@@ -82,48 +83,39 @@ public class CommonScan {
                     }
 
                     if ( currentConfidenceLevel > 0 ) {
-                        AppendMatch(scanType, currentTable, currentRow, currentConfidenceLevel);
+                        AppendMatch(scanType, currentTable, currentColumn, currentRow, currentConfidenceLevel);
                         currentResult.RowsMatched++;
                     }
                 }
                 currentResult.ScanFinished = LocalDateTime.now();
                 nPerformanceScan.addResult(currentResult);
             }
-        } else {
-
         }
-        System.out.println("\n\n" + "DEBUGTEST: here are the HTML table rows with matches emphasized");
-        System.out.println( "<TR><TH>Table</TH><TH>Column</TH><TH>PCIDSS Content Match</TH><TH>Confidence</TH></TR>" );
-
-        System.out.println( nsbResults.toString()  );
 
         return 0;
     }
 
-    private void AppendMatch(String scanType, String currentTable, String currentRow, int currentConfidenceLevel) {
-
-        nsbResults.append("<TR>");
-        nsbResults.append("<TD>");
-        nsbResults.append(currentTable);
-        nsbResults.append("</TD>");
-
-        nsbResults.append("<TD>");
-        nsbResults.append(currentRow);
-        nsbResults.append("</TD>");
-
-        nsbResults.append("<TD>");
+    private void AppendMatch(String scanType, String currentTable, String currentColumn, String currentRow,
+                             int currentConfidenceLevel) {
+        ScanResult tResult;
+        tResult = new ScanResult();
+        tResult.ConfidenceLevel = currentConfidenceLevel;
+        tResult.MatchType = "PCIDSS";
+        tResult.TableName = currentTable;
         if (Objects.equals(scanType, "NACHA")){
-            nsbResults.append(insertStrongEmphasisInto(currentRow, nachaScan.getLastMatchStart(), nachaScan.getLastMatchEnd()));
+            tResult.MatchType = "NACHA";
+            tResult.HTMLEmphasizedResult = insertStrongEmphasisInto(currentRow,
+                    nachaScan.getLastMatchStart(), nachaScan.getLastMatchEnd());
+            tResult.MatchResultRule = nachaScan.getLastMatchDescription();
         } else if (Objects.equals(scanType, "PCIDSS")) {
-            nsbResults.append(insertStrongEmphasisInto(currentRow, pciScan.getLastMatchStart(), pciScan.getLastMatchEnd()));
+            tResult.MatchType = "PCIDSS";
+            tResult.HTMLEmphasizedResult = insertStrongEmphasisInto(currentRow,
+                    pciScan.getLastMatchStart(), pciScan.getLastMatchEnd());
+            tResult.MatchResultRule = pciScan.getLastMatchDescription();
         }
-        nsbResults.append("</TD>");
+        tResult.TableColumn = currentColumn;
+        pScanSummary.addResult( tResult );
 
-        nsbResults.append("<TD ALIGN =\"RIGHT\">");
-        nsbResults.append(currentConfidenceLevel );
-        nsbResults.append("</TD>");
-
-        nsbResults.append("</TR>" + "\n");
     }
 
     /**
