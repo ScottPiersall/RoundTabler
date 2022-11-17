@@ -8,6 +8,16 @@ import static utility.ApplicationUtility.*;
  * Class used for scanning fields of data to check for NACHA compliance
  */
 public class NACHAScan{
+    private int pLastMatchStart;
+    private int pLastMatchEnd;
+
+    public int getLastMatchStart(){
+        return pLastMatchStart;
+    }
+
+    public int getLastMatchEnd(){
+        return pLastMatchEnd;
+    }
 
     /**
      * Method that checks to see if an ABA number is valid
@@ -59,6 +69,8 @@ public class NACHAScan{
             if (checkForValidABANumber(abaNumberSequenceMatcher.group())){
                 // if number is a valid ABA Number, confidence increased to 100%
                 result += 25;
+                pLastMatchStart = abaNumberSequenceMatcher.start();
+                pLastMatchEnd = abaNumberSequenceMatcher.end();
             }
         }
         return result;

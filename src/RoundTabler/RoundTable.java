@@ -104,42 +104,44 @@ public class RoundTable {
             switch ( config.getType() )  {
 
             case "all":
-
-                PCIScan allPCI;
-                int allCounter;
-                allPCI = new PCIScan( config, SummaryOfPerformance, reader   );
+                CommonScan allPCIScan = new CommonScan( config, SummaryOfPerformance, reader   );
+                CommonScan allNACHAScan = new CommonScan( config, SummaryOfPerformance, reader   );
                 try {
-
-                    allCounter = allPCI.ScanMariaDB();
+                    allPCIScan.ScanMariaDB("PCIDSS");
+                    allNACHAScan.ScanMariaDB("NACHA");
                 }
                 catch (SQLException sqlex ) {
-                System.out.println("DEBUG: " + sqlex.toString() );
-                }              
+                    System.out.println("DEBUG: " + sqlex);
+                }
 
                 break;
             
             case "pci":
-
-                PCIScan lPCI;
-                int Counter;
-                lPCI = new PCIScan( config, SummaryOfPerformance, reader   );
+                CommonScan pciScan = new CommonScan( config, SummaryOfPerformance, reader   );
                 try {
-                    Counter = lPCI.ScanMariaDB();
+                    pciScan.ScanMariaDB("PCIDSS");
                 }
                 catch (SQLException sqlex ) {
-                System.out.println("DEBUG: " + sqlex.toString() );
+                    System.out.println("DEBUG: " + sqlex);
                 }
 
                 break;
 
             case "nacha":
+                CommonScan nachaScan = new CommonScan( config, SummaryOfPerformance, reader   );
+                try {
+                    nachaScan.ScanMariaDB("NACHA");
+                }
+                catch (SQLException sqlex ) {
+                    System.out.println("DEBUG: " + sqlex);
+                }
 
                 break;
             }
  
 
             System.out.println("DEBUG/TEST: Performance Summary Object: ");
-            System.out.println( SummaryOfPerformance.toString() );
+            System.out.println(SummaryOfPerformance);
 
 
             return 0;
