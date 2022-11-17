@@ -1,9 +1,15 @@
 package RoundTabler;
 
+import RoundTabler.db.*;
+
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+
 
 //
 // A Class used for doing PCIScan of fields
@@ -21,35 +27,26 @@ public class PCIScan {
 	static String CardPartialSequenceRegex = "\\b(AMEX|VISA|MC)-\\d{4}\\b";
 	static Pattern CardPartialPattern = Pattern.compile(CardPartialSequenceRegex, Pattern.CASE_INSENSITIVE);
 
-
-	public String JDBC_DRIVER;
-
 	private RoundTabler.Configuration pScanConfiguration;
-
-	private Connection pDBConnection;
-	private String pTableName; 
-	private String pMYSQLColumnSelect;
-	private String pMYSQLColumnTypes;
-
+	private Connection pDBConnection;	
 	private PerformanceSummary pPerformanceSummary;
-
 	private StringBuilder psbResults;
 
 	private int pLastMatchStart;
 	private int pLastMatchEnd;
-
+	private DBReader pDBReader;
 
 	public PCIScan(){
 		super();
-		this.pMYSQLColumnTypes = "(mediumtext, longtext, text, tinytext, varchar)";
 		this.psbResults = new StringBuilder();
 		psbResults.append("\n");
 	}
 
-	public PCIScan(RoundTabler.Configuration ScanConfiguration, RoundTabler.PerformanceSummary Summary) {
+	public PCIScan(RoundTabler.Configuration ScanConfiguration, RoundTabler.PerformanceSummary Summary, DBReader DatabaseReader ) {
 		this();
 		pScanConfiguration = ScanConfiguration;
 		pPerformanceSummary = Summary;
+		pDBReader = DatabaseReader;
 	}
 
 	public String ScanResult() { return this.psbResults.toString(); }
@@ -63,55 +60,82 @@ public class PCIScan {
 			new HTMLErrorOut(pScanConfiguration.getFile(), "Database Type Mismatch. Database Type Configuration " + pScanConfiguration.getDbType() + " cannot be used with MySQL Scan" );
 			return 0;
 		}
-
 	
 		int currentConfidenceLevel = 0;
 		String currentTable = "";
 		String currentColumn = "";
 
 		String currentRow = "";
-		// Pseudocode
-		// gather table list
-			// gather column list for each table
-				// Instantiate New PerformanceResult
-					// TableName->PerformanceResult ColumnName->PerformanceResult
-					// GetStartTime ->PerformanceResult
-						// getConfidenceLevelmatch
-						// TableRows+=1  
-						// If ConfidenceLevel > 0
-							// Increment MatchedRows in PerformanceResult
-							// Place Row in StringBuilder
 
+		SchemaItems tablesandcolumns;
+	
+		if ( pDBReader.readSchema() ) 
+		{
+			tablesandcolumns = pDBReader.getSchemaItems();
+			int index;
+			for( index = 0; index < tablesandcolumns.size(); index ++ ){
+				currentTable = tablesandcolumns.get(index).getTableName();
+				currentColumn = tablesandcolumns.get(index).getColumnName();
+				ArrayList<String> rowsData;
+				rowsData  = pDBReader.readColumn( tablesandcolumns.get(index) );
+				int rowindex;
 
-							currentConfidenceLevel = getConfidenceLevelMatch(currentRow);
-							if ( currentConfidenceLevel > 0 ) {
+				PerformanceResult currentResult;
+				currentResult = new PerformanceResult();
+				currentResult.TableName = currentTable;
+				currentResult.TableColumn = currentColumn;
+				currentResult.MatchType = "PCIDSS";
+				currentResult.RowsMatched = 0;
+				currentResult.RowsScanned = rowsData.size();
+				currentResult.ScanStarted = LocalDateTime.now();
+	
+				for (rowindex =0; rowindex < rowsData.size(); rowindex++ ){
+					currentRow = rowsData.get(rowindex).toString();
 
-								psbResults.append("<TR>");
-							
-								psbResults.append("<TD>");
-								psbResults.append(currentTable);
-								psbResults.append("</TD>");
+					currentConfidenceLevel = getConfidenceLevelMatch( rowsData.get(rowindex).toString() );
 
-								psbResults.append("<TD>");
-								psbResults.append(currentRow);
-								psbResults.append("</TD>");
-
-								psbResults.append("<TD>");
-								psbResults.append(insertStrongEmphasisInto(currentRow, pLastMatchStart, pLastMatchEnd));
-								psbResults.append("</TD>");
-
-								psbResults.append("<TD ALIGN =\"RIGHT\">");
-								psbResults.append(currentConfidenceLevel );
-								psbResults.append("</TD>");
-
-								psbResults.append("</TR>");
+					if ( currentConfidenceLevel > 0 ) {
+							AppendMatch( currentTable, currentRow, currentConfidenceLevel);
+							currentResult.RowsMatched++;
 							}
+				}
+				currentResult.ScanFinished = LocalDateTime.now();
+				pPerformanceSummary.addResult(currentResult);
 
-					// GetEndTime -> PerformanceResult
-				// Add PerformanceResult to Performance Summary
+			}
+		} else {
+			
+		}
+		System.out.println("\n\n" + "DEBUGTEST: here are the HTML table rows with matches emphasized");
+		System.out.println( "<TR><TH>Table</TH><TH>Column</TH><TH>PCIDSS Content Match</TH><TH>Confidence</TH></TR>" );
+
+		System.out.println( psbResults.toString()  );
+
 		return 0;
 	}
 
+
+	private void AppendMatch( String currentTable, String currentRow, int currentConfidenceLevel) {
+
+		psbResults.append("<TR>");							
+		psbResults.append("<TD>");
+		psbResults.append(currentTable);
+		psbResults.append("</TD>");
+
+		psbResults.append("<TD>");
+		psbResults.append(currentRow);
+		psbResults.append("</TD>");
+
+		psbResults.append("<TD>");
+		psbResults.append(insertStrongEmphasisInto(currentRow, pLastMatchStart, pLastMatchEnd));
+		psbResults.append("</TD>");
+
+		psbResults.append("<TD ALIGN =\"RIGHT\">");
+		psbResults.append(currentConfidenceLevel );
+		psbResults.append("</TD>");
+
+		psbResults.append("</TR>" + "\n");
+	}
 
 	/**
 	*
@@ -133,7 +157,6 @@ public class PCIScan {
 		
 		Matcher CardNumberSequenceMatcher = CardNumberPattern.matcher( DatabaseRow );
 
-
 		// If we find what looks like a card sequence, make the confidence 75
 		if (CardNumberSequenceMatcher.find()) {
 			result += 75;   // Assign a confidence Level of at least 75%
@@ -154,12 +177,6 @@ public class PCIScan {
 				pLastMatchEnd = CardPartialSequenceMatcher.end();
 			}
 		}	
-			
-
-
-
-
-
 
 		return result;
 	}

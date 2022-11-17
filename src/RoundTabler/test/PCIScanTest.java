@@ -19,10 +19,12 @@ public class PCIScanTest {
 
     @Test
     public void TestConfidence_100_PARTIAL_CARD() {
+
         String databaseRow = "Processed credit card using VISA-4892 on file";
         int result = pciScan.getConfidenceLevelMatch(databaseRow);
         int expected = 100;
         assertEquals(expected, result);
+
     }
 
 

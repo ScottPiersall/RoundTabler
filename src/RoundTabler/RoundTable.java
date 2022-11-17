@@ -94,37 +94,50 @@ public class RoundTable {
 
             System.out.println();
             System.out.println("INITIALIZING DATABASE CONNECTION");
-            try {
+
+
                 // Technically a bad practice to just create this factory and forget about it,
                 // but we do not need it for anything else after it makes our single reader.
-                reader = new ReaderMaker(config).getReader();
-            }
-            catch ( SQLException sqlex ) {
-                System.out.println(sqlex.toString() );
-                return -1;
-            }
-            catch ( ClassNotFoundException cnfex ) {
-                System.out.println(cnfex); // The .toString() is implicit
-                return -1;
-            }
-            catch ( InputMismatchException imex ) {
-                System.out.println(imex);
-                return -1;
-            }
-            catch ( Exception ex ) {
-                System.out.println(ex.toString() );
-                return -1;
-            }
+            reader = new ReaderMaker(config).getReader();
 
-            PCIScan lPCI;
-            int Counter;
-            lPCI = new PCIScan( config, SummaryOfPerformance  );
-            try {
-                Counter = lPCI.ScanMariaDB();
-            }
-            catch (SQLException sqlex ) {
+            switch ( config.getType() )  {
+
+            case "all":
+                PCIScan allPCI;
+                int allCounter;
+                allPCI = new PCIScan( config, SummaryOfPerformance, reader   );
+                try {
+                    allCounter = allPCI.ScanMariaDB();
+                }
+                catch (SQLException sqlex ) {
                 System.out.println("DEBUG: " + sqlex.toString() );
+                }              
+
+                break;
+            
+            case "pci":
+                PCIScan lPCI;
+                int Counter;
+                lPCI = new PCIScan( config, SummaryOfPerformance, reader   );
+                try {
+                    Counter = lPCI.ScanMariaDB();
+                }
+                catch (SQLException sqlex ) {
+                System.out.println("DEBUG: " + sqlex.toString() );
+                }              
+
+
+                break;
+
+            case "nacha":
+
+                break;
             }
+ 
+
+            System.out.println("DEBUG/TEST: Performance Summary Object: ");
+            System.out.println( SummaryOfPerformance.toString() );
+
 
             return 0;
 
@@ -151,6 +164,18 @@ public class RoundTable {
 
             return -1;
 
+        }
+        catch ( SQLException sqlex ) {
+            System.out.println(sqlex.toString() );
+            return -1;
+        }
+        catch ( ClassNotFoundException cnfex ) {
+            System.out.println(cnfex); // The .toString() is implicit
+            return -1;
+        }
+        catch ( Exception ex ) {
+            System.out.println(ex.toString() );
+            return -1;
         }
     }
 

@@ -12,7 +12,7 @@ public class PerformanceSummary{
 		super();
 		}
 
-	public void AddResult( RoundTabler.PerformanceResult NewResult) {
+	public void addResult( RoundTabler.PerformanceResult NewResult) {
 		PerfResults.add( NewResult );
 	}
 
