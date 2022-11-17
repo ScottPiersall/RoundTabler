@@ -52,8 +52,10 @@ public class PCIScan {
 
 		// If we find what looks like a card sequence, make the confidence 75
 		if (CardNumberSequenceMatcher.find()) {
+
 			result += 75;   // Assign a confidence Level of at least 75%
 			// If the match passes LuhnsTest, Boost Confidence to 100
+			pLastMatchDescription = "Card Regular Expression";
 			if (LuhnTest.Validate(DatabaseRow.substring(CardNumberSequenceMatcher.start(), CardNumberSequenceMatcher.end())))
 				result += 25;
 				pLastMatchDescription = pLastMatchDescription + "<BR>Luhn's Test";
