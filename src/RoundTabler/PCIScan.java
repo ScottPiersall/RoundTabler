@@ -54,6 +54,8 @@ public class PCIScan {
 		if (CardNumberSequenceMatcher.find()) {
 
 			result += 75;   // Assign a confidence Level of at least 75%
+			pLastMatchStart = CardNumberSequenceMatcher.start();
+			pLastMatchEnd = CardNumberSequenceMatcher.end();
 			// If the match passes LuhnsTest, Boost Confidence to 100
 			pLastMatchDescription = "Card Regular Expression";
 			if (LuhnTest.Validate(DatabaseRow.substring(CardNumberSequenceMatcher.start(), CardNumberSequenceMatcher.end())))
@@ -66,6 +68,8 @@ public class PCIScan {
 
 		if ( result == 0 ){
 			Matcher CardPartialSequenceMatcher = CardPartialPattern.matcher( DatabaseRow );
+			pLastMatchStart = CardNumberSequenceMatcher.start();
+			pLastMatchEnd = CardNumberSequenceMatcher.end();
 			if ( CardPartialSequenceMatcher.find() ) {
 				result = 100;
 				pLastMatchStart = CardPartialSequenceMatcher.start();
@@ -73,6 +77,7 @@ public class PCIScan {
 
 				pLastMatchDescription = "Card Type Plus Last 4";
 			}
+
 		}	
 
 		return result;
