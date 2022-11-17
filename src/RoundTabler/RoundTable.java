@@ -98,6 +98,7 @@ public class RoundTable {
 
                 // Technically a bad practice to just create this factory and forget about it,
                 // but we do not need it for anything else after it makes our single reader.
+
             reader = new ReaderMaker(config).getReader();
 
             switch ( config.getType() )  {
@@ -107,6 +108,7 @@ public class RoundTable {
                 int allCounter;
                 allPCI = new PCIScan( config, SummaryOfPerformance, reader   );
                 try {
+
                     allCounter = allPCI.ScanMariaDB();
                 }
                 catch (SQLException sqlex ) {
