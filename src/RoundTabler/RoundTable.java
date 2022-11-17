@@ -102,15 +102,18 @@ public class RoundTable {
 
                 // Technically a bad practice to just create this factory and forget about it,
                 // but we do not need it for anything else after it makes our single reader.
+
             reader = new ReaderMaker(config).getReader();
 
             switch ( config.getType() )  {
 
             case "all":
+
                 PCIScan allPCI;
                 int allCounter;
                 allPCI = new PCIScan( config, SummaryOfPerformance, SummaryOfScans, reader   );
                 try {
+
                     allCounter = allPCI.ScanMariaDB();
                 }
                 catch (SQLException sqlex ) {
@@ -120,6 +123,7 @@ public class RoundTable {
                 break;
             
             case "pci":
+
                 PCIScan lPCI;
                 int Counter;
                 lPCI = new PCIScan( config, SummaryOfPerformance, SummaryOfScans, reader   );
@@ -128,8 +132,7 @@ public class RoundTable {
                 }
                 catch (SQLException sqlex ) {
                 System.out.println("DEBUG: " + sqlex.toString() );
-                }              
-
+                }
 
                 break;
 

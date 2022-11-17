@@ -21,6 +21,18 @@ public class NACHAScanTest {
     }
 
     @Test
+    public void checkForInvalidABANumberTest(){
+        boolean result = nachaScan.checkForValidABANumber("");
+        assertFalse(result);
+
+        boolean result2 = nachaScan.checkForValidABANumber("testing");
+        assertFalse(result2);
+
+        boolean result3 = nachaScan.checkForValidABANumber("000000000");
+        assertFalse(result3);
+    }
+
+    @Test
     public void getConfidenceLevelMatchTest100() {
         String databaseRow = "The ABA number of the customer is 111000025";
         int result = nachaScan.getConfidenceLevelMatch(databaseRow);
