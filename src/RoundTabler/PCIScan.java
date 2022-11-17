@@ -28,8 +28,8 @@ public class PCIScan {
 	static Pattern CardPartialPattern = Pattern.compile(CardPartialSequenceRegex, Pattern.CASE_INSENSITIVE);
 
 	private RoundTabler.Configuration pScanConfiguration;
-	private Connection pDBConnection;	
 	private PerformanceSummary pPerformanceSummary;
+	private ScanSummary pScanSummary;
 	private StringBuilder psbResults;
 
 	private int pLastMatchStart;
@@ -42,10 +42,11 @@ public class PCIScan {
 		psbResults.append("\n");
 	}
 
-	public PCIScan(RoundTabler.Configuration ScanConfiguration, RoundTabler.PerformanceSummary Summary, DBReader DatabaseReader ) {
+	public PCIScan(RoundTabler.Configuration ScanConfiguration, RoundTabler.PerformanceSummary Summary, RoundTabler.ScanSummary Scans, DBReader DatabaseReader ) {
 		this();
 		pScanConfiguration = ScanConfiguration;
 		pPerformanceSummary = Summary;
+		pScanSummary = Scans;
 		pDBReader = DatabaseReader;
 	}
 
@@ -95,7 +96,7 @@ public class PCIScan {
 					currentConfidenceLevel = getConfidenceLevelMatch( rowsData.get(rowindex).toString() );
 
 					if ( currentConfidenceLevel > 0 ) {
-							AppendMatch( currentTable, currentRow, currentConfidenceLevel);
+							AppendMatch( currentTable, currentColumn, currentRow, currentConfidenceLevel, "");
 							currentResult.RowsMatched++;
 							}
 				}
@@ -106,35 +107,19 @@ public class PCIScan {
 		} else {
 			
 		}
-		System.out.println("\n\n" + "DEBUGTEST: here are the HTML table rows with matches emphasized");
-		System.out.println( "<TR><TH>Table</TH><TH>Column</TH><TH>PCIDSS Content Match</TH><TH>Confidence</TH></TR>" );
-
-		System.out.println( psbResults.toString()  );
-
 		return 0;
 	}
 
 
-	private void AppendMatch( String currentTable, String currentRow, int currentConfidenceLevel) {
-
-		psbResults.append("<TR>");							
-		psbResults.append("<TD>");
-		psbResults.append(currentTable);
-		psbResults.append("</TD>");
-
-		psbResults.append("<TD>");
-		psbResults.append(currentRow);
-		psbResults.append("</TD>");
-
-		psbResults.append("<TD>");
-		psbResults.append(insertStrongEmphasisInto(currentRow, pLastMatchStart, pLastMatchEnd));
-		psbResults.append("</TD>");
-
-		psbResults.append("<TD ALIGN =\"RIGHT\">");
-		psbResults.append(currentConfidenceLevel );
-		psbResults.append("</TD>");
-
-		psbResults.append("</TR>" + "\n");
+	private void AppendMatch( String currentTable, String currentColumn, String currentRow, int currentConfidenceLevel, String matchDescription) {
+			ScanResult tResult;
+			tResult = new ScanResult();
+			tResult.ConfidenceLevel = currentConfidenceLevel;
+			tResult.TableName = currentTable;
+			tResult.TableColumn = currentColumn;
+			tResult.HTMLEmphasizedResult = insertStrongEmphasisInto(currentRow, pLastMatchStart, pLastMatchEnd);
+			tResult.MatchResultRule = matchDescription;
+			pScanSummary.addResult( tResult );
 	}
 
 	/**
