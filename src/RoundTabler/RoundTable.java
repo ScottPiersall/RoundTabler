@@ -104,6 +104,7 @@ public class RoundTable {
             switch ( config.getType() )  {
 
             case "all":
+
                 PCIScan allPCI;
                 int allCounter;
                 allPCI = new PCIScan( config, SummaryOfPerformance, reader   );
@@ -118,6 +119,7 @@ public class RoundTable {
                 break;
             
             case "pci":
+
                 PCIScan lPCI;
                 int Counter;
                 lPCI = new PCIScan( config, SummaryOfPerformance, reader   );
@@ -126,8 +128,7 @@ public class RoundTable {
                 }
                 catch (SQLException sqlex ) {
                 System.out.println("DEBUG: " + sqlex.toString() );
-                }              
-
+                }
 
                 break;
 

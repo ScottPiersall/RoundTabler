@@ -13,7 +13,3 @@ pause
 
 docker run -d -t --name roundtabler roundtabler
 
-docker exec -it roundtabler bash "cd src && javac RoundTabler/*.java"
-
-docker exec -it roundtabler bash "cd src && javac RoundTabler/db/*.java"
-
