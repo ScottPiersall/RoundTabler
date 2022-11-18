@@ -47,6 +47,14 @@ Navigate to the src directory using:
 
 	`cd src`
 
-To review the list of options pleas see:
+To review the list of options please see:
 
 	`java RoundTabler.RoundTable --help`
+
+To view results of your scans navigate to:
+
+	localhost:8000
+
+Then enter a slash followed by the name of your result file, i.e.:
+
+	localhost:8000/RESULTS_estore_20221118_223831.html

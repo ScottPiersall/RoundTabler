@@ -9,14 +9,4 @@ RUN apt-get -y --force-yes install mariadb-server
 
 WORKDIR ./RoundTabler
 
-COPY ./ .
-
-WORKDIR ./src
-
 ENV CLASSPATH=./:/Roundtabler/Drivers/bson-4.8.0-jar:/RoundTabler/Drivers/mariadb.jar:/RoundTabler/Drivers/mongo.jar:/RoundTabler/Drivers/mysql.jar
-
-RUN javac RoundTabler/*.java
-
-RUN javac utility/*.java
-
-RUN javac RoundTabler/db/*.java
