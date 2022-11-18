@@ -19,9 +19,9 @@ public class HTMLErrorOut {
         try{
             //Create file at directory specified. Problem with directory resorts to simply printing to command line
 
-            if(filePath.length() == 0)throw(new IOException());
+            //if(filePath.length() == 0)throw(new IOException());
 
-            File file = new File( filePath + "errorLog.html");
+            File file = new File("html/errorLog.html");
 
             file.createNewFile();
 
@@ -85,11 +85,11 @@ public class HTMLErrorOut {
                             "</a>\n" +
                             "\t\t</div>\n" +
                             "\t\t<div>\n" +
-                            "\t\t\t<p style=\"color: red; font-size: 1.5vw; font-family: 'monospace', sans-serif;\">"
+                            "\t\t\t<p style=\"color: red; font-size: 1.5vw; font-family: 'monospace', sans-serif; padding-left: 20px\">"
             );
 
             htmlWrite.write(error + "</p>");
-            htmlWrite.write("<p style=\"color: black; font-size: 1vw; font-family: 'monospace', sans-serif;\">");
+            htmlWrite.write("<p style=\"color: black; font-size: 1vw; font-family: 'monospace', sans-serif; padding-left: 20px\">");
             htmlWrite.write("Please see the documentation to help resolve any issues you may be having.");
             htmlWrite.write("</p>");
             htmlWrite.write(
@@ -106,7 +106,7 @@ public class HTMLErrorOut {
 
         }catch(IOException e){
 
-            System.out.println();
+            System.out.println(e);
             System.out.println(error);
             System.out.println("Please refer to https://github.com/ScottPiersall/RoundTabler/blob/main/README.md to help resolve any confusion.");
 
