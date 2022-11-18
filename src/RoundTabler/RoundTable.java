@@ -3,9 +3,7 @@ package RoundTabler;
 import RoundTabler.db.DBReader;
 import RoundTabler.db.ReaderMaker;
 
-
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -15,16 +13,14 @@ import java.util.InputMismatchException;
 public class RoundTable {
 
     public static void main(String[] args){
-
         round(args);
-
     }
 
     public static int round(String[] args){
 
         Configuration config = new Configuration();
 
-        DBReader reader = null;
+        DBReader reader;
 
         PerformanceSummary SummaryOfPerformance = new PerformanceSummary();
         ScanSummary SummaryOfScans = new ScanSummary();
@@ -101,50 +97,21 @@ public class RoundTable {
             System.out.println("INITIALIZING DATABASE CONNECTION");
 
 
-                // Technically a bad practice to just create this factory and forget about it,
-                // but we do not need it for anything else after it makes our single reader.
+            // Technically a bad practice to just create this factory and forget about it,
+            // but we do not need it for anything else after it makes our single reader.
 
             reader = new ReaderMaker(config).getReader();
 
-            switch ( config.getType() )  {
+            String scanType = config.getType().toUpperCase().trim();
 
-            case "all":
-                CommonScan allPCIScan = new CommonScan( config, SummaryOfPerformance, SummaryOfScans, reader   );
-                CommonScan allNACHAScan = new CommonScan( config, SummaryOfPerformance, SummaryOfScans, reader   );
-                try {
-                    allPCIScan.ScanMariaDB("PCIDSS");
-                    allNACHAScan.ScanMariaDB("NACHA");
-                }
-                catch (SQLException sqlex ) {
-                    System.out.println("DEBUG: " + sqlex);
-                }
-
-                break;
-            
-            case "pci":
-                CommonScan pciScan = new CommonScan( config, SummaryOfPerformance, SummaryOfScans, reader   );
-                try {
-                    pciScan.ScanMariaDB("PCIDSS");
-                }
-                catch (SQLException sqlex ) {
-                    System.out.println("DEBUG: " + sqlex);
-                }
-
-                break;
-
-            case "nacha":
-                CommonScan nachaScan = new CommonScan( config, SummaryOfPerformance, SummaryOfScans, reader   );
-                try {
-                    nachaScan.ScanMariaDB("NACHA");
-                }
-                catch (SQLException sqlex ) {
-                    System.out.println("DEBUG: " + sqlex);
-                }
-
-                break;
+            CommonScan scan = new CommonScan(config, SummaryOfPerformance, SummaryOfScans, reader);
+            try {
+                scan.scanMariaDB(scanType);
+            } catch (SQLException sqlex) {
+                System.out.println("DEBUG: " + sqlex);
             }
 
-            WriteResultsToHTMLFile( SummaryOfScans, SummaryOfPerformance, config );
+            WriteResultsToHTMLFile(SummaryOfScans, SummaryOfPerformance, config);
 
             return 0;
 
@@ -173,7 +140,7 @@ public class RoundTable {
 
         }
         catch ( SQLException sqlex ) {
-            System.out.println(sqlex.toString() );
+            System.out.println(sqlex);
             return -1;
         }
         catch ( ClassNotFoundException cnfex ) {
@@ -181,7 +148,7 @@ public class RoundTable {
             return -1;
         }
         catch ( Exception ex ) {
-            System.out.println(ex.toString() );
+            System.out.println(ex);
             return -1;
         }
     }
@@ -193,12 +160,6 @@ public class RoundTable {
 
      */
     public static void WriteResultsToHTMLFile( ScanSummary Scans, PerformanceSummary Performance, Configuration config ){
-
-
-        String saveDirectory = config.getFile();
-
-
-
         StringBuilder sbHTML = new StringBuilder();
 
 
@@ -207,7 +168,7 @@ public class RoundTable {
         sbHTML.append("<h1>RoundTabler Scan Resuls for</h1><br>\n");
         sbHTML.append("<h2>Database " + config.getDatabase() + "</h2><br>\n");
         sbHTML.append("<h2>on host " + config.getServer() + "</h2><br>\n");
-        sbHTML.append("<h2>scan type " + config.getType().toString() + "</h2></br>\n");
+        sbHTML.append("<h2>scan type " + config.getType() + "</h2></br>\n");
 
 
         sbHTML.append("<h2>Scan Results</h2><BR>\n");
@@ -240,18 +201,15 @@ public class RoundTable {
 
         sbHTML.append("</CENTER></BODY></HTML>");
 
-
         //
         // If no filename was specified in configuration, we write to standard output
         // otherwise, we write to the filename provided in the config
         //
         if ( config.getFile().length() == 0 ) {
 
-            System.out.println(sbHTML.toString() );
+            System.out.println(sbHTML);
 
         } else {
-
-
                 String saveFileName;
                 String dbName = config.getDatabase();
                 // Remove any characters in database name which are illegal in a fileNAme
@@ -265,44 +223,16 @@ public class RoundTable {
                 LocalDateTime.now().getHour(),
                 LocalDateTime.now().getMinute(),
                 LocalDateTime.now().getSecond()   );
-
-
-
-
-
-
-
-
             try(
                 FileWriter fileW = new FileWriter( saveFileName );
-                BufferedWriter writer = new BufferedWriter( fileW );
+                BufferedWriter writer = new BufferedWriter( fileW )
             ) {
-
                 writer.write(sbHTML.toString() );
-
                 System.out.println("DEBUG: Results written to " +  saveFileName );
-
-
-
             }
             catch (Exception ex ){
-                System.out.println("Could not create results files " + ex.toString() );
+                System.out.println("Could not create results files " + ex);
             }
-
-
-
-
-
         }
-
-
-
-
-
-
-
-
     }
-
-
 }
