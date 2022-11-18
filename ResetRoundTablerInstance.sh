@@ -6,16 +6,11 @@ echo Removed pre-existing roundtabler instance
 
 docker build --tag roundtabler .
 
-echo Docker instance successfully built. Start container?
+echo "Docker instance successfully built. Start container?"
 
 docker run -d -t --name roundtabler roundtabler
 
 docker network connect dbNetwork roundtabler
 
-echo:
-echo:
-
-echo Fresh RoundTabler instance ready for testing with updated code.
-
-echo:
+printf "\nFresh RoundTabler instance ready for testing with updated code.\n\n"
 

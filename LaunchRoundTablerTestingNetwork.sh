@@ -29,18 +29,12 @@ echo Added Mariadb database container to dbNetwork
 
 docker build --tag roundtabler .
 
-echo Docker instance successfully built. Start container?
+echo "Docker instance successfully built. Start container?"
 
 docker run -d -t --name roundtabler roundtabler
-
 
 docker network connect dbNetwork roundtabler
 echo Added roundtabler container to dbNetwork
 echo To connect to each container using the instance name in place of an IP address
 
-echo:
-echo:
-
-echo RoundTabler Testing Network Successfully built.
-
-echo:
+printf "\nRoundTabler Testing Network Successfully built.\n\n"
