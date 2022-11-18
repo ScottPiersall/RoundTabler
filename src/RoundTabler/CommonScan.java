@@ -35,64 +35,74 @@ public class CommonScan {
         nDBReader = databaseReader;
     }
 
-    public int ScanMariaDB(String scanType) throws SQLException {
+    public void scanMariaDB(String typeOfScan) throws SQLException {
         if (nScanConfiguration.getDbType().toUpperCase().compareTo("MARIADB") != 0) {
             new HTMLErrorOut(nScanConfiguration.getFile(), "Database Type Mismatch. Database Type Configuration "
-                    + nScanConfiguration.getDbType() + " cannot be used with MySQL Scan" );
-            return 0;
+                    + nScanConfiguration.getDbType() + " cannot be used with MySQL Scan");
+            return;
         }
 
         int currentConfidenceLevel = 0;
-        String currentTable = "";
-        String currentColumn = "";
+        String currentTable;
+        String currentColumn;
 
-        String currentRow = "";
+        String currentRow;
 
         SchemaItems tablesAndColumns;
-        if (nDBReader.readSchema()){
+        if (nDBReader.readSchema()) {
+            int i = 0;
+            int endIteration = 0;
+            if (Objects.equals(typeOfScan, "NACHA")) {
+                i = 1;
+                endIteration = 1;
+            } else if (Objects.equals(typeOfScan, "ALL")) {
+                endIteration = 1;
+            }
             tablesAndColumns = nDBReader.getSchemaItems();
-            int index;
-            for (index = 0; index < tablesAndColumns.size(); index++){
-                currentTable = tablesAndColumns.get(index).getTableName();
-                currentColumn = tablesAndColumns.get(index).getColumnName();
-                ArrayList<String> rowsData;
-                rowsData  = nDBReader.readColumn( tablesAndColumns.get(index) );
-                int rowindex;
-                PerformanceResult currentResult;
-                currentResult = new PerformanceResult();
-                currentResult.TableName = currentTable;
-                currentResult.TableColumn = currentColumn;
-                if (Objects.equals(scanType, "NACHA")){
-                    currentResult.MatchType = "NACHA";
-                }
-                else if (Objects.equals(scanType, "PCIDSS")){
-                    currentResult.MatchType = "PCIDSS";
-                }
-                currentResult.RowsMatched = 0;
-                currentResult.RowsScanned = rowsData.size();
-                currentResult.ScanStarted = LocalDateTime.now();
-
-                for (rowindex =0; rowindex < rowsData.size(); rowindex++ ){
-                    currentRow = rowsData.get(rowindex);
-
-                    if (Objects.equals(scanType, "NACHA")){
-                        currentConfidenceLevel = nachaScan.getConfidenceLevelMatch(rowsData.get(rowindex));
+            while (i <= endIteration) {
+                int index;
+                String scanType = "";
+                for (index = 0; index < tablesAndColumns.size(); index++) {
+                    currentTable = tablesAndColumns.get(index).getTableName();
+                    currentColumn = tablesAndColumns.get(index).getColumnName();
+                    ArrayList<String> rowsData;
+                    rowsData = nDBReader.readColumn(tablesAndColumns.get(index));
+                    int rowindex;
+                    PerformanceResult currentResult;
+                    currentResult = new PerformanceResult();
+                    currentResult.TableName = currentTable;
+                    currentResult.TableColumn = currentColumn;
+                    if (i == 0) {
+                        currentResult.MatchType = "PCIDSS";
+                        scanType = "PCIDSS";
+                    } else if (i == 1) {
+                        currentResult.MatchType = "NACHA";
+                        scanType = "NACHA";
                     }
-                    else if (Objects.equals(scanType, "PCIDSS")) {
-                        currentConfidenceLevel = pciScan.getConfidenceLevelMatch(rowsData.get(rowindex));
-                    }
+                    currentResult.RowsMatched = 0;
+                    currentResult.RowsScanned = rowsData.size();
+                    currentResult.ScanStarted = LocalDateTime.now();
 
-                    if ( currentConfidenceLevel > 0 ) {
-                        AppendMatch(scanType, currentTable, currentColumn, currentRow, currentConfidenceLevel);
-                        currentResult.RowsMatched++;
+                    for (rowindex = 0; rowindex < rowsData.size(); rowindex++) {
+                        currentRow = rowsData.get(rowindex);
+
+                        if (i == 0) {
+                            currentConfidenceLevel = pciScan.getConfidenceLevelMatch(rowsData.get(rowindex));
+                        } else if (i == 1) {
+                            currentConfidenceLevel = nachaScan.getConfidenceLevelMatch(rowsData.get(rowindex));
+                        }
+
+                        if (currentConfidenceLevel > 0) {
+                            AppendMatch(scanType, currentTable, currentColumn, currentRow, currentConfidenceLevel);
+                            currentResult.RowsMatched++;
+                        }
                     }
+                    currentResult.ScanFinished = LocalDateTime.now();
+                    nPerformanceScan.addResult(currentResult);
                 }
-                currentResult.ScanFinished = LocalDateTime.now();
-                nPerformanceScan.addResult(currentResult);
+                i++;
             }
         }
-
-        return 0;
     }
 
     private void AppendMatch(String scanType, String currentTable, String currentColumn, String currentRow,
