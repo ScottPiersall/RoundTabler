@@ -1,6 +1,4 @@
 #!/bin/bash
-@echo off
-
 docker stop roundtabler-db-1
 echo Stopped any existing mariadb docker instances
 
@@ -33,8 +31,6 @@ docker build --tag roundtabler .
 
 echo Docker instance successfully built. Start container?
 
-pause
-
 docker run -d -t --name roundtabler roundtabler
 
 
@@ -48,5 +44,3 @@ echo:
 echo RoundTabler Testing Network Successfully built.
 
 echo:
-
-pause
