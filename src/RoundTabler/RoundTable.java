@@ -100,7 +100,7 @@ public class RoundTable {
             // Technically a bad practice to just create this factory and forget about it,
             // but we do not need it for anything else after it makes our single reader.
 
-            reader = new ReaderMaker(config).getReader();
+            reader = ReaderMaker.getReader(config);
 
             String scanType = config.getType().toUpperCase().trim();
 
