@@ -105,7 +105,7 @@ public class MongoReader extends DBReader {
             if (doc.get(item.getColumnName()).toString().isEmpty())
                 continue;
 
-            columnData.add(doc.getString(item.getColumnName()));
+            columnData.add(doc.get(item.getColumnName()).toString());
         }
 
         return columnData;
