@@ -84,7 +84,7 @@ public class MongoReader extends DBReader {
                 }
 
                 // TableName, ColumnName, DataType
-                schemaItems.Add(doc.getString("name"), key, "varchar");
+                schemaItems.Add(doc.get("name").toString(), key, "varchar");
             }
         }
 
