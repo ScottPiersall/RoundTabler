@@ -205,6 +205,7 @@ public class RoundTable {
         // If no filename was specified in configuration, we write to standard output
         // otherwise, we write to the filename provided in the config
         //
+
         if ( config.getFile().length() == 0 ) {
 
             System.out.println(sbHTML);
