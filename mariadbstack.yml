@@ -4,16 +4,19 @@ services:
 
   db:
     image: mariadb
+    container_name: roundtabler-db-1
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: example
   adminer:
     image: adminer
+    container_name: roundtabler-adminer-1
     restart: always
     ports:
       - 8080:8080
   web:
     image: nginx:latest
+    container_name: roundtabler-web-1
     ports:
       - 8000:80
     volumes:
