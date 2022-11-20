@@ -37,7 +37,7 @@ public class CommonScan {
 
     public void scanMariaDB(String typeOfScan) throws SQLException {
         if (nScanConfiguration.getDbType().toUpperCase().compareTo("MARIADB") != 0) {
-            new HTMLErrorOut(nScanConfiguration.getFile(), "Database Type Mismatch. Database Type Configuration "
+            new HTMLErrorOut("Database Type Mismatch. Database Type Configuration "
                     + nScanConfiguration.getDbType() + " cannot be used with MySQL Scan");
             return;
         }
