@@ -3,11 +3,11 @@ package RoundTabler;
 import RoundTabler.db.DBReader;
 import RoundTabler.db.ReaderMaker;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.*;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.InputMismatchException;
+import java.util.Scanner;
 
 
 public class RoundTable {
@@ -43,7 +43,6 @@ public class RoundTable {
                                     "\t--password= Your password to log into the database\n" +
                                     "\t--database= The name of the database you want to scan\n" +
                                     "\nOPTIONAL PARAMETERS:\n" +
-                                    "\t--resultfile= Include a file path to store the results or any error logs\n" +
                                     "\t--table= Specify one table you would like to have scanned instead of the entire database\n"
                     );
                     return -1;
@@ -73,9 +72,6 @@ public class RoundTable {
                         break;
                     case "--database":
                         config.setDatabase(argParts[1]);
-                        break;
-                    case "--resultfile":
-                        config.setFile(argParts[1]);
                         break;
                     case "--table":
                         config.setTable(argParts[1]);
@@ -134,7 +130,7 @@ public class RoundTable {
                 }
             }
 
-            new HTMLErrorOut(filePath, e.getMessage());
+            new HTMLErrorOut(e.getMessage());
 
             return -1;
 
@@ -206,34 +202,71 @@ public class RoundTable {
         // otherwise, we write to the filename provided in the config
         //
 
-        if ( config.getFile().length() == 0 ) {
 
-            System.out.println(sbHTML);
+        String saveFileName;
+        String dbName = config.getDatabase();
+        // Remove any characters in database name which are illegal in a fileNAme
+        dbName = dbName.replaceAll("[^a-zA-Z0-9]", "_");
+        saveFileName =
+        "RESULTS_" + dbName + "_" +
+        String.format("%d%02d%02d_%02d%02d%02d.html",
+        LocalDateTime.now().getYear(),
+        LocalDateTime.now().getMonthValue(),
+        LocalDateTime.now().getDayOfMonth(),
+        LocalDateTime.now().getHour(),
+        LocalDateTime.now().getMinute(),
+        LocalDateTime.now().getSecond()   );
 
-        } else {
-                String saveFileName;
-                String dbName = config.getDatabase();
-                // Remove any characters in database name which are illegal in a fileNAme
-                dbName = dbName.replaceAll("[^a-zA-Z0-9]", "_");
-                saveFileName = config.getFile() + "/" +
-                "RESULTS_" + dbName + "_" +
-                String.format("%d%02d%02d_%02d%02d%02d.html",
-                LocalDateTime.now().getYear(),
-                LocalDateTime.now().getMonthValue(),
-                LocalDateTime.now().getDayOfMonth(),
-                LocalDateTime.now().getHour(),
-                LocalDateTime.now().getMinute(),
-                LocalDateTime.now().getSecond()   );
-            try(
-                FileWriter fileW = new FileWriter( saveFileName );
-                BufferedWriter writer = new BufferedWriter( fileW )
-            ) {
-                writer.write(sbHTML.toString() );
-                System.out.println("DEBUG: Results written to " +  saveFileName );
+        try(
+            FileWriter fileW = new FileWriter("html/" + saveFileName );
+            BufferedWriter writer = new BufferedWriter( fileW )
+        ) {
+            writer.write(sbHTML.toString() );
+            System.out.println("DEBUG: Results written to " +  saveFileName );
+        }
+        catch (Exception ex ){
+            System.out.println("Could not create results files " + ex);
+        }
+
+        WriteResultNameToJSFile(saveFileName);
+
+    }
+
+    public static int WriteResultNameToJSFile(String fileName){
+
+        File resultList = new File("html/resultList.js");
+
+        try {
+            Scanner reader = new Scanner(resultList);
+            String list = "";
+
+            while(reader.hasNext()){
+                list = reader.next();
             }
-            catch (Exception ex ){
-                System.out.println("Could not create results files " + ex);
-            }
+
+            reader.close();
+
+            String[] parts = list.split("\"");
+
+            parts[0] = "export default \"";
+
+            parts[1] += "+" + fileName + "\"";
+
+            list = String.join("", parts);
+
+            FileWriter writer = new FileWriter( resultList);
+
+            writer.write(list);
+
+            writer.close();
+
+            return 0;
+
+        }catch(IOException e) {
+
+            new HTMLErrorOut("There was an error updating the result list. To view your results please visit localhost:8000/" + fileName);
+            return -1;
+
         }
     }
 }
