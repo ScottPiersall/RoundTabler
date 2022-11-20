@@ -250,6 +250,8 @@ public class RoundTable {
 
             parts[0] = "export default \"";
 
+            parts[1] = parts[1].replace("+errorLog.html", "");
+
             parts[1] += "+" + fileName + "\"";
 
             list = String.join("", parts);

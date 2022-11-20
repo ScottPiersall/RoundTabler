@@ -10,9 +10,8 @@
 
                 const parts = results.default.split("+");
 
-
                 parts.map((file)=>{
-                    
+
                     const link = document.createElement('a');
 
                     const name = document.createElement('p');
@@ -23,7 +22,9 @@
 
                     link.href = `./${file}`;
 
-                    link.target = "_blank";
+                    if(!file.includes("error")){
+                        link.target = "_blank";
+                    }
 
                     document.getElementById("directory-list").appendChild(link);
 

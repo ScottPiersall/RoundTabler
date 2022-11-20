@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.InputMismatchException;
 
+import static RoundTabler.RoundTable.WriteResultNameToJSFile;
+
 public class HTMLErrorOut {
 
 
@@ -99,6 +101,8 @@ public class HTMLErrorOut {
             );
 
             htmlWrite.close();
+
+            WriteResultNameToJSFile("errorLog.html");
 
             System.out.println();
             System.out.println("RoundTabler has encountered an error.");
