@@ -107,6 +107,8 @@ public class RoundTable {
             // Checking performance because it records results even when no matches occur
             if (!SummaryOfPerformance.isEmpty())
                 WriteResultsToHTMLFile(SummaryOfScans, SummaryOfPerformance, config);
+            else
+                new HTMLErrorOut("No scannable content was found in the specified database/table.");
 
             return 0;
 
