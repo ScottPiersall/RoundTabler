@@ -92,10 +92,6 @@ public class RoundTable {
             System.out.println();
             System.out.println("INITIALIZING DATABASE CONNECTION");
 
-
-            // Technically a bad practice to just create this factory and forget about it,
-            // but we do not need it for anything else after it makes our single reader.
-
             reader = ReaderMaker.getReader(config);
 
             String scanType = config.getType().toUpperCase().trim();
@@ -106,8 +102,11 @@ public class RoundTable {
             } catch (SQLException sqlex) {
                 System.out.println("DEBUG: " + sqlex);
             }
-
-            WriteResultsToHTMLFile(SummaryOfScans, SummaryOfPerformance, config);
+        
+            // Should not write empty results
+            // Checking performance because it records results even when no matches occur
+            if (!SummaryOfPerformance.isEmpty())
+                WriteResultsToHTMLFile(SummaryOfScans, SummaryOfPerformance, config);
 
             return 0;
 
