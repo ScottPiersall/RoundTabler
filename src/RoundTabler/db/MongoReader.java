@@ -9,6 +9,7 @@ import com.mongodb.client.*;
 
 import java.sql.SQLException;
 import RoundTabler.Configuration;
+import RoundTabler.HTMLErrorOut;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class MongoReader extends DBReader {
         // Have to keep in mind the table argument passed here, if it was given
         // Many simplifications are performed to dumb results down to string values that are easily represented
         for (Document doc : collections) {
-            if (!this.config.getTable().isBlank() && doc.getString("name") != this.config.getTable() || doc.isEmpty())
+            if (!this.config.getTable().isBlank() && !Objects.equals(doc.get("name").toString(), this.config.getTable()) || doc.isEmpty())
                 continue;
 
             MongoCollection<Document> collection = db.getCollection(doc.getString("name"));
@@ -86,6 +87,12 @@ public class MongoReader extends DBReader {
                 // TableName, ColumnName, DataType
                 schemaItems.Add(doc.get("name").toString(), key, "varchar");
             }
+        }
+
+        // We found nothing to scan, throw an error
+        if (this.collections.isEmpty()) {
+            new HTMLErrorOut("Error in fetching the schema: no data found. Please check your --database or --table arguments, as well as if the passed user has access to this database.");
+            return false;
         }
 
         return true;

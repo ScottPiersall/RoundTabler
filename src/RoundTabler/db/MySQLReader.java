@@ -7,10 +7,11 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import RoundTabler.Configuration;
+import RoundTabler.HTMLErrorOut;
 
 /*
- * MySQL database reader
- * Requires the MySQL JDBC Driver
+ * MySQL and MariaDB database readers
+ * Requires the MySQL and MariaDB JDBC Drivers
 */
 
 public class MySQLReader extends DBReader {
@@ -20,11 +21,15 @@ public class MySQLReader extends DBReader {
     public MySQLReader(Configuration config) throws ClassNotFoundException, SQLException {
         super(config);
         
-        // Check for JDBC driver; if fails, throw ClassNotFoundException
-        Class.forName("com.mysql.cj.jdbc.Driver");
+        // Check for JDBC drivers; if fails, throw ClassNotFoundException
+        if (config.getDbType().toLowerCase() == "mysql")
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        else
+            Class.forName("org.mariadb.jdbc.Driver");
 
         // Use args to establish database connection
-        String jdbcUri = String.format("jdbc:mysql://%s:%s?user=%s&password=%s",
+        String jdbcUri = String.format("jdbc:%s://%s:%s?user=%s&password=%s",
+                                                config.getDbType().toLowerCase() == "mysql" ? "mysql" : "mariadb",
                                                 config.getServer(), !config.getPort().isBlank() ? config.getPort() : "3306",
                                                 config.getUser(), config.getPassword());
 
@@ -54,15 +59,20 @@ public class MySQLReader extends DBReader {
             rs = buildSchema.executeQuery();
 
             // If rs successfully produced results, then we iterate through it
-            if (rs != null) {
-                while (rs.next()) {
+            if (rs.next()) {
+                do {
                     // Table_Name, Column_Name, Data_Type
                     schemaItems.Add(rs.getString(1), rs.getString(2), rs.getString(3));
-                }
+                } while (rs.next());
+            }
+            else {
+                // Failed to yield results, some argument must be incorrect or the user must not have access
+                new HTMLErrorOut("Error in fetching the schema: no data found. Please check your --database or --table arguments, as well as if the passed user has access to this database.");
+                return false;
             }
         }
         catch (SQLException e) {
-            System.out.println("Error in SQL execution: " + e);
+            new HTMLErrorOut("Error in SQL execution: " + e);
             return false;
         }
 
@@ -77,8 +87,8 @@ public class MySQLReader extends DBReader {
 
         try {
             Statement select = this.conn.createStatement();
-            String queryString = String.format("SELECT %s FROM %s.%s",
-                                                       item.getColumnName(), this.config.getDatabase(), item.getTableName());
+            String queryString = String.format("SELECT %s FROM %s.%s WHERE %s IS NOT NULL",
+                                                       item.getColumnName(), this.config.getDatabase(), item.getTableName(), item.getColumnName());
 
             rs = select.executeQuery(queryString);
 
@@ -91,7 +101,7 @@ public class MySQLReader extends DBReader {
             }
         }
         catch (SQLException e) {
-            System.out.println(e);
+            new HTMLErrorOut("Error in SQL execution: " + e);
             return null;
         }
 
