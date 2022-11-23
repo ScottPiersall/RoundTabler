@@ -33,7 +33,9 @@ public class MySQLReader extends DBReader {
                                                 config.getServer(), !config.getPort().isBlank() ? config.getPort() : "3306",
                                                 config.getUser(), config.getPassword());
 
+
         this.conn = DriverManager.getConnection(jdbcUri);
+
 
         // Create the relevant query string for forming populating our SchemaItems
         StringBuilder stmtString = new StringBuilder();
