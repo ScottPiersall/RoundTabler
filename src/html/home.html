@@ -3,35 +3,36 @@
 
 
         <script type="module">
-
+            
             import * as results from './resultList.js'
 
-            window.addEventListener('load', ()=>{
+            window.addEventListener('load', refresh);
+
+            document.getElementById("refresh-button").addEventListener('click', refresh);
+
+            function refresh(){
+                
+                console.log('refreshing items');
 
                 const parts = results.default.split("+");
-
                 parts.map((file)=>{
 
-                    const link = document.createElement('a');
+                    if(file.length > 0 && document.getElementById(file) == null){
 
-                    const name = document.createElement('p');
-
-                    name.innerText = file;
-
-                    link.appendChild(name);
-
-                    link.href = `./${file}`;
-
-                    if(!file.includes("error")){
-                        link.target = "_blank";
+                        const link = document.createElement('a');
+                        const name = document.createElement('p');
+                        name.innerText = file;
+                        link.appendChild(name);
+                        link.href = `./${file}`;
+                        link.id = file;
+                        if(!file.includes("error")){
+                            link.target = "_blank";
+                        }
+                        document.getElementById("directory-list").appendChild(link);
                     }
 
-                    document.getElementById("directory-list").appendChild(link);
-
                 })
-
-
-            })
+            }
 
         </script>
 
@@ -91,20 +92,21 @@
             </a>
         </div>
 
-        <div style="display: flex; flex-direction: column; flex: 1; height: 100%; width: 25%; float: right; padding-inline: 25px; box-sizing: border-box; border-left: 3px solid #404040;">
+        <div style="display: flex; flex-direction: column; flex: 1; height: 100%; width: 25%; float: right; padding-inline: 25px; box-sizing: border-box;">
             <h2 style="font-family: 'monospace', sans-serif; font-size: 2em;">Results Directory:</h2>
             <div id="directory-list">
 
             </div>
+            <button id="refresh-button">Refresh Results</button>
         </div>
 
-        <div style="width: 75%; padding-inline: 25px; box-sizing: border-box;">
-            <h3>Overview</h3>
+        <div style="width: 75%; padding-inline: 25px; box-sizing: border-box; border-right: 3px solid #404040; padding-top: 15px; padding-bottom: 20px;">
+            <h3 style="font-size: 1.5em;">Overview</h3>
                 <p>
                     RoundTabler is a software security analysis tool that used for scanning relational database column contents for unencrytped card and ACH information. With the ability to scan your entire database, or just one table, RoundTabler
                     offers flexibility to all security teams depending on their needs.
                 </p>
-            <h3>Features:</h3>
+            <h3 style="font-size: 1.5em;">Features:</h3>
                 <ul>
                     <li style="padding-block: 5px;">Easy scanning of columns</li>
                     <li style="padding-block: 5px;">Low false-positives</li>
@@ -113,14 +115,14 @@
                     <li style="padding-block: 5px;">Quick Deployment Option</li>
                     <li style="padding-block: 5px;">Deployable via a docker</li>
                 </ul>
-            <h3>Developers:</h3>
+            <h3 style="font-size: 1.75em;">Developers:</h3>
                 <ul>
                     <li style="padding-block: 5px;">Scott Piersall</li>
                     <li style="padding-block: 5px;">Jordan Mcmillian</li>
                     <li style="padding-block: 5px;">Brian Lasher</li>
                     <li style="padding-block: 5px;">Zachary Russell</li>
                 </ul>
-            <h3>List of parameters:</h3>
+            <h3 style="font-size: 1.5em;">List of parameters:</h3>
                 <div style="margin-left: 30px;">
                 <h4>Required Parameters:</h4>
                     <ui>
