@@ -136,10 +136,10 @@ public class PCIScan {
 					case Discover: result += 25;
 								pLastMatchDescription = pLastMatchDescription + "<BR>Discover Card Number";
 								break;
-					case MasterCard: results += 25;
+					case MasterCard: result += 25;
 								pLastMatchDescription = pLastMatchDescription + "<BR>MasterCard Card Number";
 								break;
-					case Visa: results += 25;
+					case Visa: result += 25;
 								pLastMatchDescription = pLastMatchDescription + "<BR>Visa Card Number";
 								break;
 					

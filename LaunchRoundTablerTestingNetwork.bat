@@ -47,7 +47,7 @@ docker exec -d roundtabler javac RoundTabler/*.java
 docker exec -d roundtabler javac utility/*.java
 docker exec -d roundtabler javac RoundTabler/db/*.java
 
-docker cp ./nginx.conf roundtabler-web-1:/usr/share/nginx/html/conf/nginx.conf
+docker cp ./nginx.conf roundtabler-web-1:/etc/nginx/nginx.conf
 
 echo:
 echo:
