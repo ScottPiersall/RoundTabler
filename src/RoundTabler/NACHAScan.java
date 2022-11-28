@@ -1,5 +1,6 @@
 package RoundTabler;
 
+import java.util.ArrayList;
 import java.util.regex.*;
 
 import static utility.ApplicationUtility.*;
@@ -14,6 +15,7 @@ public class NACHAScan{
     private int pLastMatchStart;
     private int pLastMatchEnd;
     private String pLastMatchDescription;
+    private final ArrayList<String> abaNumbersList = getABANumbersFromFile();
 
     public NACHAScan(){
         super();
@@ -60,6 +62,14 @@ public class NACHAScan{
         return false;
     }
 
+    public boolean checkListOfAbaNumbers(String abaNumber){
+        if (!isNumeric(abaNumber)){
+            return false;
+        }
+        return abaNumbersList.contains(abaNumber);
+    }
+
+
     /**
      * Method that is inputted with a database row string and outputs the confidence level
      * of the row as it pertains to containing an ABA number
@@ -77,18 +87,25 @@ public class NACHAScan{
         boolean resultMatcher = abaNumberSequenceMatcher.find();
         // checks if the regex is found in the database row string
         if (resultMatcher){
-            // if found, confidence is increased to 75%
-            result += 75;
+            // if found, confidence is increased to 33%
+            result += 33;
             pLastMatchDescription = "9 Digit Number";
             pLastMatchStart = abaNumberSequenceMatcher.start();
             pLastMatchEnd = abaNumberSequenceMatcher.end();
             // further checks if the number found is a valid ABA number
             if (checkForValidABANumber(abaNumberSequenceMatcher.group())){
-                // if number is a valid ABA Number, confidence increased to 100%
-                result += 25;
+                // if number is a valid ABA Number, confidence increased to 67%
+                result += 34;
                 pLastMatchStart = abaNumberSequenceMatcher.start();
                 pLastMatchEnd = abaNumberSequenceMatcher.end();
-                pLastMatchDescription = "9 Digit and Valid ABA Number";
+                pLastMatchDescription = "9 Digit and Passes Validation Function";
+                if (checkListOfAbaNumbers(abaNumberSequenceMatcher.group())){
+                    // if number is a valid ABA Number on file list, confidence increased to 100%
+                    result += 33;
+                    pLastMatchStart = abaNumberSequenceMatcher.start();
+                    pLastMatchEnd = abaNumberSequenceMatcher.end();
+                    pLastMatchDescription = "9 Digit Number, Passes Validation Function, and is Valid ABA Number";
+                }
             }
         }
         return result;

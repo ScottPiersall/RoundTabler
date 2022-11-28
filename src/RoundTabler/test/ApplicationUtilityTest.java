@@ -2,6 +2,8 @@ package RoundTabler.test;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static utility.ApplicationUtility.*;
 
@@ -41,5 +43,13 @@ public class ApplicationUtilityTest {
 
         int result3 = charToInt('3');
         assertEquals(3, result3);
+    }
+
+
+    @Test
+    public void readFileTest() {
+        int expectedNumber = 19521;
+        ArrayList<String> abaNumbers = getABANumbersFromFile();
+        assertEquals(expectedNumber,abaNumbers.size());
     }
 }
