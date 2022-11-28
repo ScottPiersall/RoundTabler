@@ -1,5 +1,7 @@
 package utility;
 
+import RoundTabler.HTMLErrorOut;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -41,7 +43,7 @@ public class ApplicationUtility {
 
     public static HashSet<String> getABANumbersFromFile() {
         HashSet<String> abaNumbers = new HashSet<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("Resources/FedACHdir.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("../Resources/FedACHdir.txt"))) {
             boolean keepGoing = true;
             do {
                 String currentLine = reader.readLine();
@@ -54,6 +56,7 @@ public class ApplicationUtility {
                 }
             } while (keepGoing);
         } catch (IOException e) {
+            System.out.println("Throwing here");
             e.printStackTrace();
         }
         return abaNumbers;
