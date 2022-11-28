@@ -12,11 +12,15 @@ public class ReaderMaker {
         switch (config.getDbType().toLowerCase()) {
             case "mysql":
                 return new MySQLReader(config);
+            case "maria":
             case "mariadb":
                 return new MariaReader(config);
             case "mongo":
             case "mongodb":
                 return new MongoReader(config);
+            case "postgres":
+            case "postgresql":
+                return new PostgreSQLReader(config);
             default:
                 // No accepted database provided, throw InputMismatchException
                 throw new InputMismatchException(String.format("Database type of %s not recognized or not supported; cannot instantiate DBReader.",
