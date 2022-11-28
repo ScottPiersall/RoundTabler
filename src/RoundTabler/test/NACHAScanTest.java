@@ -49,10 +49,15 @@ public class NACHAScanTest {
     }
 
     @Test
-    public void getConfidenceLevelMatchTest75() {
+    public void getConfidenceLevelMatchTest33() {
         String databaseRow = "The ABA number of the customer is 000000000";
         int result = nachaScan.getConfidenceLevelMatch(databaseRow);
-        int expected = 75;
+        int expected = 33;
         assertEquals(expected, result);
+    }
+
+    @Test
+    public void checkListOfAbaNumbersNegativeTest(){
+        assertFalse(nachaScan.checkListOfAbaNumbers("RoundTabler"));
     }
 }
