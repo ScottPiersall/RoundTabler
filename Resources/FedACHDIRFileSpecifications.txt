@@ -1,0 +1,13 @@
+Fixed file format.
+
+
+Position		Description
+0-9			ABA
+35-70			NAME
+71-106			ADDRESS
+107-126			CITY
+127-128			STATE
+129-134			ZIPCODE
+138-140			AREA CODE
+141-143			EXCHANGE
+144-147			NUMBER
