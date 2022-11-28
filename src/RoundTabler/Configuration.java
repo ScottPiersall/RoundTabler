@@ -9,7 +9,7 @@ public class Configuration {
     private String type;
     private final String[] validScanTypes = { "all", "nacha", "pci"};
     private String dbType;
-    private final String[] validDbTypes = { "mysql", "mariadb", "mongo", "mongodb" };
+    private final String[] validDbTypes = { "mysql", "mariadb", "maria", "postgres", "postgresql", "mongo", "mongodb" };
     private String server;
     private String user;
     private String password;
