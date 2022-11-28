@@ -65,37 +65,36 @@ public class PCIScan {
 	 // DISCOVER			6				16
 	 // MASTER CARD         51 to 55		16
 	 // VISA				4				13 or 16
-     private CardType GetCardType( String matchString ){
-		CardType Result;
-		int CardLength;
-		Result = Undetermined;
-		CardLength = matchString.length();
+    private CardType GetCardType( String matchString ){
+                CardType Result;
+                int CardLength;
+                Result = CardType.Undetermined;
+                CardLength = matchString.length();
 
-		String firstChar;
-		firstchar = matchString(0,1);
+                String firstChar;
+                firstChar = matchString.substring(0,1);
 
-		select (firstChar){
+                switch (firstChar){
 
-			case "3" : {
-				String firstTwo;
-				firstTwo = matchString(0,2);
-				if ( CardLength == 15 ) {
-						select (firstTwo ) {
-							case "34": return Amex;
-							case "37" : return Amex;
-						} 
-				}
-			}
+                        case "3" : {
+                                String firstTwo;
+                                firstTwo = matchString.substring(0,2);
+                                if ( CardLength == 15 ) {
+                                                switch (firstTwo ) {
+                                                        case "34": return CardType.Amex;
+                                                        case "37" : return CardType.Amex;
+                                                }
+                                }
+                        }
 
-			case "4" : if (( CardLength == 13) || ( CardLength == 16 ) ) return Visa;
-			case "5" : if ( CardLength == 16 ) return MasterCard;
-			case "6" : if ( CardLength == 16 ) return Discover;
+                        case "4" : if (( CardLength == 13) || ( CardLength == 16 ) ) return CardType.Visa;
+                        case "5" : if ( CardLength == 16 ) return CardType.MasterCard;
+                        case "6" : if ( CardLength == 16 ) return CardType.Discover;
+                }
 
-		}
 
-
-		return Result;
-	 }
+                return Result;
+         }
 
 
 	// Confidence level rules:
@@ -129,16 +128,20 @@ public class PCIScan {
 				CardType thisCard;
 				thisCard = GetCardType( DatabaseRow.substring(CardNumberSequenceMatcher.start(), CardNumberSequenceMatcher.end( )));
 
-				select (thisCard ){
+				switch (thisCard ){
 
 					case Amex: result += 25;
 								pLastMatchDescription = pLastMatchDescription + "<BR>American Express Card Number";
+								break;
 					case Discover: result += 25;
 								pLastMatchDescription = pLastMatchDescription + "<BR>Discover Card Number";
+								break;
 					case MasterCard: results += 25;
 								pLastMatchDescription = pLastMatchDescription + "<BR>MasterCard Card Number";
+								break;
 					case Visa: results += 25;
 								pLastMatchDescription = pLastMatchDescription + "<BR>Visa Card Number";
+								break;
 					
 				}
 
