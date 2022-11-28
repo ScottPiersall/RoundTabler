@@ -25,6 +25,7 @@ public class ApplicationUtility {
      * @param character character inputted into converter
      * @return converted integer value of character
      */
+
     public static int charToInt(char character){
         /*
          * If the character imported is not a digit,
@@ -37,6 +38,7 @@ public class ApplicationUtility {
      * Forms an ArrayList of all ABA Numbers from the FedACHdir.txt file
      * @return list of all abaNumbers from file
      */
+
     public static HashSet<String> getABANumbersFromFile() {
         HashSet<String> abaNumbers = new HashSet<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("Resources/FedACHdir.txt"))) {

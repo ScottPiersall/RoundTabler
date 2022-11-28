@@ -46,6 +46,9 @@ echo To connect to each container using the instance name in place of an IP addr
 docker exec -d roundtabler javac RoundTabler/*.java
 docker exec -d roundtabler javac utility/*.java
 docker exec -d roundtabler javac RoundTabler/db/*.java
+
+docker cp ./nginx.conf roundtabler-web-1:/usr/share/nginx/html/conf/nginx.conf
+
 echo:
 echo:
 

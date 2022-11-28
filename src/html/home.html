@@ -11,11 +11,16 @@
             document.getElementById("refresh-button").addEventListener('click', refresh);
 
             function refresh(){
-                
-                console.log('refreshing items');
 
                 const parts = results.default.split("+");
+
+                console.log(results.default);
+
+                console.log(parts);
+
                 parts.map((file)=>{
+
+                    console.log(file);
 
                     if(file.length > 0 && document.getElementById(file) == null){
 

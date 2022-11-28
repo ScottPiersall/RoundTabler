@@ -47,6 +47,8 @@ docker exec -d -it roundtabler javac RoundTabler/*.java
 docker exec -d -it roundtabler javac utility/*.java
 docker exec -d -it roundtabler javac RoundTabler/db/*.java
 
+docker cp ./nginx.conf roundtabler-web-1:/usr/share/nginx/html/conf/nginx.conf
+
 # this is not done NEED TO FIX EXEC FOR .sh
 
 printf "\n\n"
