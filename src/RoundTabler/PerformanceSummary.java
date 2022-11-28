@@ -8,7 +8,7 @@ public class PerformanceSummary{
 
 	public PerformanceSummary(){
 		super();
-		}
+	}
 
 	public void addResult( RoundTabler.PerformanceResult NewResult) {
 		PerfResults.add( NewResult );
@@ -22,6 +22,10 @@ public class PerformanceSummary{
 			temp.append( PerfResults.get(Index).toString() + "\n");
 		}
 		return temp.toString();
+	}
+
+	public Boolean isEmpty() {
+		return PerfResults.isEmpty();
 	}
 
 }

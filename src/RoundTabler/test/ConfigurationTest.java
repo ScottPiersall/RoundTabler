@@ -75,17 +75,6 @@ public class ConfigurationTest {
     }
 
     @Test
-    public void setFileWorks(){
-
-        Configuration config = new Configuration();
-
-        config.setFile("D:/");
-
-        assertEquals("D:/", config.getFile());
-
-    }
-
-    @Test
     public void setTableWorks(){
 
         Configuration config = new Configuration();

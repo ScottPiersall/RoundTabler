@@ -5,14 +5,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.InputMismatchException;
 
+import static RoundTabler.RoundTable.WriteResultNameToJSFile;
+
 public class HTMLErrorOut {
 
 
-    public HTMLErrorOut(String filePath, String error){
-        addToErrorLog(filePath, error);
+    public HTMLErrorOut(String error){
+        addToErrorLog(error);
     }
 
-    private void addToErrorLog(String filePath, String error) {
+    private void addToErrorLog(String error) {
 
 
 
@@ -100,9 +102,11 @@ public class HTMLErrorOut {
 
             htmlWrite.close();
 
+            WriteResultNameToJSFile("errorLog.html");
+
             System.out.println();
             System.out.println("RoundTabler has encountered an error.");
-            System.out.println("Error information can be found in the error log file that was saved to the specified file path: " + filePath + "errorLog.html");
+            System.out.println("Error information can be found in the error log file at localhost8000/errorLog.html");
 
         }catch(IOException e){
 

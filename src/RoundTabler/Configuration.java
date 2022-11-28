@@ -14,7 +14,6 @@ public class Configuration {
     private String user;
     private String password;
     private String database;
-    private String file;
     private String table;
     private String port;
     public String missingParameter;
@@ -27,7 +26,6 @@ public class Configuration {
         this.user = "";
         this.password = "";
         this.database = "";
-        this.file = "";
         this.table = "";
     }
 
@@ -99,14 +97,6 @@ public class Configuration {
         return types.contains(this.dbType.toLowerCase());
     }
 
-    public String getFile() {
-        return this.file;
-    }
-
-    public void setFile(String file) {
-        this.file = file;
-    }
-
     public String getTable() {
         return this.table;
     }
@@ -121,7 +111,7 @@ public class Configuration {
     public boolean allFilled() throws IllegalAccessException {
 
         for(Field f : getClass().getDeclaredFields()) {
-            if (f.get(this) == "" && !f.getName().equals("file") && !f.getName().equals("table") && !f.getName().equals("port")) {
+            if (f.get(this) == ""  && !f.getName().equals("table") && !f.getName().equals("port")) {
                 this.missingParameter = f.getName();
                 return false;
             }
