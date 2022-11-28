@@ -136,8 +136,8 @@ public class CommonScan {
      */
     private String insertStrongEmphasisInto(String MatchedRow, int StartLocation, int EndLocation){
         StringBuilder tsb = new StringBuilder(MatchedRow);
-        tsb.insert(EndLocation, "</EM></STRONG>");
-        tsb.insert(StartLocation, "<STRONG><EM>");
+        tsb.insert(EndLocation, "</SPAN></EM></STRONG>");
+        tsb.insert(StartLocation, "<STRONG><EM><SPAN STYLE=\"background-color: #FFFF00\">");
         return tsb.toString();
     }
 }
