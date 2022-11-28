@@ -49,7 +49,7 @@ public class ApplicationUtilityTest {
     @Test
     public void readFileTest() {
         int expectedNumber = 19521;
-        ArrayList<String> abaNumbers = getABANumbersFromFile();
+        HashSet<String> abaNumbers = getABANumbersFromFile();
         assertEquals(expectedNumber,abaNumbers.size());
     }
 }
