@@ -15,7 +15,7 @@ public class NACHAScan{
     private int pLastMatchStart;
     private int pLastMatchEnd;
     private String pLastMatchDescription;
-    private final ArrayList<String> abaNumbersList = getABANumbersFromFile();
+    private final HashSet<String> abaNumbersList = getABANumbersFromFile();
 
     public NACHAScan(){
         super();
