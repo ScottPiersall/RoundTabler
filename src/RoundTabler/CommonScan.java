@@ -100,14 +100,12 @@ public class CommonScan {
                     currentResult.RowsMatched = 0;
                     currentResult.RowsScanned = rowsData.size();
                     currentResult.ScanStarted = LocalDateTime.now();
-
                     for (rowindex = 0; rowindex < rowsData.size(); rowindex++) {
                         currentRow = rowsData.get(rowindex);
-
                         if (i == 0) {
-                            currentConfidenceLevel = pciScan.getConfidenceLevelMatch(rowsData.get(rowindex));
+                            currentConfidenceLevel = pciScan.getConfidenceLevelMatch(currentRow);
                         } else if (i == 1) {
-                            currentConfidenceLevel = nachaScan.getConfidenceLevelMatch(rowsData.get(rowindex));
+                            currentConfidenceLevel = nachaScan.getConfidenceLevelMatch(currentRow);
                         }
 
                         if (currentConfidenceLevel > 0) {
