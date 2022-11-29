@@ -86,26 +86,19 @@ public class NACHAScan{
         int result = 0;
         boolean resultMatcher = abaNumberSequenceMatcher.find();
         // checks if the regex is found in the database row string
-        if (resultMatcher){
+        // and if the number found is a valid ABA number
+        if (resultMatcher && checkForValidABANumber(abaNumberSequenceMatcher.group())){
             // if found, confidence is increased to 33%
-            result += 33;
-            pLastMatchDescription = "9 Digit Number";
+            result += 50;
             pLastMatchStart = abaNumberSequenceMatcher.start();
             pLastMatchEnd = abaNumberSequenceMatcher.end();
-            // further checks if the number found is a valid ABA number
-            if (checkForValidABANumber(abaNumberSequenceMatcher.group())){
-                // if number is a valid ABA Number, confidence increased to 67%
-                result += 34;
+            pLastMatchDescription = "9 Digit and Passes Validation Function";
+            if (checkListOfAbaNumbers(abaNumberSequenceMatcher.group())){
+                // if number is a valid ABA Number on file list, confidence increased to 100%
+                result += 50;
                 pLastMatchStart = abaNumberSequenceMatcher.start();
                 pLastMatchEnd = abaNumberSequenceMatcher.end();
-                pLastMatchDescription = "9 Digit and Passes Validation Function";
-                if (checkListOfAbaNumbers(abaNumberSequenceMatcher.group())){
-                    // if number is a valid ABA Number on file list, confidence increased to 100%
-                    result += 33;
-                    pLastMatchStart = abaNumberSequenceMatcher.start();
-                    pLastMatchEnd = abaNumberSequenceMatcher.end();
-                    pLastMatchDescription = "9 Digit Number, Passes Validation Function, and is Valid ABA Number";
-                }
+                pLastMatchDescription = "9 Digit Number, Passes Validation Function, and is Valid ABA Number";
             }
         }
         return result;
