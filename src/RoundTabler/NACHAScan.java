@@ -17,6 +17,12 @@ public class NACHAScan{
     private String pLastMatchDescription;
     private final HashSet<String> abaNumbersList = getABANumbersFromFile();
 
+
+    // We will not scan any rows less than NACHAScanMinLength
+    private int NACHAScanMinLength = 9;
+
+
+
     public NACHAScan(){
         super();
         this.psbResults = new StringBuilder();
@@ -78,6 +84,11 @@ public class NACHAScan{
      */
 
     public int getConfidenceLevelMatch(String databaseRow){
+
+		if ( databaseRow.length() < NACHAScanMinLength ) {
+            return 0;
+        }
+
         String ABANumberSequenceRegex = "\\b[0-9]{9}\\b";
         Pattern ABANumberPattern = Pattern.compile(ABANumberSequenceRegex);
 
@@ -92,13 +103,13 @@ public class NACHAScan{
             result += 50;
             pLastMatchStart = abaNumberSequenceMatcher.start();
             pLastMatchEnd = abaNumberSequenceMatcher.end();
-            pLastMatchDescription = "9 Digit and Passes Validation Function";
+            pLastMatchDescription = "9 Digits<BR>Passes Validation Function";
             if (checkListOfAbaNumbers(abaNumberSequenceMatcher.group())){
                 // if number is a valid ABA Number on file list, confidence increased to 100%
                 result += 50;
                 pLastMatchStart = abaNumberSequenceMatcher.start();
                 pLastMatchEnd = abaNumberSequenceMatcher.end();
-                pLastMatchDescription = "9 Digit Number, Passes Validation Function, and is Valid ABA Number";
+                pLastMatchDescription = "9 Digit Number<BR>Passes Validation Function<BR>Valid ABA Number";
             }
         }
         return result;
