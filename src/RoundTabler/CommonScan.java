@@ -6,7 +6,6 @@ import RoundTabler.db.SchemaItems;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class CommonScan {
