@@ -56,6 +56,9 @@ public class CommonScan {
             int WorkSize;
             WorkSize = tablesAndColumns.size() * ( endIteration + 1 );
             int StepCount = 0;
+            String progressBar = "|";
+            System.out.println("\nSCANNING...");
+            System.out.println();
             while (i <= endIteration) {
                 int index;
                 String scanType = "";
@@ -68,7 +71,16 @@ public class CommonScan {
                     PercentCompleted = ( StepCount * 100 ) / WorkSize;
                     if ( ( PercentCompleted - PreviousPercentCompleted)  >= 10 ) {
                         PreviousPercentCompleted = ( PercentCompleted / 10 ) * 10;
-                        System.out.println( String.format("%d", PreviousPercentCompleted) + "% Completed");
+                        progressBar += "##";
+                        //System.out.println( String.format("%d", PreviousPercentCompleted) + "% Completed");
+                        if(PreviousPercentCompleted != 100) {
+                            System.out.print(progressBar + "|\r");
+                            System.out.print("\t\t\t" + PreviousPercentCompleted + "%\r");
+                        }
+                        else{
+                            System.out.println("|####################| 100%");
+
+                        }
                     }
 
                     ArrayList<String> rowsData;

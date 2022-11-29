@@ -8,19 +8,20 @@
 
             window.addEventListener('load', refresh);
 
-            document.getElementById("refresh-button").addEventListener('click', refresh);
+            document.getElementById("refresh-button").addEventListener('click', reload);
+
+            function reload(){
+                window.location.reload();
+            }
 
             function refresh(){
 
+                console.log('refreshing items');
+
                 const parts = results.default.split("+");
 
-                console.log(results.default);
-
-                console.log(parts);
 
                 parts.map((file)=>{
-
-                    console.log(file);
 
                     if(file.length > 0 && document.getElementById(file) == null){
 
@@ -115,10 +116,10 @@
                 <ul>
                     <li style="padding-block: 5px;">Easy scanning of columns</li>
                     <li style="padding-block: 5px;">Low false-positives</li>
-                    <li style="padding-block: 5px;">Avoids bad outcome (we do not certify databases with unencrypted data)</li>
+                    <li style="padding-block: 5px;">Avoid bad outcomes (RoundTabler does not certify databases with unencrypted data)</li>
                     <li style="padding-block: 5px;">Reported data includes confidence scores</li>
-                    <li style="padding-block: 5px;">Quick Deployment Option</li>
-                    <li style="padding-block: 5px;">Deployable via a docker</li>
+                    <li style="padding-block: 5px;">Quick Deployment!</li>
+                    <li style="padding-block: 5px;">Deployable via a Docker Container with an included Application Stack</li>
                 </ul>
             <h3 style="font-size: 1.75em;">Developers:</h3>
                 <ul>
