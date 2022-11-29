@@ -52,7 +52,7 @@ public class NACHAScanTest {
     public void getConfidenceLevelMatchTest33() {
         String databaseRow = "The ABA number of the customer is 000000000";
         int result = nachaScan.getConfidenceLevelMatch(databaseRow);
-        int expected = 33;
+        int expected = 0;
         assertEquals(expected, result);
     }
 
