@@ -35,14 +35,7 @@ public class CommonScan {
         nDBReader = databaseReader;
     }
 
-    public void scanMariaDB(String typeOfScan) throws SQLException {
-
-        if (nScanConfiguration.getDbType().toUpperCase().compareTo("MARIADB") != 0) {
-            new HTMLErrorOut("Database Type Mismatch. Database Type Configuration "
-                    + nScanConfiguration.getDbType() + " cannot be used with a MariaDB Database");
-            throw new SQLException();
-        }
-
+    public void scanDB(String typeOfScan) throws SQLException {
         int currentConfidenceLevel = 0;
         String currentTable;
         String currentColumn;
@@ -107,14 +100,12 @@ public class CommonScan {
                     currentResult.RowsMatched = 0;
                     currentResult.RowsScanned = rowsData.size();
                     currentResult.ScanStarted = LocalDateTime.now();
-
                     for (rowindex = 0; rowindex < rowsData.size(); rowindex++) {
                         currentRow = rowsData.get(rowindex);
-
                         if (i == 0) {
-                            currentConfidenceLevel = pciScan.getConfidenceLevelMatch(rowsData.get(rowindex));
+                            currentConfidenceLevel = pciScan.getConfidenceLevelMatch(currentRow);
                         } else if (i == 1) {
-                            currentConfidenceLevel = nachaScan.getConfidenceLevelMatch(rowsData.get(rowindex));
+                            currentConfidenceLevel = nachaScan.getConfidenceLevelMatch(currentRow);
                         }
 
                         if (currentConfidenceLevel > 0) {

@@ -62,26 +62,19 @@ public class JDBCUser extends DBReader {
         ResultSet rs = null;
 
         try {
-            Statement select = this.conn.createStatement();
+            Statement select = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             String queryString = String.format("SELECT %s FROM %s.%s WHERE %s IS NOT NULL AND LENGTH(%s) > 5",
                                                        item.getColumnName(), this.config.getDatabase(), item.getTableName(), item.getColumnName(), item.getColumnName() );
 
             rs = select.executeQuery(queryString);
 
-            // If rs successfully produced results, then we iterate through it
-            if (rs != null) {
-                while (rs.next()) {
-                    // Column data per row
-                    columnData.add(rs.getString(1));
-                }
-            }
+            // If rs successfully produced results, then we return an iterable for it
+            return new SmartIterable(rs);
         }
         catch (SQLException e) {
             new HTMLErrorOut("Error in SQL execution: " + e);
             return null;
         }
-
-        return columnData;
     }
 
     // Using the passed connection string, attempts to initiate a connection
@@ -104,7 +97,7 @@ public class JDBCUser extends DBReader {
         stmtString.append("AND TABLE_SCHEMA=?");
         if (!config.getTable().isBlank()) { stmtString.append(" AND TABLE_NAME=?"); }
 
-        buildSchema = conn.prepareStatement(stmtString.toString());
+        buildSchema = conn.prepareStatement(stmtString.toString(), ResultSet.TYPE_SCROLL_SENSITIVE);
         buildSchema.setString(1, config.getDatabase()); 
         if (!config.getTable().isBlank()) { buildSchema.setString(2, config.getTable()); }
     }
