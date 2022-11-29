@@ -35,7 +35,7 @@ public class CommonScan {
         nDBReader = databaseReader;
     }
 
-    public void scanMariaDB(String typeOfScan) throws SQLException {
+    public void scanDB(String typeOfScan) throws SQLException {
         int currentConfidenceLevel = 0;
         String currentTable;
         String currentColumn;

@@ -98,7 +98,7 @@ public class RoundTable {
 
             CommonScan scan = new CommonScan(config, SummaryOfPerformance, SummaryOfScans, reader);
             try {
-                scan.scanMariaDB(scanType);
+                scan.scanDB(scanType);
             } catch (SQLException sqlex) {
                 return -1;
             }
