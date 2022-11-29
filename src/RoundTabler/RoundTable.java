@@ -235,6 +235,10 @@ public class RoundTable {
 
 
         sbHTML.append( Performance.toString() );
+        sbHTML.append( Performance.getSummaryRow() );
+    
+
+
         sbHTML.append("</TABLE><BR><BR>");
 
         sbHTML.append("</CENTER></div></BODY></HTML>");
