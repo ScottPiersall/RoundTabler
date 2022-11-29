@@ -27,6 +27,8 @@ public class PCIScan {
 	private int pLastMatchEnd;
 	private String pLastMatchDescription;
 
+	// We will not scan any rows less than PCIScanMinLength
+	private int PCIScanMinLength = 8;
 
 	public enum CardType {
 			Amex, Discover, MasterCard, Visa, Undetermined
@@ -109,6 +111,12 @@ public class PCIScan {
 	public int getConfidenceLevelMatch(String DatabaseRow ) {
 		int result = 0;
 		
+		if ( DatabaseRow.length() < PCIScanMinLength ) {
+				return 0;
+		}
+
+
+
 		Matcher CardNumberSequenceMatcher = CardNumberPattern.matcher( DatabaseRow );
 
 		// If we find what looks like a card sequence, make the confidence 75
