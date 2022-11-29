@@ -36,15 +36,37 @@ public class PerformanceResult{
 	
 	public String toString(){
 		this.CalculatePerformance();
+
+
+		if ( RowsMatched > 0 ) {
+			// Yellow background with
+			// emphasized text for a performance result with
+			// at least one Row match
+			return 
+				"<TR><TD><STRONG><EM><SPAN STYLE=\"background-color: #FFFF00\">" + TableName + "</SPAN></EM></STRONG></TD>" +
+	    		"<TD><STRONG><EM><SPAN STYLE=\"background-color: #FFFF00\">" + TableColumn + "</SPAN></EM></STRONG></TD>"+
+				"<TD><STRONG><EM><SPAN STYLE=\"background-color: #FFFF00\">" + MatchType + "</SPAN></EM></STRONG></TD>"+
+				"<TD ALIGN=\"RIGHT\"><STRONG><EM><SPAN STYLE=\"background-color: #FFFF00\">" + String.format("%,d", RowsScanned ) + "</SPAN></EM></STRONG></TD>" +
+				"<TD ALIGN=\"RIGHT\"><STRONG><EM><SPAN STYLE=\"background-color: #FFFF00\">" + String.format("%,d", RowsMatched )+ "</SPAN></EM></STRONG></TD>" +
+				"<TD ALIGN=\"RIGHT\"><STRONG><EM><SPAN STYLE=\"background-color: #FFFF00\">" + String.format("%.0f", RowsPerSecond ) + "</SPAN></EM></STRONG></TD>" + 
+		
+				"</TR>";
+
+		}
+		else {		
+
+
 	return 
 	"<TR><TD>" + TableName + "</TD>" +
 	    "<TD>" + TableColumn + "</TD>"+
 		"<TD>" + MatchType + "</TD>"+
 		"<TD ALIGN=\"RIGHT\">" + String.format("%,d", RowsScanned ) + "</TD>" +
 		"<TD ALIGN=\"RIGHT\">" + String.format("%,d", RowsMatched )+ "</TD>" +
-		"<TD ALIGN=\"RIGHT\">" + String.format("%.2f", RowsPerSecond ) + "</TD>" + 
+		"<TD ALIGN=\"RIGHT\">" + String.format("%.0f", RowsPerSecond ) + "</TD>" + 
 		
 		"</TR>";
+
+		}
 
 	}
 

@@ -60,12 +60,24 @@ public class CommonScan {
                 endIteration = 1;
             }
             tablesAndColumns = nDBReader.getSchemaItems();
+            int WorkSize;
+            WorkSize = tablesAndColumns.size() * ( endIteration + 1 );
+            int StepCount = 0;
             while (i <= endIteration) {
                 int index;
                 String scanType = "";
+                int PercentCompleted = 0;
+                int PreviousPercentCompleted = 0;
                 for (index = 0; index < tablesAndColumns.size(); index++) {
+                    StepCount += 1;
                     currentTable = tablesAndColumns.get(index).getTableName();
                     currentColumn = tablesAndColumns.get(index).getColumnName();
+                    PercentCompleted = ( StepCount * 100 ) / WorkSize;
+                    if ( ( PercentCompleted - PreviousPercentCompleted)  >= 10 ) {
+                        PreviousPercentCompleted = ( PercentCompleted / 10 ) * 10;
+                        System.out.println( String.format("%d", PreviousPercentCompleted) + "% Completed");
+                    }
+
                     ArrayList<String> rowsData;
                     rowsData = nDBReader.readColumn(tablesAndColumns.get(index));
                     int rowindex;
