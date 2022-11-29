@@ -207,7 +207,7 @@ public class RoundTable {
 
         if(Scans.toString().length() != 0) {
 
-            sbHTML.append("<center><TABLE style=\"font-family: 'monospace', sans-serif;\" BORDER=\"2\">");
+            sbHTML.append("<center><TABLE style=\"font-family: 'monospace', sans-serif;\" BORDER=\"2\" WIDTH=\"95%\">");
             sbHTML.append("<TR><TH>Table Name</TH>" +
                     "<TH>Table Column</TH>" +
                     "<TH>Match Type</TH>" +
@@ -225,7 +225,7 @@ public class RoundTable {
 
         sbHTML.append("<h2>Scan Performance Summary:</h2><BR><CENTER>\n");
 
-        sbHTML.append("<TABLE style=\"font-family: 'monospace', sans-serif;\"  BORDER=\"2\">");
+        sbHTML.append("<TABLE style=\"font-family: 'monospace', sans-serif;\"  BORDER=\"2\" WIDTH=\"95%\">");
         sbHTML.append("<TR><TH>Table Name</TH>" +
         "<TH>Column Name</TH>"+
         "<TH>Scan Type</TH>"+
