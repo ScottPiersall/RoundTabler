@@ -63,8 +63,8 @@ public class JDBCUser extends DBReader {
 
         try {
             Statement select = this.conn.createStatement();
-            String queryString = String.format("SELECT %s FROM %s.%s WHERE %s IS NOT NULL",
-                                                       item.getColumnName(), this.config.getDatabase(), item.getTableName(), item.getColumnName());
+            String queryString = String.format("SELECT %s FROM %s.%s WHERE %s IS NOT NULL AND LENGTH(%s) > 5",
+                                                       item.getColumnName(), this.config.getDatabase(), item.getTableName(), item.getColumnName(), item.getColumnName() );
 
             rs = select.executeQuery(queryString);
 
