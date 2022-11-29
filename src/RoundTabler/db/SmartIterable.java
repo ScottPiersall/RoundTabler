@@ -28,16 +28,21 @@ public class SmartIterable extends ArrayList<String> {
         this.cache.clear();
     
         try {
+            if (this.queryResults.isClosed())
+                return false;
+
             if (this.queryResults.next()) {
                 do {
                     this.cache.add(this.queryResults.getString(1));
                 } while (this.queryResults.next() && this.cache.size() <= MAX_ENTRIES);
             }
-            else
+            else {
+                this.queryResults.close();
                 return false;
+            }
         }
         catch (SQLException sqlex) {
-            new HTMLErrorOut("Error in SQL Execution: " + sqlex);
+            new HTMLErrorOut("Error in SQL Execution:" + sqlex);
             return false;
         }
 
@@ -50,6 +55,9 @@ public class SmartIterable extends ArrayList<String> {
         int lastRow = 0;
 
         try {
+            if (this.queryResults.isClosed())
+                return 0;
+
             int currentRow = this.queryResults.getRow();
             this.queryResults.last();
             lastRow = this.queryResults.getRow();
@@ -74,7 +82,7 @@ public class SmartIterable extends ArrayList<String> {
             readNextBatch();
         }
 
-        if (index % MAX_ENTRIES >= this.cache.size() || this.cache.size() == 0) {
+        if (index % MAX_ENTRIES >= this.cache.size()) {
             return "";
         }
 
