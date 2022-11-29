@@ -106,7 +106,9 @@ public class HTMLErrorOut {
 
             System.out.println();
             System.out.println("RoundTabler has encountered an error.");
-            System.out.println("Error information can be found in the error log file at localhost8000/errorLog.html");
+            System.out.println();
+            System.out.println("Error information can be found in the error log file at localhost:8000/errorLog.html");
+            System.out.println();
 
         }catch(IOException e){
 

@@ -90,7 +90,7 @@ public class RoundTable {
             System.out.println("ALL REQUIRED PARAMETERS FULFILLED...");
 
             System.out.println();
-            System.out.println("INITIALIZING DATABASE CONNECTION");
+            System.out.println("INITIALIZING DATABASE CONNECTION...");
 
             reader = ReaderMaker.getReader(config);
 
@@ -268,10 +268,11 @@ public class RoundTable {
             BufferedWriter writer = new BufferedWriter( fileW )
         ) {
             writer.write(sbHTML.toString() );
-            System.out.println("DEBUG: Results written to " +  saveFileName );
+            System.out.println("\nResults written to localhost:8000/" +  saveFileName );
         }
         catch (Exception ex ){
-            System.out.println("Could not create results files " + ex);
+            //System.out.println("Could not create results files " + ex);
+            new HTMLErrorOut("Could not create result file " + ex);
         }
 
         WriteResultNameToJSFile(saveFileName);
