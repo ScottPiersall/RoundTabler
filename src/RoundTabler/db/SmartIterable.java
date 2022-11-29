@@ -34,7 +34,7 @@ public class SmartIterable extends ArrayList<String> {
             if (this.queryResults.next()) {
                 do {
                     this.cache.add(this.queryResults.getString(1));
-                } while (this.queryResults.next() && this.cache.size() <= MAX_ENTRIES);
+                } while (this.cache.size() < MAX_ENTRIES && this.queryResults.next());
             }
             else {
                 this.queryResults.close();
@@ -62,7 +62,7 @@ public class SmartIterable extends ArrayList<String> {
             this.queryResults.last();
             lastRow = this.queryResults.getRow();
 
-            // Reset
+            // Reset position
             this.queryResults.absolute(currentRow);
         }
         catch (SQLException sqlex) {
@@ -82,10 +82,10 @@ public class SmartIterable extends ArrayList<String> {
             readNextBatch();
         }
 
-        if (index % MAX_ENTRIES >= this.cache.size()) {
-            return "";
+        if (index % MAX_ENTRIES < this.cache.size()) {
+            return this.cache.get(index % MAX_ENTRIES);
         }
 
-        return this.cache.get(index % MAX_ENTRIES);
+        return "";
     }
 }
