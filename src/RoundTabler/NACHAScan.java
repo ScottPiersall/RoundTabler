@@ -88,7 +88,7 @@ public class NACHAScan extends GenericScan {
     */
     public int getConfidenceLevelMatch( String databaseRow ) {
 
-		if ( databaseRow.length() < NACHAScanMinLength ) {
+        if ( databaseRow.length() < NACHAScanMinLength ) {
             return 0;
         }
 

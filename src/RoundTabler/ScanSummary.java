@@ -8,25 +8,25 @@ import java.util.ArrayList;
 
 public class ScanSummary{
 
-	private ArrayList<RoundTabler.ScanResult> ScannerResults = new ArrayList<RoundTabler.ScanResult>();
+    private ArrayList<RoundTabler.ScanResult> ScannerResults = new ArrayList<RoundTabler.ScanResult>();
 
-	public ScanSummary() {
-		super();
-	}
+    public ScanSummary() {
+        super();
+    }
 
-	public void addResult( RoundTabler.ScanResult NewResult ) {
-		ScannerResults.add( NewResult );
-	}
+    public void addResult( RoundTabler.ScanResult NewResult ) {
+        ScannerResults.add( NewResult );
+    }
 
-	public String toString() {
-		StringBuilder temp;
-		int index;
-		temp = new StringBuilder();
-		
-		for( index=0; index < ScannerResults.size(); index++ ){
-			temp.append( ScannerResults.get(index).toString() + "\n" );
-		}
+    public String toString() {
+        StringBuilder temp;
+        int index;
+        temp = new StringBuilder();
+        
+        for( index=0; index < ScannerResults.size(); index++ ){
+            temp.append( ScannerResults.get(index).toString() + "\n" );
+        }
 
-		return temp.toString();
-	}
+        return temp.toString();
+    }
 }
