@@ -42,7 +42,6 @@ public class PerformanceResult {
 	public String toString() {
 		this.CalculatePerformance();
 
-
 		if ( RowsMatched > 0 ) {
 			// Yellow background with
 			// emphasized text for a performance result with
