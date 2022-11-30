@@ -24,6 +24,12 @@ echo Stopped any existing roundtabler instance
 docker rm roundtabler
 printf "Removed any existing roundtabler instance\n\n"
 
+# Create our network if it does not exist, first testing for existence
+# Uses bash behavior similar to short circuiting in other languages
+# Pipes output to nowhere since that does not matter, just checking existence
+# docker network inspect roundtabler_default >/dev/null 2>&1 || docker network create roundtabler_default
+# printf "Created Docker network"
+
 docker-compose-v1 -f mariadbstack.yml up -d
 printf "Started Docker Application stack with Mariadb database and Adminer for Browser connection ability\n"
 
@@ -37,19 +43,14 @@ docker run -d -t --name roundtabler --mount type=bind,source="$(pwd)",target=/Ro
 
 printf "\n\n"
 
-docker network connect roundtablerproject_default roundtabler
-echo Added roundtabler container to roundtablerproject_default
+docker network connect roundtabler_default roundtabler
+echo Added roundtabler container to roundtabler_default
 echo To connect to each container using the instance name in place of an IP address
 
-# this is not done NEED TO FIX EXEC FOR .sh
-
-docker exec -d -it roundtabler javac RoundTabler/*.java
-docker exec -d -it roundtabler javac utility/*.java
-docker exec -d -it roundtabler javac RoundTabler/db/*.java
+# Compile the program; this should work on any relatively recent distro
+docker exec -d -it roundtabler javac ./src/**/*.java ./src/RoundTabler/db/*.java
 
 docker cp ./nginx.conf roundtabler-web-1:/etc/nginx/nginx.conf
-
-# this is not done NEED TO FIX EXEC FOR .sh
 
 printf "\n\n"
 
