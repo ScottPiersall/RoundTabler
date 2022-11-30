@@ -73,16 +73,16 @@ RoundTabler requires you to have a working version of Docker on your machine.
     * `git clone https://github.com/ScottPiersall/RoundTabler.git`
 
 2. Navigate to the cloned directory: `cd RoundTabler`
-3. Make the `LaunchRoundTablerInstance` script executable if necessary
+3. Make the `LinuxLaunchRoundTablerTestingNetwork` script executable if necessary
 
-    * `chmod +x LaunchRoundTablerInstance`
+    * `chmod +x LinuxLaunchRoundTablerTestingNetwork`
 
-4. Execute the `LaunchRoundTablerInstance` script as a user with necessary Docker permissions
+4. Execute the `LinuxLaunchRoundTablerTestingNetwork` script as a user with necessary Docker permissions
 
     * e.g. `sudo su` for a superuser
-    * `./LinuxLaunchRoundTablerInstance`
+    * `./LinuxLaunchRoundTablerTestingNetwork`
 
-5. Attach to the container with an interactive prompt OR set your host CLASSPATH
+5. Attach to the container with an interactive prompt **OR** set your host CLASSPATH to that seen in the `Dockerfile`
 
     * `docker exec -it roundtabler /bin/bash`
 
