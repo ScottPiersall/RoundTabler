@@ -1,19 +1,16 @@
 package RoundTabler.db;
 
-import org.bson.BsonDocument;
-import org.bson.Document;
-import org.bson.BsonInt64;
-import org.bson.conversions.Bson;
-import com.mongodb.MongoException;
-import com.mongodb.client.*;
-
 import java.sql.SQLException;
-import RoundTabler.Configuration;
-import RoundTabler.HTMLErrorOut;
-
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Objects;
+
+import org.bson.Document;
+import com.mongodb.MongoException;
+import com.mongodb.client.*;
+
+import RoundTabler.Configuration;
+import RoundTabler.HTMLErrorOut;
 
 /*
  * MongoDB database reader
@@ -27,7 +24,7 @@ public class MongoReader extends DBReader {
     // Collection of "collections" for use when searching, so we don't have to retrieve the collection so often
     private HashMap<String, MongoCollection<Document>> collections = new HashMap<>();
 
-    public MongoReader(Configuration config) throws ClassNotFoundException, SQLException {
+    public MongoReader( Configuration config ) throws ClassNotFoundException, SQLException {
         super(config);
 
         // Check for Java driver; if fails, throw ClassNotFoundException
@@ -44,7 +41,7 @@ public class MongoReader extends DBReader {
         try {
             conn = MongoClients.create(dbUri);
         }
-        catch (MongoException me) {
+        catch ( MongoException me ) {
             // Convert the MongoException to an SQLException to be handled later
             throw new SQLException(me);
         }
@@ -52,7 +49,7 @@ public class MongoReader extends DBReader {
 
     public Boolean readSchema() { 
         // If we have already read the schema with this reader, then disallow future reads
-        if (!schemaItems.isEmpty())
+        if ( !schemaItems.isEmpty() )
             return true;
 
         MongoDatabase db = conn.getDatabase(this.config.getDatabase());
@@ -64,12 +61,12 @@ public class MongoReader extends DBReader {
         // Have to keep in mind the table argument passed here, if it was given
         // Many simplifications are performed to dumb results down to string values that are easily represented
         for (Document doc : collections) {
-            if (!this.config.getTable().isBlank() && !Objects.equals(doc.get("name").toString(), this.config.getTable()) || doc.isEmpty())
+            if ( !this.config.getTable().isBlank() && !Objects.equals(doc.get("name").toString(), this.config.getTable()) || doc.isEmpty() )
                 continue;
 
-            MongoCollection<Document> collection = db.getCollection(doc.getString("name"));
+            MongoCollection<Document> collection = db.getCollection( doc.getString("name") );
 
-            this.collections.put(doc.getString("name"), collection); // "Cache" the collection reference
+            this.collections.put( doc.getString("name"), collection ); // "Cache" the collection reference
 
             // Retrieve the first object in this collection to find the column names
             // Since we check for emptiness earlier, this should always work
@@ -78,19 +75,19 @@ public class MongoReader extends DBReader {
 
             // The set of keys are the column names for this collection(table)
             // Naively assume that the type is always string (at least for now)
-            for (String key : first.keySet()) {
+            for ( String key : first.keySet() ) {
                 // Skip the _id column: our scans should never uncover useful information there
-                if (Objects.equals(key, "_id")) {
+                if ( Objects.equals(key, "_id") ) {
                     continue;
                 }
 
                 // TableName, ColumnName, DataType
-                schemaItems.Add(doc.get("name").toString(), key, "varchar");
+                schemaItems.Add( doc.get("name").toString(), key, "varchar" );
             }
         }
 
         // We found nothing to scan, throw an error
-        if (this.collections.isEmpty()) {
+        if ( this.collections.isEmpty() ) {
             new HTMLErrorOut("Error in fetching the schema: no data found. Please check your --database or --table arguments, as well as if the passed user has access to this database.");
             return false;
         }
@@ -98,21 +95,21 @@ public class MongoReader extends DBReader {
         return true;
     }
 
-    public java.util.ArrayList<String> readColumn(SchemaItem item) { 
+    public java.util.ArrayList<String> readColumn( SchemaItem item ) { 
         ArrayList<String> columnData = new ArrayList<String>();
 
         // Retrieve the relevant collection from our cache
-        MongoCollection<Document> collection = this.collections.get(item.getTableName());
+        MongoCollection<Document> collection = this.collections.get( item.getTableName() );
 
         // Read all objects from the collection with the property name of this item
         // Recovers one string per-document, similar to a relational database
-        for (Document doc : collection.find()) {
+        for ( Document doc : collection.find() ) {
             // If not empty, add it to the list to check (same as NULL check for MySQL)
             // Some strange behavior with the library makes get().toString() have different results than getString()
-            if (doc.get(item.getColumnName()).toString().isEmpty())
+            if ( doc.get(item.getColumnName()).toString().isEmpty() )
                 continue;
 
-            columnData.add(doc.get(item.getColumnName()).toString());
+            columnData.add( doc.get(item.getColumnName()).toString() );
         }
 
         return columnData;

@@ -38,7 +38,7 @@ public class SchemaItems{
 	}
 
 	// Mimics the ArrayList get function (kinda proxies it)
-	public SchemaItem get(int index) {
+	public SchemaItem get( int index ) {
 		return this.SchemaItemResults.get(index);
 	}
 }

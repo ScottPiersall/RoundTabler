@@ -8,23 +8,30 @@ public class SchemaItem{
 	private String pColumnDataType;
 	
 	// Constructor for database types without explicit column types
-	public SchemaItem( String TableName, String ColumnName){
+	public SchemaItem( String TableName, String ColumnName ) {
 		this.pTableName = TableName;
 		this.pColumnName = ColumnName;
 	}
 
-	public SchemaItem( String TableName, String ColumnName, String DataType ){
+	public SchemaItem( String TableName, String ColumnName, String DataType ) {
 		this.pTableName = TableName;
 		this.pColumnName = ColumnName;
 		this.pColumnDataType = DataType;
 	}
 
-	public String getTableName() { return this.pTableName; }
-	public String getColumnName() { return this.pColumnName; }
-	public String getColumnType() { return this.pColumnDataType; }
+	public String getTableName() {
+		return this.pTableName;
+	}
+
+	public String getColumnName() {
+		return this.pColumnName;
+	}
+	public String getColumnType() {
+		return this.pColumnDataType;
+	}
 
 	@Override
 	public String toString() {
-		return String.format("(%s, %s)", this.pTableName, this.pColumnName);
+		return String.format( "(%s, %s)", this.pTableName, this.pColumnName );
 	}
 }

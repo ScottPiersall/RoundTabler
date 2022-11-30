@@ -1,15 +1,15 @@
 package RoundTabler.db;
 
-import RoundTabler.Configuration;
-
 import java.sql.SQLException;
 import java.util.InputMismatchException;
+
+import RoundTabler.Configuration;
 
 // DBReader factory
 public class ReaderMaker {
     // Return the reader created by this
     static public DBReader getReader(Configuration config) throws ClassNotFoundException, SQLException, InputMismatchException {
-        switch (config.getDbType().toLowerCase()) {
+        switch ( config.getDbType().toLowerCase() ) {
             case "mysql":
                 return new MySQLReader(config);
             case "maria":
