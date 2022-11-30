@@ -12,9 +12,9 @@ public class ApplicationUtility {
      * Function that defines if a string value is a number or not
      * @param strNum String numerical value
      * @return boolean whether the value is a number or not
-     */
-    public static boolean isNumeric(String strNum) {
-        if (strNum == null || strNum.trim().equals("")) {
+    */
+    public static boolean isNumeric( String strNum ) {
+        if ( strNum == null || strNum.trim().equals("") ) {
             return false;
         }
         else {
@@ -26,9 +26,8 @@ public class ApplicationUtility {
      * Converts a character into an int
      * @param character character inputted into converter
      * @return converted integer value of character
-     */
-
-    public static int charToInt(char character){
+    */
+    public static int charToInt( char character ){
         /*
          * If the character imported is not a digit,
          * then a NumberFormatException is thrown
@@ -39,26 +38,27 @@ public class ApplicationUtility {
     /**
      * Forms an ArrayList of all ABA Numbers from the FedACHdir.txt file
      * @return list of all abaNumbers from file
-     */
-
+    */
     public static HashSet<String> getABANumbersFromFile() {
         HashSet<String> abaNumbers = new HashSet<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("../Resources/FedACHdir.txt"))) {
+        
+        try ( BufferedReader reader = new BufferedReader( new FileReader("../Resources/FedACHdir.txt") ) ) {
             boolean keepGoing = true;
             do {
                 String currentLine = reader.readLine();
-                if (currentLine == null || currentLine.trim().equals("")){
+                if ( currentLine == null || currentLine.trim().equals("") ){
                     keepGoing = false;
                 }
                 else {
                     String abaNumber = currentLine.substring(0,9);
                     abaNumbers.add(abaNumber);
                 }
-            } while (keepGoing);
-        } catch (IOException e) {
-            System.out.println("Throwing here");
-            e.printStackTrace();
+            } while ( keepGoing );
+        } 
+        catch ( IOException e ) {
+            new HTMLErrorOut("Unable to read FedACHDir.txt");
         }
+
         return abaNumbers;
     }
 }
