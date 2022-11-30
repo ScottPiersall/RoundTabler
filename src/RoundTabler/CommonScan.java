@@ -18,7 +18,6 @@ public class CommonScan {
     NACHAScan nachaScan = new NACHAScan();
     PCIScan pciScan = new PCIScan();
 
-    private Configuration nScanConfiguration;
     private PerformanceSummary nPerformanceScan;
     private ScanSummary pScanSummary;
     private StringBuilder nsbResults;
@@ -31,10 +30,9 @@ public class CommonScan {
         nsbResults.append("\n");
     }
 
-    public CommonScan( Configuration scanConfiguration, PerformanceSummary performanceSummary,
+    public CommonScan( PerformanceSummary performanceSummary,
                      ScanSummary scans, DBReader databaseReader ) {
         this();
-        nScanConfiguration = scanConfiguration;
         nPerformanceScan = performanceSummary;
         pScanSummary = scans;
         nDBReader = databaseReader;

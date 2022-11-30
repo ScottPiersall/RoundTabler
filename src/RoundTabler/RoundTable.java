@@ -1,14 +1,13 @@
 package RoundTabler;
 
-import RoundTabler.db.DBReader;
-import RoundTabler.db.ReaderMaker;
-
 import java.io.*;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import RoundTabler.db.DBReader;
+import RoundTabler.db.ReaderMaker;
 
 public class RoundTable {
 
@@ -25,10 +24,8 @@ public class RoundTable {
         PerformanceSummary SummaryOfPerformance = new PerformanceSummary();
         ScanSummary SummaryOfScans = new ScanSummary();
 
-        try{
-
+        try {
             //Iterate through all args given through the command line.
-
             for (String elem : args) {
                 String[] argParts = elem.split("=");
 
@@ -45,101 +42,96 @@ public class RoundTable {
                                     "\nOPTIONAL PARAMETERS:\n" +
                                     "\t--table= Specify one table you would like to have scanned instead of the entire database\n"
                     );
+
                     return -1;
                 }
 
-                //If any parameters are left empty i.e. "--server=" then throw exception and stop.
-                if(argParts.length == 1)throw(new InputMismatchException("Must provide an argument for parameter flag: " + argParts[0].replace("--", "")));
+                // If any parameters are left empty i.e. "--server=" then throw exception and stop.
+                if ( argParts.length == 1 )
+                    throw new InputMismatchException( "Must provide an argument for parameter flag: " + argParts[0].replace("--", "") );
 
-                //Initialize Config fields for easy access to all arguments needed for execution.
-                switch (argParts[0]) {
+                // Initialize Config fields for easy access to all arguments needed for execution.
+                switch ( argParts[0] ) {
                     case "--type":
-                        config.setType(argParts[1]);
-                        if(!config.validateScanType())throw (new InputMismatchException("Invalid scan type of: " + argParts[1] + "."));
+                        config.setType( argParts[1] );
+                        if ( !config.validateScanType() )
+                            throw new InputMismatchException( "Invalid scan type of: " + argParts[1] + "." );
                         break;
                     case "--dbtype":
-                        config.setDbType(argParts[1]);
-                        if(!config.validateDbType())throw (new InputMismatchException("Invalid database type of: " + argParts[1] + "."));
+                        config.setDbType( argParts[1] );
+                        if ( !config.validateDbType() )
+                            throw new InputMismatchException( "Invalid database type of: " + argParts[1] + "." );
                         break;
                     case "--server":
-                        config.setServer(argParts[1]);
+                        config.setServer( argParts[1] );
                         break;
                     case "--user":
-                        config.setUser(argParts[1]);
+                        config.setUser( argParts[1] );
                         break;
                     case "--password":
-                        config.setPassword(argParts[1]);
+                        config.setPassword( argParts[1] );
                         break;
                     case "--database":
-                        config.setDatabase(argParts[1]);
+                        config.setDatabase( argParts[1] );
                         break;
                     case "--table":
-                        config.setTable(argParts[1]);
+                        config.setTable( argParts[1] );
                         break;
                     default:
-                        //If a argument does not match any of the valid argument types then throw exception and stop.
-                        throw(new InputMismatchException("Invalid parameter field of type " + argParts[0].replace("--", "") + "."));
+                        // If an argument does not match any of the valid argument types then throw exception and stop.
+                        throw new InputMismatchException( "Invalid parameter field of type " + argParts[0].replace("--", "") + "." );
                 }
             }
 
-            //Ensures all required parameters needed for RoundTabler to run are filled out. THIS DOES NOT ENSURE --resultfile IS FILLED OUT BECAUSE ITS NOT A REQUIRED PARAMETER
-            if(!config.allFilled())throw(new InputMismatchException("Missing required parameter flag: " + config.missingParameter + "."));
+            //Ensures all required parameters needed for RoundTabler to run are filled out.
+            if ( !config.allFilled() )
+                throw new InputMismatchException( "Missing required parameter flag: " + config.missingParameter + "." );
 
-            //Print Statements signifying next step in RoundTabler process... can be removed just used as a checkpoint to ensure all arg checking is complete.
+            //Print Statements signifying next step in RoundTabler process...
             System.out.println();
             System.out.println("ALL REQUIRED PARAMETERS FULFILLED...");
 
             System.out.println();
             System.out.println("INITIALIZING DATABASE CONNECTION...");
 
+            // Initialize our database reader based on the configuration passed
             reader = ReaderMaker.getReader(config);
 
+            // Standardize our scan type casing
             String scanType = config.getType().toUpperCase().trim();
 
-            CommonScan scan = new CommonScan(config, SummaryOfPerformance, SummaryOfScans, reader);
+            // Attempt to execute scans (PCI/NACHA based on config passed)
+            CommonScan scan = new CommonScan( SummaryOfPerformance, SummaryOfScans, reader );
             try {
                 scan.scanDB(scanType);
-            } catch (SQLException sqlex) {
+            } catch ( SQLException sqlex ) {
                 return -1;
             }
 
             // Should not write empty results
             // Checking performance because it records results even when no matches occur
-            if (!SummaryOfPerformance.isEmpty()) {
-                WriteResultsToHTMLFile(SummaryOfScans, SummaryOfPerformance, config);
+            if ( !SummaryOfPerformance.isEmpty() ) {
+                WriteResultsToHTMLFile( SummaryOfScans, SummaryOfPerformance, config );
                 return 0;
-            }else {
+            }
+            else {
                 new HTMLErrorOut("No scannable content was found in the specified database/table.");
                 return -1;
             }
 
-        }catch(InputMismatchException | IllegalAccessException | SQLException | ClassNotFoundException e){
-
-            String filePath = "";
-
-            for (String elem : args) {
-                if(elem.contains("--resultfile") && elem.split("=").length > 1){
-                    filePath = elem.split("=")[1];
-                    break;
-                }
-            }
-
-            new HTMLErrorOut(e.getMessage());
-
+        }
+        catch ( InputMismatchException | IllegalAccessException | SQLException | ClassNotFoundException e ) {
+            new HTMLErrorOut( e.getMessage() );
             return -1;
-
         }
     }
 
-    /**
-     *
-     *
-     *
-
-     */
-    public static void WriteResultsToHTMLFile( ScanSummary Scans, PerformanceSummary Performance, Configuration config ){
+    /*
+     * Write our results to a user-friendly HTML file
+     * If hosted with Docker, these can be seen at http://localhost:8000/home.html
+    */
+    public static void WriteResultsToHTMLFile( ScanSummary Scans, PerformanceSummary Performance, Configuration config ) {
         StringBuilder sbHTML = new StringBuilder();
-
 
         sbHTML.append("<HTML><BODY style=\"margin: 0; font-family: 'monospace', sans-serif;\"><TITLE>Results</TITLE>");
 
@@ -149,9 +141,10 @@ public class RoundTable {
         sbHTML.append("<h2>Server: <span style=\"font-weight: lighter;\">" + config.getServer() + "</span></h2>\n");
         sbHTML.append("<h2>Scan Type: <span style=\"font-weight: lighter;\">" + config.getType() + "</span></h2>\n");
 
-        if(!config.getTable().equals("")){
+        if( !config.getTable().equals("") ) {
             sbHTML.append("<h2>Table: <span style=\"font-weight: lighter;\">" + config.getTable() + "</span></h2></div>\n");
-        }else{
+        }
+        else {
             sbHTML.append("</div>");
         }
 
@@ -205,7 +198,7 @@ public class RoundTable {
 
         sbHTML.append("</div><div style=\"padding-inline: 15px;\"><h2>Scan Results:</h2><BR>\n");
 
-        if(Scans.toString().length() != 0) {
+        if ( Scans.toString().length() != 0 ) {
 
             sbHTML.append("<center><TABLE style=\"font-family: 'monospace', sans-serif;\" BORDER=\"2\" WIDTH=\"95%\">");
             sbHTML.append("<TR><TH>Table Name</TH>" +
@@ -215,12 +208,13 @@ public class RoundTable {
                     "<TH>Confidence Level</TH>" +
                     "<TH>Match Rule(s)</TH>" +
                     "</TR>");
-            sbHTML.append(Scans.toString());
+            sbHTML.append( Scans.toString() );
             sbHTML.append("</TABLE></center><BR><BR>");
-        }else{
+
+        }
+        else {
             sbHTML.append("<h3 style=\"text-align: center;\">No unencrypted credit card or ACH information found.</h3><BR>\n");
         }
-
         sbHTML.append("\n\n");
 
         sbHTML.append("<h2>Scan Performance Summary:</h2><BR><CENTER>\n");
@@ -236,23 +230,18 @@ public class RoundTable {
 
         sbHTML.append( Performance.toString() );
         sbHTML.append( Performance.getSummaryRow() );
-    
 
 
         sbHTML.append("</TABLE><BR><BR>");
-
         sbHTML.append("</CENTER></div></BODY></HTML>");
-
-        //
-        // If no filename was specified in configuration, we write to standard output
-        // otherwise, we write to the filename provided in the config
-        //
-
-
+        
+        // File-saving operations
         String saveFileName;
         String dbName = config.getDatabase();
-        // Remove any characters in database name which are illegal in a fileNAme
+        // Remove any characters in database name which are illegal in a filename
         dbName = dbName.replaceAll("[^a-zA-Z0-9]", "_");
+
+        // Generate a time-unique filename
         saveFileName =
         "RESULTS_" + dbName + "_" +
         String.format("%d%02d%02d_%02d%02d%02d.html",
@@ -263,31 +252,29 @@ public class RoundTable {
         LocalDateTime.now().getMinute(),
         LocalDateTime.now().getSecond()   );
 
-        try(
-            FileWriter fileW = new FileWriter("html/" + saveFileName );
+        try (
+            FileWriter fileW = new FileWriter( "html/" + saveFileName );
             BufferedWriter writer = new BufferedWriter( fileW )
         ) {
-            writer.write(sbHTML.toString() );
-            System.out.println("\nResults written to localhost:8000/" +  saveFileName );
+            writer.write( sbHTML.toString() );
+            System.out.println( "\nResults written to localhost:8000/" +  saveFileName );
         }
-        catch (Exception ex ){
-            //System.out.println("Could not create results files " + ex);
+        catch ( Exception ex ){
             new HTMLErrorOut("Could not create result file " + ex);
         }
 
+        // Update the list of results
         WriteResultNameToJSFile(saveFileName);
-
     }
 
-    public static int WriteResultNameToJSFile(String fileName){
-
+    public static int WriteResultNameToJSFile( String fileName ){
         File resultList = new File("html/resultList.js");
 
         try {
             Scanner reader = new Scanner(resultList);
             String list = "";
 
-            while(reader.hasNext()){
+            while ( reader.hasNext() ) {
                 list = reader.next();
             }
 
@@ -303,7 +290,7 @@ public class RoundTable {
 
             list = String.join("", parts);
 
-            FileWriter writer = new FileWriter( resultList);
+            FileWriter writer = new FileWriter(resultList);
 
             writer.write(list);
 
@@ -311,11 +298,10 @@ public class RoundTable {
 
             return 0;
 
-        }catch(IOException e) {
-
+        }
+        catch( IOException e ) {
             new HTMLErrorOut("There was an error updating the result list. To view your results please visit localhost:8000/" + fileName);
             return -1;
-
         }
     }
 }
