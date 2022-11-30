@@ -28,9 +28,8 @@ printf "Removed any existing roundtabler instance\n\n"
 # Uses bash behavior similar to short circuiting in other languages
 # Pipes output to nowhere since that does not matter, just checking existence
 # docker network inspect roundtabler_default >/dev/null 2>&1 || docker network create roundtabler_default
-printf "Created Docker network"
+# printf "Created Docker network"
 
-# Linux version uses docker compose [args] rather than this, as docker-compose-v1 as in the mac version
 docker compose -f mariadbstack.yml up -d
 printf "Started Docker Application stack with Mariadb database and Adminer for Browser connection ability\n"
 
