@@ -31,7 +31,9 @@ public class PerformanceResult {
 			Double dElapsed = Double.valueOf(elapsed);
 			RowsPerSecond = dRows / dElapsed; 
 					
-		} else { RowsPerSecond = 0.0;}
+		} else { 
+			RowsPerSecond = 0.0; 
+		}
 
 		if ( ( RowsPerSecond == 0.0 ) && ( RowsScanned > 0 ) ) {
 			RowsPerSecond = Double.valueOf( RowsScanned );
