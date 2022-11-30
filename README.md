@@ -21,7 +21,7 @@ Release Date	|	Version		| Change(s)
 Name                        | Contribution(s)
 -------------------------   | ---------------------------------------------
 Tiffany Ambrose             | Writer
-Joseph Charlton             | Writer and Coder
+Joseph Charlton             | Writer
 Dania Jean-Baptiste         | Writer
 Brian Lasher                | Writer and Coder
 Nataliz Martinez-Santiago   | Writer
@@ -40,10 +40,13 @@ RoundTabler requires you to have a working version of Docker on your machine.
 ### On Windows:
 
 1. Clone the repository to your machine.
+
     * `git clone https://github.com/ScottPiersall/RoundTabler.git`
-2. Double-click on the `LaunchRoundTablerInstance.bat` to automatically build and start the RoundTabler Docker container and the Docker Application Stack.
+    
+2. Double-click on the `WindowsLaunchRoundTablerTestingNetwork.bat` to automatically build and start the RoundTabler Docker container and the Docker Application Stack.
 3. Open Docker Desktop and launch the CLI on the instance named 'roundtabler'.
 4. Navigate to the src directory using:
+
     * `cd src`
 
 #### You are now ready to start using RoundTabler.
@@ -54,11 +57,13 @@ RoundTabler requires you to have a working version of Docker on your machine.
 
     * `git clone https://github.com/ScottPiersall/RoundTabler.git`
     
-2. Double-click on the `LaunchRoundTablerInstance.sh` to automatically build and start the RoundTabler Docker container and the Docker Application Stack.
+2. Double-click on the `MacOSLaunchRoundTablerTestingNetwork.sh` to automatically build and start the RoundTabler Docker container and the Docker Application Stack.
 3. Open Docker Desktop and launch the CLI on the instance named 'roundtabler'.
 4. Navigate to the src directory using:
 
     * `cd src`
+
+#### You are now ready to start using RoundTabler.
 
 ### On Linux:
 
@@ -75,7 +80,7 @@ RoundTabler requires you to have a working version of Docker on your machine.
 4. Execute the `LaunchRoundTablerInstance` script as a user with necessary Docker permissions
 
     * e.g. `sudo su` for a superuser
-    * `./LaunchRoundTablerInstance`
+    * `./LinuxLaunchRoundTablerInstance`
 
 5. Attach to the container with an interactive prompt OR set your host CLASSPATH
 
@@ -96,13 +101,13 @@ Before you run the tool, you can view the homepage provided by the NGINX Docker 
 
 On the homepage, all the results from the scans will be made available to you via the localhost, as well as any errors that occur.
 
-To review the list of helpfuly options please run:
+To review the list of helpful options in the CLI please run:
 
 	`java RoundTabler.RoundTable --help`
 
 Example command for RoundTabler:
 
-	`java RoundTabler.RoundTable --type=all --dbtype=mariadb --server=[SERVER ADDRESS] --user=[USERNAME CREDENTIAL] --password=[PASSWORD CREDENTIAL] --database=[DATABASE NAME]`
+	`java RoundTabler.RoundTable --type=all --dbtype=mariadb --server=[DATABASE SERVER ADDRESS] --user=[USERNAME CREDENTIAL] --password=[PASSWORD CREDENTIAL] --database=[DATABASE NAME]`
 
 ## Testing RoundTabler
 
@@ -116,11 +121,13 @@ The RoundTabler development team provides an example database that can be used t
         * Password: example
     * Click 'Create Database' and make a database called **estore**.
     * Click 'import' in the sidebar and click 'browse'
-        * Select the file under the 'SampleDBs' folder in the cloned repository on your machine.
+        * Select the file under the 'SampleDBs' folder in the cloned repository on your machine named: **estore_large.mysqlbackup.sql.gz**.
         * Click `execute`
     * After some time, Adminer will reflect the changes it made. The database has been successfully populated!
     
 2. Now you can open Docker Desktop, and launch the CLI for the 'roundtabler' container.
+    * **On Linux**, you can access the CLI from your terminal using:
+        * `docker exec -it roundtabler /bin/bash`
 3. Remember to enter the src directory using:
 
     * `cd src`
@@ -151,8 +158,21 @@ In cases where the database you wish to scan is extremely large, you may get the
 
 To properly navigate this error, you need to allow RoundTabler to use more memory while running. In order to do that, you simply need to add the -Xms flag to the normal RoundTabler command:
 
-`java -Xms[MEMORY AMT][M | G] RoundTabler.Roundtable --type=all --dbtype=mariadb --server=[SERVER ADDRESS] --user=[USERNAME CREDENTIAL] --password=[PASSWORD CREDENTIAL] --database=[DATABASE NAME]`
+`java -Xms[MEMORY AMOUNT][M | G] RoundTabler.Roundtable --type=all --dbtype=mariadb --server=[SERVER ADDRESS] --user=[USERNAME CREDENTIAL] --password=[PASSWORD CREDENTIAL] --database=[DATABASE NAME]`
 
-This will allow RoundTabler to use more than the default amount and scan larger databases. 
+This will allow RoundTabler to use more than the default amount of memory and scan larger databases. 
+
+### Browser Caching
+
+In some cases, your browser will stop you from being able to view new results from scans. This is caused by your browser storing cached information of the homepage and failing to display new changes to it by the NGINX container. 
+
+To fix this issue, you can access your browsers settings, clear the cache, and then refresh the homepage.
+
+Here are ways to clear your browser cache for a few common browsers:
+
+* [Google Chrome](https://support.google.com/accounts/answer/32050?hl=en&co=GENIE.Platform%3DDesktop)
+* [Safari](https://www.macrumors.com/how-to/clear-safari-cache/)
+* [FireFox](https://support.mozilla.org/en-US/kb/how-clear-firefox-cache)
+* [Opera](https://www.opera.com/use-cases/clean-browser-and-remove-trackers)
      
     
