@@ -3,38 +3,43 @@ package RoundTabler;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+/*
+ * Class/structure that contains and manages performance information
+ * regarding scans
+*/
 
-public class PerformanceResult{
+public class PerformanceResult {
 
 	public String TableName;
 	public String TableColumn;
 	public int RowsScanned;
 	public int RowsMatched;
 	public String MatchType;    //"PCIDSS or NACHA"
-	public LocalDateTime	ScanStarted;
-	public LocalDateTime	ScanFinished;
-	public Double			RowsPerSecond;
+	public LocalDateTime ScanStarted;
+	public LocalDateTime ScanFinished;
+	public Double RowsPerSecond;
 
-	public PerformanceResult(){
+	public PerformanceResult() {
 		super();
-
 	}
 
-	private void CalculatePerformance(){
-		long elapsed = ChronoUnit.SECONDS.between( ScanStarted, ScanFinished);
+	// Calculates performance as a measure of time to complete the task
+	private void CalculatePerformance() {
+		long elapsed = ChronoUnit.SECONDS.between( ScanStarted, ScanFinished );
 		if ( elapsed != 0 ) { 
 			Double dRows = Double.valueOf(RowsScanned);
 			Double dElapsed = Double.valueOf(elapsed);
 			RowsPerSecond = dRows / dElapsed; 
 					
 		} else { RowsPerSecond = 0.0;}
+
 		if ( ( RowsPerSecond == 0.0 ) && ( RowsScanned > 0 ) ) {
-			RowsPerSecond = Double.valueOf( RowsScanned);
+			RowsPerSecond = Double.valueOf( RowsScanned );
 		}
 	}
 
 	
-	public String toString(){
+	public String toString() {
 		this.CalculatePerformance();
 
 
@@ -49,26 +54,18 @@ public class PerformanceResult{
 				"<TD ALIGN=\"RIGHT\"><STRONG><EM><SPAN STYLE=\"background-color: #FFFF00\">" + String.format("%,d", RowsScanned ) + "</SPAN></EM></STRONG></TD>" +
 				"<TD ALIGN=\"RIGHT\"><STRONG><EM><SPAN STYLE=\"background-color: #FFFF00\">" + String.format("%,d", RowsMatched )+ "</SPAN></EM></STRONG></TD>" +
 				"<TD ALIGN=\"RIGHT\"><STRONG><EM><SPAN STYLE=\"background-color: #FFFF00\">" + String.format("%.0f", RowsPerSecond ) + "</SPAN></EM></STRONG></TD>" + 
-		
 				"</TR>";
-
 		}
+
 		else {		
-
-
-	return 
-	"<TR><TD>" + TableName + "</TD>" +
-	    "<TD>" + TableColumn + "</TD>"+
-		"<TD>" + MatchType + "</TD>"+
-		"<TD ALIGN=\"RIGHT\">" + String.format("%,d", RowsScanned ) + "</TD>" +
-		"<TD ALIGN=\"RIGHT\">" + String.format("%,d", RowsMatched )+ "</TD>" +
-		"<TD ALIGN=\"RIGHT\">" + String.format("%.0f", RowsPerSecond ) + "</TD>" + 
-		
-		"</TR>";
-
+			return 
+				"<TR><TD>" + TableName + "</TD>" +
+	    		"<TD>" + TableColumn + "</TD>"+
+				"<TD>" + MatchType + "</TD>"+
+				"<TD ALIGN=\"RIGHT\">" + String.format("%,d", RowsScanned ) + "</TD>" +
+				"<TD ALIGN=\"RIGHT\">" + String.format("%,d", RowsMatched )+ "</TD>" +
+				"<TD ALIGN=\"RIGHT\">" + String.format("%.0f", RowsPerSecond ) + "</TD>" + 
+				"</TR>";
 		}
-
 	}
-
-
 }
