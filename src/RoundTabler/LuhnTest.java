@@ -2,13 +2,12 @@ package RoundTabler;
 
 import static utility.ApplicationUtility.charToInt;
 
-//
-// Utility Class
-// For Checking Card Numbers
-// To See if they Pass Luhn's Algorithm
-//
-// Credit Card Numbers, to be valid, must pass Luhn's Algorithm
-//
+/* 
+* Utility Class For Checking Card Numbers
+* To See if they Pass Luhn's Algorithm
+*
+* Credit Card Numbers, to be valid, must pass Luhn's Algorithm
+*/
 public class LuhnTest {
 
 	public static boolean Validate( String cardNumber ) {
@@ -21,19 +20,20 @@ public class LuhnTest {
 
 		int cardNumberLength = cardNumber.length();
 
-		if (cardNumberLength == 0) {
+		if ( cardNumberLength == 0 ) {
 			return false;
 		}
 
-		for (int i = cardNumberLength - 1; i >= 0; i--) {
+		// Iterate through the card number backwards
+		for ( int i = cardNumberLength - 1; i >= 0; i-- ) {
 			int addDigits = 0;
 			int digit = charToInt(cardNumber.charAt(i));
-			if (isSecondNumber) {
+			if ( isSecondNumber ) {
 				digit *= 2;
-				if (digit >= 10) {
+				if ( digit >= 10 ) {
 					String stringDigit = Integer.toString(digit);
-					for (int j = 0; j < stringDigit.length(); j++) {
-						addDigits += charToInt(stringDigit.charAt(j));
+					for ( int j = 0; j < stringDigit.length(); j++ ) {
+						addDigits += charToInt( stringDigit.charAt(j) );
 					}
 					digit = addDigits;
 				}
