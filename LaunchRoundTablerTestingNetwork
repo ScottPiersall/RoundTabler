@@ -1,0 +1,61 @@
+#!/bin/bash
+
+docker stop roundtabler-db-1
+echo Stopped any existing mariadb docker instances
+
+docker rm roundtabler-db-1
+echo Removed any existing mariadb docker instances
+
+docker stop roundtabler-adminer-1
+echo Stopped any existing mariadb adminer docker instances
+
+docker rm roundtabler-adminer-1
+echo Removed any existing mariadb adminer docker instances
+
+docker stop roundtabler-web-1
+echo Stopped any existing mariadb web docker instances
+
+docker rm roundtabler-web-1
+echo Removed any existing mariadb web docker instances
+
+docker stop roundtabler
+echo Stopped any existing roundtabler instance
+
+docker rm roundtabler
+printf "Removed any existing roundtabler instance\n\n"
+
+# Create our network if it does not exist, first testing for existence
+# Uses bash behavior similar to short circuiting in other languages
+# Pipes output to nowhere since that does not matter, just checking existence
+# docker network inspect roundtabler_default >/dev/null 2>&1 || docker network create roundtabler_default
+# printf "Created Docker network"
+
+docker compose -f mariadbstack.yml up -d
+printf "Started Docker Application stack with Mariadb database and Adminer for Browser connection ability\n"
+
+docker build --tag roundtabler .
+
+echo Docker instance successfully built. Start container?
+
+read -p "Press any key to resume ..."
+
+docker run -d -t --name roundtabler --mount type=bind,source="$(pwd)",target=/RoundTabler roundtabler
+
+printf "\n\n"
+
+docker network connect roundtabler_default roundtabler
+echo Added roundtabler container to roundtabler_default
+echo To connect to each container using the instance name in place of an IP address
+
+# Compile the program; this should work on any relatively recent distro
+docker exec -d -it roundtabler javac ./src/**/*.java ./src/RoundTabler/db/*.java
+
+docker cp ./nginx.conf roundtabler-web-1:/etc/nginx/nginx.conf
+
+printf "\n\n"
+
+echo RoundTabler Testing Network Successfully built.
+
+printf "\n"
+
+read -p "Press any key to complete the process..."
