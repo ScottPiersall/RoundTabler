@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
  * Class used for doing PCIScan of fields for protected cards
 */
 
-public class PCIScan {
+public class PCIScan extends GenericScan {
 
 	// Match potential card numbers by any sequence of digits
 	// between 13 and 16 characters in length with embedded dashes
@@ -35,6 +35,7 @@ public class PCIScan {
 		super();
 		this.psbResults = new StringBuilder();
 		psbResults.append("\n");
+		this.scanType = "PCIDSS";
 	}
 
 	public int getLastMatchStart() {

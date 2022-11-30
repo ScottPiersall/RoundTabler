@@ -9,7 +9,7 @@ import static utility.ApplicationUtility.*;
  * Class used for scanning fields of data to check for NACHA compliance
 */
 
-public class NACHAScan{
+public class NACHAScan extends GenericScan {
 
     private StringBuilder psbResults;
 
@@ -25,6 +25,7 @@ public class NACHAScan{
         super();
         this.psbResults = new StringBuilder();
         psbResults.append("\n");
+        this.scanType = "NACHA";
     }
 
     public int getLastMatchStart() {
