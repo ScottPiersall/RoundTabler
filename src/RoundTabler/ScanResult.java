@@ -1,8 +1,10 @@
 package RoundTabler;
 
+/*
+ * Class/structure that contains information about scan results
+*/
 
-
-public class ScanResult{
+public class ScanResult {
 
 	public String TableName;
 	public String TableColumn;
@@ -11,7 +13,7 @@ public class ScanResult{
     public int ConfidenceLevel;
     public String MatchResultRule;
 
-	public ScanResult(){
+	public ScanResult() {
 		super();
 		TableName = "NOT SET";
 		TableColumn = "NOT SET";
@@ -22,15 +24,15 @@ public class ScanResult{
 	}
 
 	
-	public String toString(){
+	public String toString() {
 	
-	return "<TR><TD>" + TableName + "</TD>" +
-	    "<TD>" + TableColumn + "</TD>"+
-	    "<TD>" + MatchType + "</TD>"+
-		"<TD>"  + HTMLEmphasizedResult + "</TD>"+
-		"<TD ALIGN=\"RIGHT\">"  + String.format("%,d", ConfidenceLevel ) + "</TD>"+
-		"<TD>" + MatchResultRule + "</TD>" +
-		"</TR>";
+		return "<TR><TD>" + TableName + "</TD>" +
+	    	"<TD>" + TableColumn + "</TD>"+
+	    	"<TD>" + MatchType + "</TD>"+
+			"<TD>"  + HTMLEmphasizedResult + "</TD>"+
+			"<TD ALIGN=\"RIGHT\">"  + String.format("%,d", ConfidenceLevel ) + "</TD>"+
+			"<TD>" + MatchResultRule + "</TD>" +
+			"</TR>";
 
 	}
 
