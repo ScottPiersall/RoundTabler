@@ -3,26 +3,22 @@ package RoundTabler;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.InputMismatchException;
 
 import static RoundTabler.RoundTable.WriteResultNameToJSFile;
 
+/*
+ * Class that handles and manages displaying program errors in an HTML file
+*/
+
 public class HTMLErrorOut {
 
-
-    public HTMLErrorOut(String error){
+    public HTMLErrorOut( String error ) {
         addToErrorLog(error);
     }
 
-    private void addToErrorLog(String error) {
-
-
-
-        try{
-            //Create file at directory specified. Problem with directory resorts to simply printing to command line
-
-            //if(filePath.length() == 0)throw(new IOException());
-
+    private void addToErrorLog( String error ) {
+        try {
+            // Open a writer to and create a new file for errorLog.html
             File file = new File("html/errorLog.html");
 
             file.createNewFile();
@@ -102,6 +98,7 @@ public class HTMLErrorOut {
 
             htmlWrite.close();
 
+            // Make JSFile know that an error occurred and should show on the list
             WriteResultNameToJSFile("errorLog.html");
 
             System.out.println();
@@ -110,14 +107,11 @@ public class HTMLErrorOut {
             System.out.println("Error information can be found in the error log file at localhost:8000/errorLog.html");
             System.out.println();
 
-        }catch(IOException e){
-
+        }
+        catch ( IOException e ) {
             System.out.println(e);
             System.out.println(error);
             System.out.println("Please refer to https://github.com/ScottPiersall/RoundTabler/blob/main/README.md to help resolve any confusion.");
-
         }
     }
-
-
 }

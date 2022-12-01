@@ -48,7 +48,7 @@ public abstract class DBReader {
     // Close the connection
     public void closeConnection() {
         if (this.conn != null)
-            try { this.conn.close(); } catch (SQLException e) { System.out.println(e); }
+            try { this.conn.close(); } catch ( SQLException e ) { e.printStackTrace(System.out); }
     }
 
     // Using a ResultSet or similar data type construct SchemaItems

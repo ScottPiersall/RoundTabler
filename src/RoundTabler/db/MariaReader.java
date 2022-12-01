@@ -1,6 +1,7 @@
 package RoundTabler.db;
 
 import java.sql.SQLException;
+
 import RoundTabler.Configuration;
 
 /*
@@ -9,7 +10,7 @@ import RoundTabler.Configuration;
 */
 
 public class MariaReader extends JDBCUser {
-    public MariaReader(Configuration config) throws ClassNotFoundException, SQLException {
+    public MariaReader( Configuration config ) throws ClassNotFoundException, SQLException {
         super(config);
 
         // Check for the relevant JDBC Driver

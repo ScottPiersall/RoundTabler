@@ -4,6 +4,11 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
+/*
+ * Class/structure that stores and manages arguments and configuration
+ * Performs validation on input
+*/
+
 public class Configuration {
 
     private String type;
@@ -35,11 +40,11 @@ public class Configuration {
         return this.type;
     }
 
-    public void setType(String type) {
+    public void setType( String type ) {
         this.type = type;
     }
 
-    public boolean validateScanType(){
+    public boolean validateScanType() {
         List<String> types = Arrays.asList(this.validScanTypes);
 
         return types.contains(this.type.toLowerCase());
@@ -49,7 +54,7 @@ public class Configuration {
         return this.dbType;
     }
 
-    public void setDbType(String dbType) {
+    public void setDbType( String dbType ) {
         this.dbType = dbType;
     }
 
@@ -57,12 +62,14 @@ public class Configuration {
         return this.server;
     }
 
-    public String getPort() { return this.port; }
+    public String getPort() { 
+        return this.port;
+    }
 
-    public void setServer(String server) {
-        this.server = server.split(":")[0]; // If : not present, this is always the entire string
+    public void setServer( String server ) {
+        this.server = server.split(":")[0]; // If ":" is not present, this is always the entire string
 
-        if(server.contains(":")){
+        if ( server.contains(":") ) {
             this.port = server.split(":")[1];
         }
     }
@@ -71,7 +78,7 @@ public class Configuration {
         return this.user;
     }
 
-    public void setUser(String user) {
+    public void setUser( String user ) {
         this.user = user;
     }
 
@@ -79,7 +86,7 @@ public class Configuration {
         return this.password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword( String password ) {
         this.password = password;
     }
 
@@ -87,11 +94,11 @@ public class Configuration {
         return this.database;
     }
 
-    public void setDatabase(String database) {
+    public void setDatabase( String database ) {
         this.database = database;
     }
 
-    public boolean validateDbType(){
+    public boolean validateDbType() {
         List<String> types = Arrays.asList(this.validDbTypes);
 
         return types.contains(this.dbType.toLowerCase());
@@ -101,16 +108,16 @@ public class Configuration {
         return this.table;
     }
 
-    public void setTable(String table) {
+    public void setTable( String table ) {
         this.table = table;
     }
 
 
-    //Ensure all required parameters have been filled out except --resultfile since it isn't required
-
+    // Ensure all required parameters have been filled out
+    // Non-required fields are "table" and "port" (port is a part of the server argument)
     public boolean allFilled() throws IllegalAccessException {
 
-        for(Field f : getClass().getDeclaredFields()) {
+        for ( Field f : getClass().getDeclaredFields() ) {
             if (f.get(this) == ""  && !f.getName().equals("table") && !f.getName().equals("port")) {
                 this.missingParameter = f.getName();
                 return false;
@@ -118,7 +125,5 @@ public class Configuration {
         }
 
         return true;
-
     }
-
 }

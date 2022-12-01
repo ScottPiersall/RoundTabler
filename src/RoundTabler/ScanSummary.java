@@ -2,26 +2,31 @@ package RoundTabler;
 
 import java.util.ArrayList;
 
+/*
+ * Class/structure that contains all ScanResults
+*/
+
 public class ScanSummary{
 
-	private ArrayList<RoundTabler.ScanResult> ScannerResults = new ArrayList<RoundTabler.ScanResult>();
+    private ArrayList<RoundTabler.ScanResult> ScannerResults = new ArrayList<RoundTabler.ScanResult>();
 
-	public ScanSummary(){
-		super();
-		}
+    public ScanSummary() {
+        super();
+    }
 
-	public void addResult( RoundTabler.ScanResult NewResult) {
-		ScannerResults.add( NewResult );
-	}
+    public void addResult( RoundTabler.ScanResult NewResult ) {
+        ScannerResults.add( NewResult );
+    }
 
-	public String toString() {
-		StringBuilder temp;
-		int Index;
-		temp = new StringBuilder();
-		for( Index=0; Index < ScannerResults.size(); Index++ ){
-			temp.append( ScannerResults.get(Index).toString() + "\n");
-		}
-		return temp.toString();
-	}
+    public String toString() {
+        StringBuilder temp;
+        int index;
+        temp = new StringBuilder();
+        
+        for( index=0; index < ScannerResults.size(); index++ ){
+            temp.append( ScannerResults.get(index).toString() + "\n" );
+        }
 
+        return temp.toString();
+    }
 }

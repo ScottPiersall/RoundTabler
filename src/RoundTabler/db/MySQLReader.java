@@ -1,6 +1,7 @@
 package RoundTabler.db;
 
 import java.sql.SQLException;
+
 import RoundTabler.Configuration;
 
 /*
@@ -9,7 +10,7 @@ import RoundTabler.Configuration;
 */
 
 public class MySQLReader extends JDBCUser {
-    public MySQLReader(Configuration config) throws ClassNotFoundException, SQLException {
+    public MySQLReader( Configuration config ) throws ClassNotFoundException, SQLException {
         super(config);
         
         // Check for JDBC driver; if fails, throw ClassNotFoundException
