@@ -43,9 +43,7 @@ docker network connect roundtabler_default roundtabler
 echo Added roundtabler container to roundtabler_default
 echo To connect to each container using the instance name in place of an IP address
 
-docker exec -d roundtabler javac RoundTabler/*.java
-docker exec -d roundtabler javac utility/*.java
-docker exec -d roundtabler javac RoundTabler/db/*.java
+docker exec -d -it roundtabler javac ./**/*.java ./RoundTabler/db/*.java
 
 docker cp ./nginx.conf roundtabler-web-1:/etc/nginx/nginx.conf
 
