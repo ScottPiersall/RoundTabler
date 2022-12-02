@@ -45,9 +45,6 @@ RoundTabler requires you to have a working version of Docker on your machine.
     
 2. Double-click on the `WindowsLaunchRoundTablerTestingNetwork.bat` to automatically build and start the RoundTabler Docker container and the Docker Application Stack.
 3. Open Docker Desktop and launch the CLI on the instance named 'roundtabler'.
-4. Navigate to the src directory using:
-
-    * `cd src`
 
 #### You are now ready to start using RoundTabler.
 
@@ -59,9 +56,6 @@ RoundTabler requires you to have a working version of Docker on your machine.
     
 2. Double-click on the `MacOSLaunchRoundTablerTestingNetwork.sh` to automatically build and start the RoundTabler Docker container and the Docker Application Stack.
 3. Open Docker Desktop and launch the CLI on the instance named 'roundtabler'.
-4. Navigate to the src directory using:
-
-    * `cd src`
 
 #### You are now ready to start using RoundTabler.
 
@@ -86,12 +80,7 @@ RoundTabler requires you to have a working version of Docker on your machine.
 
     * `docker exec -it roundtabler /bin/bash`
 
-6. Navigate to the src directory using:
-
-    * `cd src`
-
 #### You are now ready to start using RoundTabler.
-
 
 ## Running the RoundTabler Tool
 
@@ -128,9 +117,6 @@ The RoundTabler development team provides an example database that can be used t
 2. Now you can open Docker Desktop, and launch the CLI for the 'roundtabler' container.
     * **On Linux**, you can access the CLI from your terminal using:
         * `docker exec -it roundtabler /bin/bash`
-3. Remember to enter the src directory using:
-
-    * `cd src`
     
 4. Once in src you can run RoundTabler:
 
@@ -138,6 +124,8 @@ The RoundTabler development team provides an example database that can be used t
     
 5. This will start the RoundTabler tool and scan the estore database you recently created, and populated, in step one. 
 6. Once the scan is finished, you can refresh the home page at localhost:8000/home.html and the directory will have the result file from your scan for viewing.
+
+**Note:** If you would like to test against the estore_huge please refer to the 'Testing Against Estore_Huge' section for testing that database. 
 
 ## Helpful Notes
 
@@ -175,4 +163,30 @@ Here are ways to clear your browser cache for a few common browsers:
 * [FireFox](https://support.mozilla.org/en-US/kb/how-clear-firefox-cache)
 * [Opera](https://www.opera.com/use-cases/clean-browser-and-remove-trackers)
      
+## Testing Against Estore_Huge
+
+1. Open your browser and browse to localhost:8080.
+
+    * Log in with the credentials of:
+        * User: root
+        * Password: example
+    * Once you are logged into the database, click 'Create Database' and name the database: 'estore_huge'
+    * You can close the browser for now.
+
+2. Now, navigate to the SampleDBs folder on the host machine located withing your cloned RoundTabler code.
+
+3. Unzip the file named `estore_huge.mysqlbackup.sql.gz` into the SampleDBs folder you are currently in.
+
+4. Open a terminal using **Administrative Privileges** in the SampleDBs folder and run:
+
+    * `docker cp ./estore_huge.mysqlbackup.sql roundtabler-db-1:/`
+    * This will copy the unzipped sql script into the roundtabler-db-1 container. 
+
+5. Open Docker Desktop and click the drop down on the roundtabler application stack, then open the CLI for the roundtabler-db-1 container and run:
+
+    * `mysql -uroot -pexample estore_huge < estore_huge.mysqlbackup.sql`
+    * This will pipe the sql script into the estore_huge database.
     
+6. You can now open the CLI for the roundtabler container and run the following command:
+
+    * `java RoundTabler.RoundTable --type=all --dbtype=mariadb --server=roundtabler-db-1 --user=root --password=example --database=estore_huge`
