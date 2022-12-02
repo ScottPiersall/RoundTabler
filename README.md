@@ -38,6 +38,13 @@ RoundTabler requires you to have a working version of Docker on your machine.
     
 2. Double-click on the `WindowsLaunchRoundTablerTestingNetwork.bat` to automatically build and start the RoundTabler Docker container and the Docker Application Stack.
 3. Open Docker Desktop and launch the CLI on the instance named 'roundtabler'.
+4. cd into the src directory
+
+    * `cd src`
+    
+5. On Windows, the java files need to be compiled manually in the container. Now that you are in the src directory inside the contianer, run the following command:
+
+    * `javac RoundTabler/*.java RoundTabler/db/*.java utility/*.java`
 
 #### You are now ready to start using RoundTabler.
 
