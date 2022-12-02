@@ -6,4 +6,4 @@
 *.idea
 out
 *.iml
-*.js
+src/html/resultList.js
