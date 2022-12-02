@@ -4,18 +4,11 @@ A security tool for scanning relational database column contents for unencrypted
 ## Features
 
 * Easy scanning of columns
-* Low false-positives
+* Low false-negatives
 * Avoids bad outcome (we do not certify databases with unencrypted data)
 * Reported data includes confidence scores
 * Quick Deployment Option
 * Deployable via a docker/VM image - NOTHING TO BUILD OR INSTALL!
-
-
-## Releases
-
-Release Date	|	Version		| Change(s)
-----------------|-----------------------|------------------------------------------------------------------------------------
-02 Nov 2020	|	0.0.0.1     |	Repository Created. 
 
 ## Authors
 Name                        | Contribution(s)
@@ -55,7 +48,12 @@ RoundTabler requires you to have a working version of Docker on your machine.
     * `git clone https://github.com/ScottPiersall/RoundTabler.git`
     
 2. Double-click on the `MacOSLaunchRoundTablerTestingNetwork.sh` to automatically build and start the RoundTabler Docker container and the Docker Application Stack.
+
 3. Open Docker Desktop and launch the CLI on the instance named 'roundtabler'.
+
+4. cd into the src directory
+
+    * `cd src`
 
 #### You are now ready to start using RoundTabler.
 
@@ -79,6 +77,10 @@ RoundTabler requires you to have a working version of Docker on your machine.
 5. Attach to the container with an interactive prompt **OR** set your host CLASSPATH to that seen in the `Dockerfile`
 
     * `docker exec -it roundtabler /bin/bash`
+
+6. cd into the src directory
+
+    * `cd src`
 
 #### You are now ready to start using RoundTabler.
 
@@ -117,7 +119,11 @@ The RoundTabler development team provides an example database that can be used t
 2. Now you can open Docker Desktop, and launch the CLI for the 'roundtabler' container.
     * **On Linux**, you can access the CLI from your terminal using:
         * `docker exec -it roundtabler /bin/bash`
-    
+
+3. cd into the src directory
+
+    * `cd src`
+
 4. Once in src you can run RoundTabler:
 
     * `java RoundTabler.RoundTable --type=all --dbtype=mariadb --server=roundtabler-db-1 --user=root --password=example --database=estore`
@@ -187,6 +193,8 @@ Here are ways to clear your browser cache for a few common browsers:
     * `mysql -uroot -pexample estore_huge < estore_huge.mysqlbackup.sql`
     * This will pipe the sql script into the estore_huge database.
     
-6. You can now open the CLI for the roundtabler container and run the following command:
+6. You can now open the CLI for the roundtabler container and run the following commands:
+
+    * `cd src`
 
     * `java RoundTabler.RoundTable --type=all --dbtype=mariadb --server=roundtabler-db-1 --user=root --password=example --database=estore_huge`
